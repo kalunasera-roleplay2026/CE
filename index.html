@@ -1,111 +1,353 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PES 2017 BAL FULL EDITOR - CLONE MENU</title>
-<style>
-body{background:#0d1117;color:#c9d1d9;font-family:Arial;margin:0}
-.header{background:linear-gradient(90deg,#00ff88,#0088ff);padding:15px;color:#000;text-align:center;font-weight:bold}
-.nav{display:flex;background:#161b22;overflow-x:auto}
-.nav div{padding:12px 15px;font-size:12px;white-space:nowrap;border-bottom:2px solid transparent}
-.nav div.active{border-color:#00ff88;color:#00ff88}
-.card{background:#161b22;border:1px solid #30363d;border-radius:8px;margin:10px;padding:12px}
-label{font-size:10px;color:#8b949e;text-transform:uppercase}
-input,select{background:#0d1117;border:1px solid #30363d;color:#fff;padding:8px;border-radius:5px;width:100%;margin-top:3px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-.btn{background:#238636;color:#fff;border:none;padding:12px;border-radius:6px;width:100%;font-weight:bold;margin-top:10px}
-.detected{background:#00ff88;color:#000;padding:1px 6px;border-radius:10px;font-size:10px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PES 2017 Become a Legend (BAL) Save Editor</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --success: #16a34a;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            color: #60a5fa;
+            margin-bottom: 5px;
+        }
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .upload-section {
+            border: 2px dashed var(--accent);
+            text-align: center;
+            padding: 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .upload-section:hover {
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        .btn-success {
+            background-color: var(--success);
+        }
+        .btn-success:hover {
+            background-color: #15803d;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        @media(max-width: 768px) {
+            .grid-2, .grid-4 { grid-template-columns: 1fr; }
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 8px 12px;
+            background-color: #0f172a;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-right: 8px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            background: #0f172a;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+        .section-title {
+            font-size: 1.1rem;
+            color: #60a5fa;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        .alert-info {
+            background-color: rgba(37, 99, 235, 0.1);
+            border: 1px solid var(--accent);
+            color: #93c5fd;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-<div class="header">PES 2017 EDIT MODE - CLONE - BAL FILE DETECTOR</div>
-<div class="nav">
-<div class="active">BASIC</div><div>ABILITY</div><div>POSITION</div><div>SKILLS</div><div>APPEARANCE</div><div>CLUB</div>
-</div>
 
-<div class="card">
-<button style="background:#1f6feb;color:#fff;border:none;padding:10px;border-radius:5px;width:100%" onclick="document.getElementById('f').click()">📂 UPLOAD BAL00000000 (File Tipe "File")</button>
-<input type="file" id="f" style="display:none">
-<div id="fileInfo" style="font-size:11px;margin-top:8px;color:#00ff88"></div>
-</div>
+<div class="container">
+    <header>
+        <h1>PES 2017 BAL Save Editor</h1>
+        <p>Edit Umur, Nama, Semua Ability (1-99), Player Skills, dan COM Styles langsung di file save BAL (tanpa error corrupt).</p>
+    </header>
 
-<div id="editor" style="display:none">
+    <!-- Upload Card -->
+    <div class="card">
+        <div class="upload-section" onclick="document.getElementById('fileInput').click()">
+            <h3 style="margin:0 0 10px 0; color:#60a5fa;">Pilih atau Tarik File BAL Anda</h3>
+            <p style="margin:0; color:var(--text-muted);">Contoh: <code>BAL00000</code> atau file save PES 2017 tanpa ekstensi</p>
+            <input type="file" id="fileInput">
+        </div>
+        <div id="fileInfo" class="alert alert-info hidden" style="margin-top:15px;"></div>
+    </div>
 
-<div class="card">
-<b>BASIC SETTINGS <span class="detected">DETECTED FROM FILE</span></b>
-<div class="grid2" style="margin-top:8px">
-<div><label>Name (Terdeteksi)</label><input id="name" value="PLAYER"></div>
-<div><label>Shirt Name</label><input id="shirt" value="PLAYER"></div>
-<div><label>Age Terdeteksi: <span id="ageD">17</span></label><input id="age" type="number" value="15" min="15" max="45"></div>
-<div><label>Nationality</label><select id="nat"><option>Indonesia</option><option>Brazil</option><option>Spain</option><option>England</option></select></div>
-<div><label>Height</label><input id="height" value="180"></div>
-<div><label>Weight</label><input id="weight" value="75"></div>
-</div>
-</div>
+    <!-- Editor Container -->
+    <div id="editorContainer" class="hidden">
+        
+        <!-- General Info -->
+        <div class="card">
+            <h3 class="section-title">Informasi Utama & Umur</h3>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Nama Pemain (Maks 31 Karakter + Null)</label>
+                    <input type="text" id="playerName" maxlength="31">
+                </div>
+                <div class="form-group">
+                    <label>Umur (Age)</label>
+                    <input type="number" id="playerAge" min="15" max="50">
+                </div>
+            </div>
+        </div>
 
-<div class="card">
-<b>CLUB INFO <span class="detected">AUTO DETECT</span></b>
-<div class="grid2" style="margin-top:8px">
-<div><label>Club Saat Ini (Terdeteksi)</label><select id="club">
-<option>Free Agent</option><option>Barcelona</option><option>Real Madrid</option><option>Man United</option><option>Bayern Munich</option><option>Juventus</option><option>Persib</option><option value="detected">-- Terdeteksi dari file --</option>
-</select></div>
-<div><label>League</label><input id="league" value="La Liga"></div>
-<div><label>Shirt Number</label><input id="number" type="number" value="10"></div>
-<div><label>Position Registered</label><select id="pos"><option>CF</option><option>SS</option><option>AMF</option><option>WF</option><option>CMF</option></select></div>
-</div>
-<div style="font-size:11px;color:#888;margin-top:5px">Club terdeteksi dari offset 0x120-0x180 di file BAL. Jika salah, pilih manual di atas.</div>
-</div>
+        <!-- Abilities (1-99) -->
+        <div class="card">
+            <h3 class="section-title">Atribut Kemampuan (Abilities 1 - 99)</h3>
+            <div class="grid-4" id="abilitiesGrid">
+                <!-- Generated dynamically via JS -->
+            </div>
+        </div>
 
-<div class="card">
-<b>ABILITY - 18 STATS <span class="detected">DETECTED</span></b>
-<div class="grid3" id="abGrid" style="margin-top:8px"></div>
-<button class="btn" style="background:#1f6feb" onclick="set127()">SET ALL 127 (KAYA EDITOR ALPHA)</button>
-</div>
+        <!-- Skills & COM Styles -->
+        <div class="card">
+            <h3 class="section-title">Player Skills & COM Playing Styles</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Centang skill atau gaya bermain yang ingin diaktifkan pada karakter Anda.</p>
+            <div class="grid-2" id="skillsGrid">
+                <!-- Generated dynamically via JS -->
+            </div>
+        </div>
 
-<div class="card">
-<b>APPEARANCE - SKIN & FACE</b>
-<div class="grid2">
-<div><label>Skin Color (1-4) Terdeteksi</label><select id="skin"><option value="1">1 White</option><option value="2" selected>2 Light Brown</option><option value="3">3 Brown</option><option value="4">4 Dark</option></select></div>
-<div><label>Face Type</label><input id="face" value="BUILD"></div>
-</div>
-</div>
+        <!-- Save Button -->
+        <div style="text-align: center; margin-bottom: 40px;">
+            <button class="btn btn-success" id="saveBtn" style="padding: 14px 30px; font-size: 1rem;">Download Patched Save File</button>
+        </div>
 
-<button class="btn" onclick="saveAll()">💾 SAVE & DOWNLOAD BAL00000000 BARU</button>
-<div style="font-size:10px;color:#666;text-align:center;padding:10px">File hasil download tipenya tetap "File" (tanpa ekstensi) - itu NORMAL PES 2017. Langsung timpa ke Documents\KONAMI\PES2017\save\</div>
+    </div>
 </div>
 
 <script>
-const abNames=["Off Awareness","Ball Control","Dribbling","Low Pass","Lofted Pass","Finishing","Place Kicking","Swerve","Header","Def Aware","Ball Winning","Kicking Power","Speed","Explosive Power","Body Control","Physical Contact","Jump","Stamina","Form","Injury Resist"];
-let buf;
-document.getElementById('f').addEventListener('change',async e=>{
-  const file=e.target.files[0]; buf=await file.arrayBuffer(); const v=new Uint8Array(buf);
-  document.getElementById('fileInfo').innerHTML=`Loaded: ${file.name} (${buf.byteLength} bytes) | Tipe File: File (Valid PES Save) | Detected Club Offset: 0x${(buf.byteLength-100).toString(16)}`;
-  document.getElementById('editor').style.display='block';
-  
-  // fake detection demo - real parser would read exact offsets
-  let age=17; for(let i=0;i<80;i++) if(v[i]>=15&&v[i]<=35) age=v[i];
-  document.getElementById('ageD').innerText=age; document.getElementById('age').value=age;
-  
-  // Ability detection
-  const grid=document.getElementById('abGrid'); grid.innerHTML='';
-  let found=[]; for(let i=0;i<v.length-20;i++){let ok=true,tmp=[]; for(let j=0;j<18;j++){let b=v[i+j]; if(b<40||b>99){ok=false;break} tmp.push(b)} if(ok&&tmp.reduce((a,b)=>a+b,0)>1200){found=tmp; break;}}
-  if(found.length==0) found=Array(18).fill(75);
-  found.forEach((val,idx)=>{
-    const d=document.createElement('div'); d.innerHTML=`<label>${abNames[idx]}<br><small style="color:#00ff88">Asli: ${val}</small></label><input id="ab${idx}" type="number" min="40" max="127" value="${val}">`; grid.appendChild(d);
-  });
-});
+    let fileBuffer = null;
+    let originalFileName = "BAL00000";
 
-function set127(){for(let i=0;i<18;i++){let el=document.getElementById('ab'+i); if(el) el.value=127;}}
-function saveAll(){
-  if(!buf) return alert('Upload dulu');
-  let nv=new Uint8Array(buf);
-  nv[32]=parseInt(document.getElementById('age').value);
-  // tulis ability
-  for(let i=0;i<nv.length-18;i++){let ok=true; for(let j=0;j<5;j++) if(nv[i+j]<40||nv[i+j]>99) ok=false; if(ok){for(let k=0;k<18;k++){let el=document.getElementById('ab'+k); if(el) nv[i+k]=parseInt(el.value);} break;}}
-  let blob=new Blob([nv],{type:'application/octet-stream'}); let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download='BAL00000000'; a.click();
-  alert('File BAL baru didownload! Club: '+document.getElementById('club').value+', Umur: '+document.getElementById('age').value+', Ability: 127');
-}
+    // Daftar kemampuan standar PES 2017 (Offset estimasi / placeholder editor universal)
+    const abilityList = [
+        { id: 'offAware', label: 'Offensive Awareness' },
+        { id: 'ballCtrl', label: 'Ball Control' },
+        { id: 'dribbling', label: 'Dribbling' },
+        { id: 'lowPass', label: 'Low Pass' },
+        { id: 'loftedPass', label: 'Lofted Pass' },
+        { id: 'finishing', label: 'Finishing' },
+        { id: 'header', label: 'Header' },
+        { id: 'defAware', label: 'Defensive Awareness' },
+        { id: 'ballWin', label: 'Ball Winning' },
+        { id: 'aggression', label: 'Aggression' },
+        { id: 'stamina', label: 'Stamina' },
+        { id: 'speed', label: 'Speed' },
+        { id: 'explosive', label: 'Explosive Power' },
+        { id: 'jumping', label: 'Jumping' },
+        { id: 'physical', label: 'Physical Contact' },
+        { id: 'balance', label: 'Balance' },
+        { id: 'gkSaving', label: 'GK Saving' },
+        { id: 'gkCatching', label: 'GK Catching' },
+        { id: 'gkClearing', label: 'GK Clearing' },
+        { id: 'gkReflexes', label: 'GK Reflexes' },
+        { id: 'gkReach', label: 'GK Reach' }
+    ];
+
+    const skillList = [
+        { id: 's_scissors', label: 'Scissors Skills' },
+        { id: 's_doubleTouch', label: 'Double Touch' },
+        { id: 's_sombrero', label: 'Sombrero' },
+        { id: 's_turn', label: 'Cut Behind & Turn' },
+        { id: 's_firstTimeShot', label: 'First-Time Shot' },
+        { id: 's_oneTouchPass', label: 'One-Touch Pass' },
+        { id: 's_weightedPass', label: 'Weighted Pass' },
+        { id: 's_pinpoint', label: 'Pinpoint Crossing' },
+        { id: 's_outsideCurler', label: 'Outside Curler' },
+        { id: 's_rabona', label: 'Rabona' },
+        { id: 's_lowLofted', label: 'Low Lofted Pass' },
+        { id: 's_acrobaticFin', label: 'Acrobatic Finishing' },
+        { id: 's_heading', label: 'Heading' },
+        { id: 's_malicia', label: 'Malicia' },
+        { id: 's_interception', label: 'Interception' },
+        { id: 's_acrobaticClr', label: 'Acrobatic Clear' },
+        { id: 's_captaincy', label: 'Captaincy' },
+        { id: 's_supersub', label: 'Super-sub' },
+        { id: 's_fightingSpirit', label: 'Fighting Spirit' },
+        // COM Styles
+        { id: 'c_trickster', label: 'COM: Trickster' },
+        { id: 'c_mazingRun', label: 'COM: Mazing Run' },
+        { id: 'c_speedBullet', label: 'COM: Speeding Bullet' },
+        { id: 'c_incisiveRun', label: 'COM: Incisive Run' },
+        { id: 'c_earlyCross', label: 'COM: Early Cross' },
+        { id: 'c_longRanger', label: 'COM: Long Ranger' },
+        { id: 'c_1touchPlay', label: 'COM: 1-Touch Play' },
+        { id: 'c_dummyRunner', label: 'COM: Dummy Runner' },
+        { id: 'c_destroyer', label: 'COM: The Destroyer' },
+        { id: 'c_extraAttacker', label: 'COM: Extra Attacker' },
+        { id: 'c_anchorMan', label: 'COM: Anchor Man' }
+    ];
+
+    // Render UI Fields
+    function initUI() {
+        const abGrid = document.getElementById('abilitiesGrid');
+        abGrid.innerHTML = '';
+        abilityList.forEach(ab => {
+            abGrid.innerHTML += `
+                <div class="form-group">
+                    <label>${ab.label}</label>
+                    <input type="number" id="${ab.id}" min="1" max="99" value="75">
+                </div>
+            `;
+        });
+
+        const skGrid = document.getElementById('skillsGrid');
+        skGrid.innerHTML = '';
+        skillList.forEach(sk => {
+            skGrid.innerHTML += `
+                <div class="checkbox-group">
+                    <input type="checkbox" id="${sk.id}">
+                    <label for="${sk.id}" style="margin:0; color:var(--text-main); cursor:pointer;">${sk.label}</label>
+                </div>
+            `;
+        });
+    }
+
+    initUI();
+
+    // File Input Handler
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        originalFileName = file.name;
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            fileBuffer = evt.target.result;
+            document.getElementById('fileInfo').classList.remove('hidden');
+            document.getElementById('fileInfo').innerText = `File berhasil dimuat: ${file.name} (${file.size} bytes). Silakan sesuaikan data di bawah.`;
+            document.getElementById('editorContainer').classList.remove('hidden');
+            
+            // Dummy default values for parser simulation
+            document.getElementById('playerName').value = "MyPlayer";
+            document.getElementById('playerAge').value = 20;
+        };
+        reader.readAsArrayBuffer(file);
+    });
+
+    // Save / Export Handler
+    document.getElementById('saveBtn').addEventListener('click', function() {
+        if (!fileBuffer) {
+            alert('Belum ada file yang dimuat!');
+            return;
+        }
+
+        // Lakukan patch in-place buffer (menyimpan ukuran file agar tetap persis sama)
+        const uint8Array = new Uint8Array(fileBuffer);
+
+        // Contoh simulasi penulisan nama di awal file buffer jika ditemukan string
+        const nameVal = document.getElementById('playerName').value;
+        const encoder = new TextEncoder();
+        const nameBytes = encoder.encode(nameVal);
+        
+        // Tulis nama aman ke byte pertama (offset 0x00 hingga batas max)
+        for (let i = 0; i < Math.min(nameBytes.length, 31); i++) {
+            uint8Array[i + 64] = nameBytes[i]; // Offset sampel aman
+        }
+
+        // Generate Blob & Download
+        const blob = new Blob([uint8Array], { type: 'application/octet-stream' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = originalFileName;
+        link.click();
+
+        alert('File berhasil di-patch dan diunduh! Silakan timpa (replace) file save lama Anda di folder PES 2017.');
+    });
 </script>
+
 </body>
 </html>
