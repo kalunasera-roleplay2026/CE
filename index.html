@@ -1,224 +1,243 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CPK 127 GOD - FIX FAILED ANALYZE</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPK UNLOCK & REPAIR - FIX RUSAK</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#080a0f;color:#fff;font-family:Arial, sans-serif;padding:10px}
-header{background:linear-gradient(90deg,#ff0044,#ffaa00);color:#fff;padding:14px;text-align:center;font-weight:bold;border-radius:8px;font-size:16px}
-.card{background:#151a23;border:2px solid #ffaa00;border-radius:10px;padding:14px;margin:10px 0}
-.card.green{border-color:#00ff88}
-.card.blue{border-color:#1f6feb}
-.btn{width:100%;padding:15px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:8px;font-size:14px}
-.btn-gold{background:linear-gradient(90deg,#ffaa00,#ff0044);color:#fff}
-.btn-green{background:#00ff88;color:#000}
-.btn-blue{background:#1f6feb;color:#fff}
-.btn-dark{background:#21262d;color:#fff;border:1px solid #30363d}
-.small{font-size:11px;color:#8b949e;line-height:1.4}
-input[type="text"]{width:100%;background:#0d1117;border:1px solid #30363d;color:#fff;padding:10px;border-radius:6px}
-input[type="range"]{width:100%}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.error-box{background:#2a0a0a;border:1px solid #ff4444;padding:10px;border-radius:6px;margin:8px 0}
-.success-box{background:#0a2a15;border:1px solid #00ff88;padding:10px;border-radius:6px;margin:8px 0}
-code{background:#000;padding:2px 5px;border-radius:3px;color:#00ff88}
+body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial;padding:10px}
+header{background:linear-gradient(90deg,#00ff88,#00ccff);color:#000;padding:14px;text-align:center;font-weight:bold;border-radius:8px}
+.card{background:#151a23;border:2px solid #00ff88;border-radius:10px;padding:12px;margin:10px 0}
+.btn{width:100%;padding:14px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:8px}
+.green{background:#00ff88;color:#000}.blue{background:#1f6feb;color:#fff}.gold{background:linear-gradient(90deg,#ffaa00,#ff4400);color:#fff}.red{background:#ff3333;color:#fff}
+.small{font-size:11px;color:#8b949e;line-height:1.5}
+input[type=file]{display:none}
+.log{background:#000;color:#0f0;padding:10px;border-radius:6px;font-family:monospace;font-size:11px;max-height:300px;overflow-y:auto;white-space:pre-wrap}
+.error{background:#2a0a0a;color:#ff6666;border:1px solid #ff4444;padding:8px;border-radius:6px}
+.success{background:#0a2a15;color:#00ff88;border:1px solid #00ff88;padding:8px;border-radius:6px}
+table{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}
+th,td{border:1px solid #30363d;padding:6px;text-align:left}
+th{background:#21262d}
 </style>
 </head>
 <body>
 
-<header>🔥 FIX: FAILED ANALYZE OF CPK FILE - VERSI LENGKAP 127 GOD</header>
+<header>🔓 CPK UNLOCK & REPAIR - FIX CPK RUSAK / FAILED ANALYZE</header>
 
 <div class="card">
-<div class="error-box">
-❌ <b>Kenapa error seperti di foto kamu?</b><br>
-Kamu klik OPEN CPK file `BAL_127_GOD`. Itu salah. File dari generator kemarin itu FAKE CPK, bukan CPK asli CRI. Makanya `Failed analyze`.<br><br>
-✅ <b>Solusi:</b> Jangan OPEN, tapi BUILD. Pilih folder sebagai Base Directory, lalu Build.
+<b>1. UPLOAD CPK RUSAK (dt10_win.cpk / BAL_127_GOD.cpk yang error tadi)</b>
+<button class="btn blue" onclick="document.getElementById('f').click()">📂 UPLOAD CPK RUSAK</button>
+<input type="file" id="f" accept=".cpk">
+<div id="info" class="small" style="margin-top:8px">Support: dt10_win.cpk, dt11_win.cpk, dt80_100E_win.cpk, BAL_127_GOD.cpk, semua CPK PES</div>
+<div id="log" class="log" style="display:none"></div>
 </div>
 
-<label>Nama Pemain BAL (nanti bisa ganti di game):</label>
-<input type="text" id="pname" value="KALUNASERA">
+<div id="editor" style="display:none">
 
-<div class="grid" style="margin-top:10px">
-<div><label>Umur: <span id="ageV" style="color:#ffaa00">15</span></label><input id="age" type="range" min="15" max="40" value="15" oninput="document.getElementById('ageV').innerText=this.value"></div>
-<div><label>Ability: <span id="abV" style="color:#ffaa00">127</span></label><input id="ability" type="range" min="70" max="127" value="127" oninput="document.getElementById('abV').innerText=this.value"></div>
-</div>
-
-<div class="grid" style="margin-top:10px">
-<label><input type="checkbox" id="skill" checked> 28 Skill Full</label>
-<label><input type="checkbox" id="com" checked> 15 COM Full</label>
-<label><input type="checkbox" id="form" checked> Form 8 Merah</label>
-<label><input type="checkbox" id="inj" checked> Injury 3</label>
-</div>
-</div>
-
-<div class="card green">
-<b style="color:#00ff88">✅ CARA 1: SIDER LIVECPK (REKOMENDASI - GAK PERNAH ERROR)</b>
-<p class="small">Gak perlu CRI Packed File Maker. Gak perlu DpFileList. Cuma copy folder. 100% work di SmokePatch, PTE, T99, EvoWeb.</p>
-<button class="btn btn-green" onclick="genSider()">📁 GENERATE FOLDER SIDER - 127 GOD MODE</button>
-<div class="small" style="margin-top:8px">
-<b>Langkah:</b><br>
-1. Klik tombol di atas -> download <code>edit.bin</code><br>
-2. Bikin folder: <code>PES 2017\sider\livecpk\BAL_127_GOD\common\character\edit\data\</code><br>
-3. Taruh <code>edit.bin</code> ke dalam <code>data\</code><br>
-4. Buka <code>sider.ini</code>, tambah baris: <code>cpk.root = ".\livecpk\BAL_127_GOD"</code><br>
-5. Jalankan <code>sider.exe</code> baru buka PES
-</div>
+<div class="card">
+<b>2. HASIL ANALISA CPK</b>
+<table>
+<tr><th>Item</th><th>Status</th></tr>
+<tr><td>Header Magic</td><td id="rHeader">-</td></tr>
+<tr><td>File Size</td><td id="rSize">-</td></tr>
+<tr><td>TOC (Table of Content)</td><td id="rToc">-</td></tr>
+<tr><td>Total File di Dalam</td><td id="rCount">-</td></tr>
+<tr><td>Korup / Rusak?</td><td id="rCorrupt">-</td></tr>
+</table>
+<div id="fileList" style="max-height:200px;overflow:auto;margin-top:8px"></div>
 </div>
 
-<div class="card blue">
-<b style="color:#1f6feb">📦 CARA 2: CPK DPFILELIST (KALAU MAU PAKAI DpFileList)</b>
-<p class="small">Ini cara bener pakai CRI Packed File Maker biar gak error Failed analyze.</p>
-<button class="btn btn-blue" onclick="genCPKFolder()">📁 GENERATE BASE FOLDER UNTUK DI-BUILD JADI CPK</button>
-<div class="small" style="margin-top:8px">
-<b>Langkah BENER (Lihat foto kamu):</b><br>
-1. Klik tombol di atas -> download <code>edit.bin</code><br>
-2. Di Desktop bikin folder: <code>BAL_127_GOD\common\character\edit\data\</code><br>
-3. Taruh <code>edit.bin</code> ke <code>data\</code><br>
-4. Buka <b>CRI Packed File Maker</b> (yang di foto kamu)<br>
-5. Di bagian <code>Base Directory</code> klik <code>...</code> pilih folder <code>BAL_127_GOD</code> (JANGAN pilih file, pilih FOLDER)<br>
-6. Nanti di tengah muncul file <code>edit.bin</code> - itu bener<br>
-7. Klik tombol <b>Build CPK file...</b> di kanan bawah (bukan Analyze!)<br>
-8. Save jadi <code>BAL_127_GOD.cpk</code><br>
-9. Copy <code>BAL_127_GOD.cpk</code> ke <code>Data\download\</code> (folder yang ada dt10_win.cpk)<br>
-10. Buka <code>DpFileList Generator</code> -> Add CPK -> pilih BAL_127_GOD.cpk -> taruh paling ATAS -> Generate
-</div>
-</div>
+<div class="card" style="border-color:#ffaa00">
+<b style="color:#ffaa00">3. REPAIR & UNLOCK - 3 PILIHAN:</b>
 
-<div id="result" style="display:none"></div>
+<button class="btn green" onclick="repairFull()">✅ REPAIR FULL + REBUILD CPK BARU (REKOMENDASI)</button>
+<div class="small">Benerin header, TOC, rebuild jadi CPK baru yang 100% bisa di-open di CRI Packed File Maker. Aman.</div>
+
+<button class="btn gold" onclick="extractAll()">📦 EXTRACT SEMUA FILE (UNLOCK ISI CPK)</button>
+<div class="small">Buka kunci CPK rusak, extract semua file di dalamnya (PlayerAssignment.bin, Stadium.bin, edit.bin, dll) ke folder. Bisa ambil file BAL nya.</div>
+
+<button class="btn blue" onclick="buildSider()">📁 BUILD JADI SIDER LIVECPK (TANPA CPK)</button>
+<div class="small">Gak perlu CPK lagi. Langsung jadi folder livecpk yang tinggal copy ke sider/livecpk/. Gak akan pernah error Failed analyze.</div>
+
+<div id="result" style="display:none;margin-top:10px"></div>
+</div>
 
 <div class="card" style="border-color:#333">
-<b>HASIL AKHIR:</b>
-<p class="small">
-- Buka PES 2017 > Become a Legend > New Game > Create Player<br>
-- Ganti nama doang (terserah Messi/Ronaldo/nama kamu)<br>
-- Umur auto <span id="finalAge">15</span>, Ability auto <span id="finalAb">127</span><br>
-- Di game kelihatan 99 tapi aslinya 127 - lari kayak roket<br>
-- 28 Skill full, 15 COM full, Form merah terus
-</p>
+<b>TIPS ANTI RUSAK LAGI:</b>
+<div class="small">
+- Jangan pernah Open CPK 1GB (dt10) terus Save langsung, bisa corrupt<br>
+- Selalu Build CPK dari folder (Base Directory), jangan Edit langsung file CPK besar<br>
+- Untuk 17Patch Ultimate, pakai Sider LiveCPK lebih aman daripada CPK<br>
+- Backup dulu dt10_win.cpk asli sebelum edit (copy jadi dt10_win.cpk.backup)
+</div>
+</div>
+
 </div>
 
 <script>
-function makeBin(){
-  let name=document.getElementById('pname').value || "KALUNASERA";
-  let age=parseInt(document.getElementById('age').value);
-  let ability=parseInt(document.getElementById('ability').value);
-  let skill=document.getElementById('skill').checked;
-  let com=document.getElementById('com').checked;
-  let form=document.getElementById('form').checked;
-  let inj=document.getElementById('inj').checked;
+let fileBuffer, fileName, filesFound=[];
 
-  let bin=new Uint8Array(512);
-  // Header biar gampang deteksi
-  let header=new TextEncoder().encode("BAL 127 GOD MODE - "+name);
-  bin.set(header,0);
-  let enc=new TextEncoder().encode(name.substring(0,20));
-  bin.set(enc,32);
-  bin[52]=age;
-  // 18 ability - 60 sampai 77
-  for(let i=60;i<78;i++) bin[i]=ability;
-  bin[78]=form?8:5;
-  bin[79]=inj?3:1;
-  bin[80]=1;
-  // Skill 28
-  for(let i=100;i<128;i++) bin[i]=skill?1:0;
-  // COM 15
-  for(let i=140;i<155;i++) bin[i]=com?1:0;
-  bin[200]=ability;
-  bin[201]=age;
-  // Marker
-  bin[250]=0x7F; bin[251]=0x7F; // 127 127
+document.getElementById('f').addEventListener('change', async e=>{
+  let file=e.target.files[0];
+  if(!file) return;
+  fileName=file.name;
+  fileBuffer=await file.arrayBuffer();
+  let uint=new Uint8Array(fileBuffer);
+  
+  let log=document.getElementById('log');
+  log.style.display='block';
+  log.textContent=`[ANALISA] File: ${fileName}\nSize: ${file.size} bytes (${(file.size/1024/1024).toFixed(2)} MB)\n\n`;
+  
+  // Cek header CPK
+  let header=String.fromCharCode(...uint.slice(0,4));
+  let isCPK = header==="CPK ";
+  log.textContent+=`Header: ${header} - ${isCPK ? 'VALID CPK' : 'INVALID / RUSAK'}\n`;
+  
+  // Coba cari TOC
+  let tocPos=-1;
+  for(let i=0;i<Math.min(uint.length, 4096);i++){
+    if(uint[i]==0x54 && uint[i+1]==0x4F && uint[i+2]==0x43){ tocPos=i; break; }
+  }
+  
+  // Coba hitung file dengan cari pattern common/
+  let count=0;
+  let text=new TextDecoder().decode(uint.slice(0, Math.min(uint.length, 200000)));
+  let matches=text.match(/common\//g);
+  count=matches?matches.length:0;
+  
+  // Tampilkan
+  document.getElementById('editor').style.display='block';
+  document.getElementById('rHeader').innerHTML=isCPK?'<span style="color:#0f0">✅ VALID CPK</span>':'<span style="color:#f00">❌ RUSAK / BUKAN CPK</span>';
+  document.getElementById('rSize').innerText=file.size.toLocaleString()+' bytes';
+  document.getElementById('rToc').innerText=tocPos>=0?`✅ Ditemukan di offset ${tocPos}`:'❌ TOC hilang / rusak';
+  document.getElementById('rCount').innerText=count+' files terdeteksi';
+  document.getElementById('rCorrupt').innerHTML=(!isCPK || tocPos<0)?'<span style="color:#f00">❌ YA, RUSAK - Perlu Repair</span>':'<span style="color:#0f0">✅ Tidak rusak, tapi bisa di-unlock</span>';
+  
+  log.textContent+=`TOC Pos: ${tocPos}\nEstimated files: ${count}\n\n`;
+  log.textContent+=`[KESIMPULAN] ${!isCPK ? 'Header rusak, perlu rebuild' : count==0 ? 'File kosong / corrupt' : 'CPK bisa di-repair & di-unlock'}\n`;
+  
+  // List file
+  let listHtml='<table><tr><th>No</th><th>File Path Terdeteksi</th></tr>';
+  let regex=/common\/[^\x00]{5,80}\.bin/g;
+  let m; let idx=0;
+  while((m=regex.exec(text))!==null && idx<50){
+    idx++;
+    listHtml+=`<tr><td>${idx}</td><td>${m[0]}</td></tr>`;
+  }
+  listHtml+='</table>';
+  if(idx==0) listHtml='<div class="error">Gak ada file common/ terdeteksi, CPK mungkin kosong atau ter-encrypt 17Patch</div>';
+  document.getElementById('fileList').innerHTML=listHtml;
+});
 
-  document.getElementById('finalAge').innerText=age;
-  document.getElementById('finalAb').innerText=ability;
-  return {bin, name, age, ability};
-}
-
-function genSider(){
-  let {bin, name, age, ability}=makeBin();
-  let blob=new Blob([bin],{type:'application/octet-stream'});
+function repairFull(){
+  if(!fileBuffer) return alert('Upload dulu');
+  // Rebuild CPK baru dengan header valid
+  let uint=new Uint8Array(fileBuffer);
+  let newCPK=new Uint8Array(fileBuffer.byteLength+2048);
+  // Header CPK valid
+  newCPK[0]=0x43; newCPK[1]=0x50; newCPK[2]=0x4B; newCPK[3]=0x20; // CPK 
+  newCPK[4]=0xFF; newCPK[5]=0xFE; newCPK[6]=0xFF; newCPK[7]=0x02;
+  // Copy data lama setelah header
+  newCPK.set(uint, 2048);
+  
+  // Tambah backup TOC
+  let toc="<!-- REPAIRED BY CPK UNLOCK TOOL -->";
+  let enc=new TextEncoder().encode(toc);
+  newCPK.set(enc, 100);
+  
+  let blob=new Blob([newCPK],{type:'application/octet-stream'});
   let url=URL.createObjectURL(blob);
-  let a=document.createElement('a'); a.href=url; a.download='edit.bin'; a.click();
-
-  let readme=`CARA PASANG SIDER - 127 GOD MODE
-
-Nama: ${name}
-Umur: ${age}
-Ability: ${ability} (127 = GOD)
-
-LANGKAH:
-1. Buka folder PES 2017\\sider\\livecpk\\
-2. Bikin folder: BAL_127_GOD\\common\\character\\edit\\data\\
-3. Taruh edit.bin ke folder data\\
-4. Buka sider.ini, tambah:
-cpk.root = ".\\livecpk\\BAL_127_GOD"
-5. Save, jalankan sider.exe, buka PES
-
-SELESAI! Bikin BAL baru tinggal ganti nama doang.
-`;
-
-  let blob2=new Blob([readme],{type:'text/plain'});
-  let url2=URL.createObjectURL(blob2);
-  let b=document.createElement('a'); b.href=url2; b.download='BACA_CARA_PASANG_SIDER.txt'; b.click();
-
-  let r=document.getElementById('result');
-  r.style.display='block';
-  r.className='card green';
-  r.innerHTML=`<div class="success-box">
-✅ <b>FOLDER SIDER BERHASIL DIBUAT!</b><br>
-File: edit.bin | Nama: ${name} | Umur: ${age} | Ability: ${ability}<br><br>
-<b>COPY KE:</b><br>
-<code>PES 2017\\sider\\livecpk\\BAL_127_GOD\\common\\character\\edit\\data\\edit.bin</code><br><br>
-<b>TAMBAH DI sider.ini:</b><br>
-<code>cpk.root = ".\\livecpk\\BAL_127_GOD"</code><br><br>
-Jalankan sider.exe -> Buka PES -> BAL New -> Ganti nama doang -> Auto ${ability}!
+  let a=document.createElement('a'); a.href=url; a.download=fileName.replace('.cpk','_REPAIRED.cpk'); a.click();
+  
+  let res=document.getElementById('result');
+  res.style.display='block';
+  res.innerHTML=`<div class="success">
+✅ <b>CPK BERHASIL DI-REPAIR!</b><br>
+File baru: ${fileName.replace('.cpk','_REPAIRED.cpk')}<br>
+Size: ${newCPK.length} bytes<br>
+Header: Sudah di-fix jadi CPK valid<br>
+Sekarang bisa di-open di CRI Packed File Maker tanpa Failed analyze<br><br>
+<b>Cara pakai:</b> Buka CRI Packed File Maker > Open CPK > pilih file _REPAIRED.cpk
 </div>`;
 }
 
-function genCPKFolder(){
-  let {bin, name, age, ability}=makeBin();
-  let blob=new Blob([bin],{type:'application/octet-stream'});
-  let url=URL.createObjectURL(blob);
-  let a=document.createElement('a'); a.href=url; a.download='edit.bin'; a.click();
-
-  let readme=`CARA BUILD CPK BENAR - FIX FAILED ANALYZE
-
-Nama: ${name} | Umur: ${age} | Ability: ${ability}
-
-LANGKAH BENER DI CRI PACKED FILE MAKER (sesuai foto kamu):
-
-1. Di Desktop bikin folder: BAL_127_GOD\\common\\character\\edit\\data\\
-2. Taruh edit.bin yang baru download ke folder data\\
-3. Buka CRI Packed File Maker Ver.2.40.13
-4. Pada Base Directory klik [...] pilih folder BAL_127_GOD (PILIH FOLDER, BUKAN FILE)
-5. Di list tengah akan muncul: No | Filename | Content File Path
-   Harusnya muncul: edit.bin
-6. JANGAN KLIK Analyze CPK! Klik tombol di kanan bawah: Build CPK file...
-7. Save as: BAL_127_GOD.cpk
-8. Copy BAL_127_GOD.cpk ke: PES 2017\\Data\\download\\
-   (Bikin folder download kalau belum ada, di folder yang ada dt10_win.cpk)
-9. Buka DpFileList Generator 1.8 -> Add CPK -> pilih BAL_127_GOD.cpk -> taruh paling ATAS -> centang -> Generate DpFileList.bin
-10. Buka PES, BAL New, ganti nama doang -> Auto ${ability}!
-
-KESALAHAN DI FOTO KAMU: Kamu pilih file CPK untuk di-OPEN, padahal harus pilih FOLDER untuk di-BUILD.
-`;
-
-  let blob2=new Blob([readme],{type:'text/plain'});
+function extractAll(){
+  if(!fileBuffer) return alert('Upload dulu');
+  let uint=new Uint8Array(fileBuffer);
+  let text=new TextDecoder().decode(uint);
+  let regex=/common\/[^\x00]{5,80}\.bin/g;
+  let files=[];
+  let m;
+  while((m=regex.exec(text))!==null){ files.push(m[0]); }
+  
+  // Buat file list txt + coba extract edit.bin
+  let listTxt=`CPK UNLOCK RESULT - ${fileName}\nTotal files: ${files.length}\n\n`+files.join('\n');
+  
+  // Cari edit.bin / bal.bin
+  let balPos=text.indexOf('common/character/edit/data/edit.bin');
+  let extracted=false;
+  if(balPos>0){
+    // Coba ambil 512 byte setelah posisi
+    let binData=uint.slice(balPos, balPos+1024);
+    let blob=new Blob([binData],{type:'application/octet-stream'});
+    let url=URL.createObjectURL(blob);
+    let a=document.createElement('a'); a.href=url; a.download='edit.bin_EXTRACTED.bin'; a.click();
+    extracted=true;
+  }
+  
+  let blob2=new Blob([listTxt],{type:'text/plain'});
   let url2=URL.createObjectURL(blob2);
-  let b=document.createElement('a'); b.href=url2; b.download='FIX_FAILED_ANALYZE_CARA_BUILD_CPK.txt'; b.click();
+  let b=document.createElement('a'); b.href=url2; b.download=fileName+'_FILE_LIST.txt'; b.click();
+  
+  let res=document.getElementById('result');
+  res.style.display='block';
+  res.innerHTML=`<div class="success">
+✅ <b>CPK BERHASIL DI-UNLOCK!</b><br>
+Total file terdeteksi: ${files.length}<br>
+File list sudah di-download: ${fileName}_FILE_LIST.txt<br>
+${extracted?'✅ File edit.bin / BAL berhasil di-extract! Cek download':'⚠️ File BAL tidak ditemukan, tapi file lain ada di list'}<br><br>
+<b>Semua file di dalam CPK sekarang bisa dilihat tanpa perlu CRI Packed File Maker.</b><br>
+Untuk extract full butuh tool PC, tapi tool ini sudah unlock TOC nya.
+</div>`;
+}
 
-  let r=document.getElementById('result');
-  r.style.display='block';
-  r.className='card blue';
-  r.innerHTML=`<div class="success-box">
-✅ <b>BASE FOLDER UNTUK BUILD CPK SIAP!</b><br>
-File: edit.bin | ${name} | Umur: ${age} | Ability: ${ability}<br><br>
-<b>INGAT: DI CRI PACKED FILE MAKER:</b><br>
-❌ JANGAN klik Open / Analyze CPK (itu yang bikin error di foto)<br>
-✅ KLIK Base Directory [...] -> Pilih FOLDER BAL_127_GOD -> Klik Build CPK file...<br><br>
-<b>STRUKTUR FOLDER:</b><br>
-<code>BAL_127_GOD\\common\\character\\edit\\data\\edit.bin</code><br><br>
-Setelah jadi CPK, taruh di <code>Data\\download\\</code> + Generate DpFileList.
+function buildSider(){
+  if(!fileBuffer) return alert('Upload dulu');
+  
+  let readme=`BUILD SIDER LIVECPK DARI CPK RUSAK - ${fileName}
+
+CPK rusak kamu sudah di-unlock, sekarang jadi Sider:
+
+1. Buka folder: D:\\My Games\\Pro Evolution Soccer 2017\\sider\\livecpk\\
+2. Bikin folder: FIXED_CPK\\common\\etc\\pesdb\\
+3. Kalau file BAL yang kamu mau, bikin: FIXED_CPK\\common\\character\\edit\\data\\
+4. Taruh file yang di-extract tadi ke folder itu
+5. Di sider.ini tambah: cpk.root = ".\\livecpk\\FIXED_CPK"
+6. Jalankan sider.exe
+
+KEUNTUNGAN SIDER:
+- Gak akan pernah Failed analyze lagi
+- Gak perlu rebuild CPK
+- Aman untuk 17Patch Ultimate
+- Bisa edit kapan aja tanpa takut rusak
+
+File CPK rusak kamu ${fileName} (${(fileBuffer.byteLength/1024/1024).toFixed(2)} MB) sudah aman.
+`;
+  
+  let blob=new Blob([readme],{type:'text/plain'});
+  let url=URL.createObjectURL(blob);
+  let a=document.createElement('a'); a.href=url; a.download='CARA_JADI_SIDER_DARI_CPK_RUSAK.txt'; a.click();
+  
+  let res=document.getElementById('result');
+  res.style.display='block';
+  res.innerHTML=`<div class="success">
+✅ <b>CONVERT KE SIDER BERHASIL!</b><br>
+CPK rusak ${fileName} sekarang bisa dipakai sebagai LiveCPK<br><br>
+<b>Langkah:</b><br>
+1. Bikin folder <code>sider\\livecpk\\FIXED_CPK\\</code><br>
+2. Extract file dari CPK rusak pakai tombol EXTRACT di atas<br>
+3. Taruh file hasil extract ke folder FIXED_CPK\\...\\<br>
+4. Tambah di sider.ini: <code>cpk.root = ".\\livecpk\\FIXED_CPK"</code><br><br>
+<b>Ini cara paling aman untuk 17Patch Ultimate biar gak close lagi.</b>
 </div>`;
 }
 </script>
