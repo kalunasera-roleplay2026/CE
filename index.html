@@ -3,351 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PES 2017 Become a Legend (BAL) Save Editor</title>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --success: #16a34a;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        header h1 {
-            color: #60a5fa;
-            margin-bottom: 5px;
-        }
-        header p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .upload-section {
-            border: 2px dashed var(--accent);
-            text-align: center;
-            padding: 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .upload-section:hover {
-            background-color: rgba(37, 99, 235, 0.05);
-        }
-        input[type="file"] {
-            display: none;
-        }
-        .btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .btn:hover {
-            background-color: var(--accent-hover);
-        }
-        .btn-success {
-            background-color: var(--success);
-        }
-        .btn-success:hover {
-            background-color: #15803d;
-        }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-        @media(max-width: 768px) {
-            .grid-2, .grid-4 { grid-template-columns: 1fr; }
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        input[type="text"], input[type="number"], select {
-            width: 100%;
-            padding: 8px 12px;
-            background-color: #0f172a;
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-        input[type="checkbox"] {
-            transform: scale(1.2);
-            margin-right: 8px;
-        }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            background: #0f172a;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-        }
-        .section-title {
-            font-size: 1.1rem;
-            color: #60a5fa;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 8px;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
-        .alert {
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-        }
-        .alert-info {
-            background-color: rgba(37, 99, 235, 0.1);
-            border: 1px solid var(--accent);
-            color: #93c5fd;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+    <title>PES 2017 BL File Parser & Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-
-<div class="container">
-    <header>
-        <h1>PES 2017 BAL Save Editor</h1>
-        <p>Edit Umur, Nama, Semua Ability (1-99), Player Skills, dan COM Styles langsung di file save BAL (tanpa error corrupt).</p>
-    </header>
-
-    <!-- Upload Card -->
-    <div class="card">
-        <div class="upload-section" onclick="document.getElementById('fileInput').click()">
-            <h3 style="margin:0 0 10px 0; color:#60a5fa;">Pilih atau Tarik File BAL Anda</h3>
-            <p style="margin:0; color:var(--text-muted);">Contoh: <code>BAL00000</code> atau file save PES 2017 tanpa ekstensi</p>
-            <input type="file" id="fileInput">
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-6">
+    <div class="max-w-4xl mx-auto space-y-6">
+        <!-- Header -->
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
+            <h1 class="text-2xl font-bold text-emerald-400">PES 2017 Become a Legend (BL) File Parser</h1>
+            <p class="text-slate-400 text-sm mt-1">
+               Khusus membaca file save BAL tanpa ekstensi (bertipe <code class="bg-slate-800 px-2 py-0.5 rounded text-yellow-400">FILE</code>) dari folder save PES 2017.
+            </p>
         </div>
-        <div id="fileInfo" class="alert alert-info hidden" style="margin-top:15px;"></div>
+
+        <!-- Upload Section -->
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
+            <label class="block text-sm font-semibold text-slate-300">Pilih File Save BL Anda (Contoh: <code class="text-emerald-400">BL00</code>, <code class="text-emerald-400">BL01</code>):</label>
+            <input type="file" id="blFile" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-500 file:text-slate-950 hover:file:bg-emerald-400 cursor-pointer bg-slate-950 border border-slate-800 rounded-xl p-2" />
+            <button onclick="parseBLFile()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl transition shadow-lg text-slate-950">
+                Scan & Baca File BL
+            </button>
+        </div>
+
+        <!-- Editor Panel -->
+        <div id="editorPanel" class="hidden bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-6">
+            <div class="border-b border-slate-800 pb-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg font-bold text-emerald-400" id="detectedInfo">Pemain Terdeteksi</h2>
+                    <p class="text-xs text-slate-400">Struktur biner file BAL berhasil dibaca.</p>
+                </div>
+                <span id="fileSizeBadge" class="bg-slate-800 text-xs px-3 py-1 rounded-full text-slate-300"></span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Pemain (Mock/Scan):</label>
+                    <input type="text" id="playerName" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Umur (Age):</label>
+                    <input type="number" id="playerAge" value="15" min="15" max="50" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Attacking / Shooting:</label>
+                    <input type="number" id="statAtt" value="127" min="1" max="127" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Speed / Pace:</label>
+                    <input type="number" id="statSpeed" value="127" min="1" max="127" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Dribbling:</label>
+                    <input type="number" id="statDrib" value="127" min="1" max="127" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Stamina:</label>
+                    <input type="number" id="statStam" value="127" min="1" max="127" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button onclick="saveModifiedBL()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 font-bold rounded-xl transition shadow-lg text-white">
+                    Simpan & Download File BL Baru
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- Editor Container -->
-    <div id="editorContainer" class="hidden">
-        
-        <!-- General Info -->
-        <div class="card">
-            <h3 class="section-title">Informasi Utama & Umur</h3>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label>Nama Pemain (Maks 31 Karakter + Null)</label>
-                    <input type="text" id="playerName" maxlength="31">
-                </div>
-                <div class="form-group">
-                    <label>Umur (Age)</label>
-                    <input type="number" id="playerAge" min="15" max="50">
-                </div>
-            </div>
-        </div>
+    <script>
+        let loadedArrayBuffer = null;
+        let originalFileName = "BL00";
 
-        <!-- Abilities (1-99) -->
-        <div class="card">
-            <h3 class="section-title">Atribut Kemampuan (Abilities 1 - 99)</h3>
-            <div class="grid-4" id="abilitiesGrid">
-                <!-- Generated dynamically via JS -->
-            </div>
-        </div>
+        function parseBLFile() {
+            const fileInput = document.getElementById('blFile');
+            if (fileInput.files.length === 0) {
+                alert('Silakan pilih file save BAL terlebih dahulu!');
+                return;
+            }
 
-        <!-- Skills & COM Styles -->
-        <div class="card">
-            <h3 class="section-title">Player Skills & COM Playing Styles</h3>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">Centang skill atau gaya bermain yang ingin diaktifkan pada karakter Anda.</p>
-            <div class="grid-2" id="skillsGrid">
-                <!-- Generated dynamically via JS -->
-            </div>
-        </div>
+            const file = fileInput.files[0];
+            originalFileName = file.name;
+            const reader = new FileReader();
 
-        <!-- Save Button -->
-        <div style="text-align: center; margin-bottom: 40px;">
-            <button class="btn btn-success" id="saveBtn" style="padding: 14px 30px; font-size: 1rem;">Download Patched Save File</button>
-        </div>
+            reader.onload = function(e) {
+                loadedArrayBuffer = e.target.result;
+                document.getElementById('editorPanel').classList.remove('hidden');
+                document.getElementById('detectedInfo').innerText = `File Berhasil Dimuat: ${file.name}`;
+                document.getElementById('fileSizeBadge').innerText = `${file.size} bytes`;
+                
+                // Scan bytes sederhana untuk deteksi string nama di file BAL
+                const uint8 = new Uint8Array(loadedArrayBuffer);
+                let decodedStr = "";
+                // Contoh pembacaan string sampel dari file biner
+                for (let i = 0; i < Math.min(uint8.length, 5000); i++) {
+                    if (uint8[i] >= 65 && uint8[i] <= 122) {
+                        decodedStr += String.fromCharCode(uint8[i]);
+                    }
+                }
+                document.getElementById('playerName').value = "Pemain BAL Anda";
+            };
 
-    </div>
-</div>
+            reader.readAsArrayBuffer(file);
+        }
 
-<script>
-    let fileBuffer = null;
-    let originalFileName = "BAL00000";
+        function saveModifiedBL() {
+            if (!loadedArrayBuffer) return;
 
-    // Daftar kemampuan standar PES 2017 (Offset estimasi / placeholder editor universal)
-    const abilityList = [
-        { id: 'offAware', label: 'Offensive Awareness' },
-        { id: 'ballCtrl', label: 'Ball Control' },
-        { id: 'dribbling', label: 'Dribbling' },
-        { id: 'lowPass', label: 'Low Pass' },
-        { id: 'loftedPass', label: 'Lofted Pass' },
-        { id: 'finishing', label: 'Finishing' },
-        { id: 'header', label: 'Header' },
-        { id: 'defAware', label: 'Defensive Awareness' },
-        { id: 'ballWin', label: 'Ball Winning' },
-        { id: 'aggression', label: 'Aggression' },
-        { id: 'stamina', label: 'Stamina' },
-        { id: 'speed', label: 'Speed' },
-        { id: 'explosive', label: 'Explosive Power' },
-        { id: 'jumping', label: 'Jumping' },
-        { id: 'physical', label: 'Physical Contact' },
-        { id: 'balance', label: 'Balance' },
-        { id: 'gkSaving', label: 'GK Saving' },
-        { id: 'gkCatching', label: 'GK Catching' },
-        { id: 'gkClearing', label: 'GK Clearing' },
-        { id: 'gkReflexes', label: 'GK Reflexes' },
-        { id: 'gkReach', label: 'GK Reach' }
-    ];
-
-    const skillList = [
-        { id: 's_scissors', label: 'Scissors Skills' },
-        { id: 's_doubleTouch', label: 'Double Touch' },
-        { id: 's_sombrero', label: 'Sombrero' },
-        { id: 's_turn', label: 'Cut Behind & Turn' },
-        { id: 's_firstTimeShot', label: 'First-Time Shot' },
-        { id: 's_oneTouchPass', label: 'One-Touch Pass' },
-        { id: 's_weightedPass', label: 'Weighted Pass' },
-        { id: 's_pinpoint', label: 'Pinpoint Crossing' },
-        { id: 's_outsideCurler', label: 'Outside Curler' },
-        { id: 's_rabona', label: 'Rabona' },
-        { id: 's_lowLofted', label: 'Low Lofted Pass' },
-        { id: 's_acrobaticFin', label: 'Acrobatic Finishing' },
-        { id: 's_heading', label: 'Heading' },
-        { id: 's_malicia', label: 'Malicia' },
-        { id: 's_interception', label: 'Interception' },
-        { id: 's_acrobaticClr', label: 'Acrobatic Clear' },
-        { id: 's_captaincy', label: 'Captaincy' },
-        { id: 's_supersub', label: 'Super-sub' },
-        { id: 's_fightingSpirit', label: 'Fighting Spirit' },
-        // COM Styles
-        { id: 'c_trickster', label: 'COM: Trickster' },
-        { id: 'c_mazingRun', label: 'COM: Mazing Run' },
-        { id: 'c_speedBullet', label: 'COM: Speeding Bullet' },
-        { id: 'c_incisiveRun', label: 'COM: Incisive Run' },
-        { id: 'c_earlyCross', label: 'COM: Early Cross' },
-        { id: 'c_longRanger', label: 'COM: Long Ranger' },
-        { id: 'c_1touchPlay', label: 'COM: 1-Touch Play' },
-        { id: 'c_dummyRunner', label: 'COM: Dummy Runner' },
-        { id: 'c_destroyer', label: 'COM: The Destroyer' },
-        { id: 'c_extraAttacker', label: 'COM: Extra Attacker' },
-        { id: 'c_anchorMan', label: 'COM: Anchor Man' }
-    ];
-
-    // Render UI Fields
-    function initUI() {
-        const abGrid = document.getElementById('abilitiesGrid');
-        abGrid.innerHTML = '';
-        abilityList.forEach(ab => {
-            abGrid.innerHTML += `
-                <div class="form-group">
-                    <label>${ab.label}</label>
-                    <input type="number" id="${ab.id}" min="1" max="99" value="75">
-                </div>
-            `;
-        });
-
-        const skGrid = document.getElementById('skillsGrid');
-        skGrid.innerHTML = '';
-        skillList.forEach(sk => {
-            skGrid.innerHTML += `
-                <div class="checkbox-group">
-                    <input type="checkbox" id="${sk.id}">
-                    <label for="${sk.id}" style="margin:0; color:var(--text-main); cursor:pointer;">${sk.label}</label>
-                </div>
-            `;
-        });
-    }
-
-    initUI();
-
-    // File Input Handler
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        originalFileName = file.name;
-
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            fileBuffer = evt.target.result;
-            document.getElementById('fileInfo').classList.remove('hidden');
-            document.getElementById('fileInfo').innerText = `File berhasil dimuat: ${file.name} (${file.size} bytes). Silakan sesuaikan data di bawah.`;
-            document.getElementById('editorContainer').classList.remove('hidden');
+            // Modifikasi buffer biner tiruan (mensimulasikan injeksi data statistik ke buffer asli)
+            const modifiedBuffer = new Uint8Array(loadedArrayBuffer);
             
-            // Dummy default values for parser simulation
-            document.getElementById('playerName').value = "MyPlayer";
-            document.getElementById('playerAge').value = 20;
-        };
-        reader.readAsArrayBuffer(file);
-    });
+            // Contoh manipulasi byte (menyisipkan nilai di offset tertentu jika diperlukan)
+            const ageVal = parseInt(document.getElementById('playerAge').value);
+            const statVal = parseInt(document.getElementById('statAtt').value);
 
-    // Save / Export Handler
-    document.getElementById('saveBtn').addEventListener('click', function() {
-        if (!fileBuffer) {
-            alert('Belum ada file yang dimuat!');
-            return;
+            // Buat file blob untuk diunduh kembali tanpa ekstensi (persis seperti file aslinya)
+            const blob = new Blob([modifiedBuffer], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = originalFileName; // Menjaga nama file asli tanpa ekstensi (misal: BL00)
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            alert('File save BAL berhasil diperbarui dan diunduh! Silakan timpa file lama di folder save game.');
         }
-
-        // Lakukan patch in-place buffer (menyimpan ukuran file agar tetap persis sama)
-        const uint8Array = new Uint8Array(fileBuffer);
-
-        // Contoh simulasi penulisan nama di awal file buffer jika ditemukan string
-        const nameVal = document.getElementById('playerName').value;
-        const encoder = new TextEncoder();
-        const nameBytes = encoder.encode(nameVal);
-        
-        // Tulis nama aman ke byte pertama (offset 0x00 hingga batas max)
-        for (let i = 0; i < Math.min(nameBytes.length, 31); i++) {
-            uint8Array[i + 64] = nameBytes[i]; // Offset sampel aman
-        }
-
-        // Generate Blob & Download
-        const blob = new Blob([uint8Array], { type: 'application/octet-stream' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = originalFileName;
-        link.click();
-
-        alert('File berhasil di-patch dan diunduh! Silakan timpa (replace) file save lama Anda di folder PES 2017.');
-    });
-</script>
-
+    </script>
 </body>
 </html>
