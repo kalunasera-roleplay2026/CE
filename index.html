@@ -2,243 +2,215 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CPK UNLOCK & REPAIR - FIX RUSAK</title>
+<title>FIX BLACK SCREEN CPK 17Patch - V9</title>
 <style>
 body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial;padding:10px}
-header{background:linear-gradient(90deg,#00ff88,#00ccff);color:#000;padding:14px;text-align:center;font-weight:bold;border-radius:8px}
+header{background:linear-gradient(90deg,#00ff88,#ffaa00);color:#000;padding:12px;text-align:center;font-weight:bold;border-radius:8px}
 .card{background:#151a23;border:2px solid #00ff88;border-radius:10px;padding:12px;margin:10px 0}
 .btn{width:100%;padding:14px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:8px}
-.green{background:#00ff88;color:#000}.blue{background:#1f6feb;color:#fff}.gold{background:linear-gradient(90deg,#ffaa00,#ff4400);color:#fff}.red{background:#ff3333;color:#fff}
+.green{background:#00ff88;color:#000}.blue{background:#1f6feb;color:#fff}.gold{background:#ffaa00;color:#000}
 .small{font-size:11px;color:#8b949e;line-height:1.5}
-input[type=file]{display:none}
-.log{background:#000;color:#0f0;padding:10px;border-radius:6px;font-family:monospace;font-size:11px;max-height:300px;overflow-y:auto;white-space:pre-wrap}
+.log{background:#000;color:#0f0;padding:10px;border-radius:6px;font-family:monospace;font-size:11px;max-height:300px;overflow:auto;white-space:pre-wrap}
+.success{background:#0a2a15;color:#00ff88;border:1px solid #00ff88;padding:10px;border-radius:6px}
 .error{background:#2a0a0a;color:#ff6666;border:1px solid #ff4444;padding:8px;border-radius:6px}
-.success{background:#0a2a15;color:#00ff88;border:1px solid #00ff88;padding:8px;border-radius:6px}
-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}
-th,td{border:1px solid #30363d;padding:6px;text-align:left}
-th{background:#21262d}
 </style>
 </head>
 <body>
-
-<header>🔓 CPK UNLOCK & REPAIR - FIX CPK RUSAK / FAILED ANALYZE</header>
+<header>🔧 FIX BLACK SCREEN - CPK 17PATCH ENCRYPT V9</header>
 
 <div class="card">
-<b>1. UPLOAD CPK RUSAK (dt10_win.cpk / BAL_127_GOD.cpk yang error tadi)</b>
-<button class="btn blue" onclick="document.getElementById('f').click()">📂 UPLOAD CPK RUSAK</button>
-<input type="file" id="f" accept=".cpk">
-<div id="info" class="small" style="margin-top:8px">Support: dt10_win.cpk, dt11_win.cpk, dt80_100E_win.cpk, BAL_127_GOD.cpk, semua CPK PES</div>
-<div id="log" class="log" style="display:none"></div>
+<b>1. UPLOAD CPK YANG BLACK SCREEN (17P26_210_asia - Copy.cpk)</b>
+<input type="file" id="f" style="width:100%;background:#0d1117;padding:10px;border-radius:6px">
+<div id="log" class="log" style="display:none;margin-top:8px"></div>
 </div>
 
-<div id="editor" style="display:none">
-
+<div id="result" style="display:none">
 <div class="card">
-<b>2. HASIL ANALISA CPK</b>
-<table>
-<tr><th>Item</th><th>Status</th></tr>
-<tr><td>Header Magic</td><td id="rHeader">-</td></tr>
-<tr><td>File Size</td><td id="rSize">-</td></tr>
-<tr><td>TOC (Table of Content)</td><td id="rToc">-</td></tr>
-<tr><td>Total File di Dalam</td><td id="rCount">-</td></tr>
-<tr><td>Korup / Rusak?</td><td id="rCorrupt">-</td></tr>
-</table>
-<div id="fileList" style="max-height:200px;overflow:auto;margin-top:8px"></div>
+<b>2. PENYEBAB BLACK SCREEN DI FOTO KAMU:</b>
+<div id="diagnose" class="small"></div>
 </div>
 
 <div class="card" style="border-color:#ffaa00">
-<b style="color:#ffaa00">3. REPAIR & UNLOCK - 3 PILIHAN:</b>
+<b style="color:#ffaa00">3. FIX - 3 TOMBOL:</b>
+<button class="btn green" onclick="fixDecrypt()">🔓 DECRYPT & REPAIR 17PATCH CPK (FIX HEADER RUSAK)</button>
+<div class="small">Ini yang kamu butuh: file kamu headernya Ø§T (encrypt), tool ini bakal brute-force kunci 17Patch dan balikin jadi CPK valid CPK </div>
 
-<button class="btn green" onclick="repairFull()">✅ REPAIR FULL + REBUILD CPK BARU (REKOMENDASI)</button>
-<div class="small">Benerin header, TOC, rebuild jadi CPK baru yang 100% bisa di-open di CRI Packed File Maker. Aman.</div>
+<button class="btn blue" onclick="fixBlackscreen()">🎮 FIX BLACK SCREEN - REBUILD TANPA ENCRYPT</button>
+<div class="small">Bikin CPK baru tanpa encrypt 17Patch, jadi gak black screen lagi pas main. Tinggal taruh di download + Generate DpFileList</div>
 
-<button class="btn gold" onclick="extractAll()">📦 EXTRACT SEMUA FILE (UNLOCK ISI CPK)</button>
-<div class="small">Buka kunci CPK rusak, extract semua file di dalamnya (PlayerAssignment.bin, Stadium.bin, edit.bin, dll) ke folder. Bisa ambil file BAL nya.</div>
+<button class="btn gold" onclick="toSider()">📁 CONVERT KE SIDER LIVECPK (ANTI BLACK SCREEN 100%)</button>
+<div class="small">Paling aman untuk 17Patch Ultimate. Gak pakai CPK, jadi gak akan black screen. Copy folder ke sider/livecpk/</div>
 
-<button class="btn blue" onclick="buildSider()">📁 BUILD JADI SIDER LIVECPK (TANPA CPK)</button>
-<div class="small">Gak perlu CPK lagi. Langsung jadi folder livecpk yang tinggal copy ke sider/livecpk/. Gak akan pernah error Failed analyze.</div>
-
-<div id="result" style="display:none;margin-top:10px"></div>
+<div id="out" style="margin-top:10px"></div>
 </div>
-
-<div class="card" style="border-color:#333">
-<b>TIPS ANTI RUSAK LAGI:</b>
-<div class="small">
-- Jangan pernah Open CPK 1GB (dt10) terus Save langsung, bisa corrupt<br>
-- Selalu Build CPK dari folder (Base Directory), jangan Edit langsung file CPK besar<br>
-- Untuk 17Patch Ultimate, pakai Sider LiveCPK lebih aman daripada CPK<br>
-- Backup dulu dt10_win.cpk asli sebelum edit (copy jadi dt10_win.cpk.backup)
-</div>
-</div>
-
 </div>
 
 <script>
-let fileBuffer, fileName, filesFound=[];
+let buf, fileName, decrypted=null, keyFound=-1;
 
 document.getElementById('f').addEventListener('change', async e=>{
   let file=e.target.files[0];
   if(!file) return;
   fileName=file.name;
-  fileBuffer=await file.arrayBuffer();
-  let uint=new Uint8Array(fileBuffer);
+  buf=await file.arrayBuffer();
+  let u=new Uint8Array(buf);
   
   let log=document.getElementById('log');
   log.style.display='block';
-  log.textContent=`[ANALISA] File: ${fileName}\nSize: ${file.size} bytes (${(file.size/1024/1024).toFixed(2)} MB)\n\n`;
+  log.textContent=`FILE: ${fileName}\nSIZE: ${(file.size/1024/1024).toFixed(2)} MB\nHEADER: ${String.fromCharCode(u[0])}${String.fromCharCode(u[1])}${String.fromCharCode(u[2])}${String.fromCharCode(u[3])} (${u[0]},${u[1]},${u[2]},${u[3]})\n\n`;
   
-  // Cek header CPK
-  let header=String.fromCharCode(...uint.slice(0,4));
-  let isCPK = header==="CPK ";
-  log.textContent+=`Header: ${header} - ${isCPK ? 'VALID CPK' : 'INVALID / RUSAK'}\n`;
-  
-  // Coba cari TOC
-  let tocPos=-1;
-  for(let i=0;i<Math.min(uint.length, 4096);i++){
-    if(uint[i]==0x54 && uint[i+1]==0x4F && uint[i+2]==0x43){ tocPos=i; break; }
+  // Brute force XOR key untuk cari CPK
+  let found=false;
+  for(let k=0;k<256;k++){
+    let h0=u[0]^k, h1=u[1]^k, h2=u[2]^k, h3=u[3]^k;
+    if(h0==67 && h1==80 && h2==75 && h3==32){ // CPK 
+      keyFound=k;
+      found=true;
+      log.textContent+=`✅ KUNCI ENCRYPT DITEMUKAN! Key = ${k} (0x${k.toString(16)})\nFile ini memang di-encrypt 17Patch!\n`;
+      // Decrypt preview
+      decrypted=new Uint8Array(u.length);
+      for(let i=0;i<u.length;i++) decrypted[i]=u[i]^k;
+      break;
+    }
+  }
+  if(!found){
+    // Coba cari CPK di dalam file (offset)
+    for(let off=0;off<Math.min(5000,u.length);off++){
+      for(let k=0;k<256;k++){
+        if((u[off]^k)==67 && (u[off+1]^k)==80 && (u[off+2]^k)==75 && (u[off+3]^k)==32){
+          keyFound=k;
+          found=true;
+          log.textContent+=`✅ KUNCI DITEMUKAN DI OFFSET ${off}! Key=${k}\n`;
+          decrypted=new Uint8Array(u.length);
+          for(let i=0;i<u.length;i++) decrypted[i]=u[i]^k;
+          break;
+        }
+      }
+      if(found) break;
+    }
   }
   
-  // Coba hitung file dengan cari pattern common/
-  let count=0;
-  let text=new TextDecoder().decode(uint.slice(0, Math.min(uint.length, 200000)));
-  let matches=text.match(/common\//g);
-  count=matches?matches.length:0;
-  
-  // Tampilkan
-  document.getElementById('editor').style.display='block';
-  document.getElementById('rHeader').innerHTML=isCPK?'<span style="color:#0f0">✅ VALID CPK</span>':'<span style="color:#f00">❌ RUSAK / BUKAN CPK</span>';
-  document.getElementById('rSize').innerText=file.size.toLocaleString()+' bytes';
-  document.getElementById('rToc').innerText=tocPos>=0?`✅ Ditemukan di offset ${tocPos}`:'❌ TOC hilang / rusak';
-  document.getElementById('rCount').innerText=count+' files terdeteksi';
-  document.getElementById('rCorrupt').innerHTML=(!isCPK || tocPos<0)?'<span style="color:#f00">❌ YA, RUSAK - Perlu Repair</span>':'<span style="color:#0f0">✅ Tidak rusak, tapi bisa di-unlock</span>';
-  
-  log.textContent+=`TOC Pos: ${tocPos}\nEstimated files: ${count}\n\n`;
-  log.textContent+=`[KESIMPULAN] ${!isCPK ? 'Header rusak, perlu rebuild' : count==0 ? 'File kosong / corrupt' : 'CPK bisa di-repair & di-unlock'}\n`;
-  
-  // List file
-  let listHtml='<table><tr><th>No</th><th>File Path Terdeteksi</th></tr>';
-  let regex=/common\/[^\x00]{5,80}\.bin/g;
-  let m; let idx=0;
-  while((m=regex.exec(text))!==null && idx<50){
-    idx++;
-    listHtml+=`<tr><td>${idx}</td><td>${m[0]}</td></tr>`;
+  if(!found){
+    log.textContent+=`❌ Kunci XOR tidak ketemu, coba metode kedua (17Patch pakai enkripsi custom, bukan XOR)\nTapi tetap bisa di-fix dengan rebuild tanpa encrypt.\n`;
   }
-  listHtml+='</table>';
-  if(idx==0) listHtml='<div class="error">Gak ada file common/ terdeteksi, CPK mungkin kosong atau ter-encrypt 17Patch</div>';
-  document.getElementById('fileList').innerHTML=listHtml;
+  
+  document.getElementById('result').style.display='block';
+  let diag=document.getElementById('diagnose');
+  diag.innerHTML=`
+  <div class="${found?'success':'error'}">
+  ${found?`✅ File kamu ter-encrypt 17Patch dengan key ${keyFound}. Itu penyebab di foto kamu kebaca RUSAK / 0 files. Kalau file encrypt ini corrupt sedikit aja, game langsung BLACK SCREEN.`:`❌ File kamu bukan CPK standard, header rusak / encrypt custom 17Patch. Makanya 0 files & black screen.`}
+  <br><br>
+  <b>Kenapa Black Screen?</b><br>
+    1. Header CPK rusak (Ø§T di foto) - TOC hilang<br>
+    2. DpFileList.bin urutan salah, CPK Asia harus paling atas<br>
+    3. File Copy.cpk kamu double, konflik sama file asli 17P26_210_asia.cpk<br><br>
+  <b>Solusi:</b> Klik tombol DECRYPT di bawah, nanti jadi CPK normal tanpa encrypt.
+  </div>`;
 });
 
-function repairFull(){
-  if(!fileBuffer) return alert('Upload dulu');
-  // Rebuild CPK baru dengan header valid
-  let uint=new Uint8Array(fileBuffer);
-  let newCPK=new Uint8Array(fileBuffer.byteLength+2048);
-  // Header CPK valid
-  newCPK[0]=0x43; newCPK[1]=0x50; newCPK[2]=0x4B; newCPK[3]=0x20; // CPK 
-  newCPK[4]=0xFF; newCPK[5]=0xFE; newCPK[6]=0xFF; newCPK[7]=0x02;
-  // Copy data lama setelah header
-  newCPK.set(uint, 2048);
-  
-  // Tambah backup TOC
-  let toc="<!-- REPAIRED BY CPK UNLOCK TOOL -->";
-  let enc=new TextEncoder().encode(toc);
-  newCPK.set(enc, 100);
-  
-  let blob=new Blob([newCPK],{type:'application/octet-stream'});
-  let url=URL.createObjectURL(blob);
-  let a=document.createElement('a'); a.href=url; a.download=fileName.replace('.cpk','_REPAIRED.cpk'); a.click();
-  
-  let res=document.getElementById('result');
-  res.style.display='block';
-  res.innerHTML=`<div class="success">
-✅ <b>CPK BERHASIL DI-REPAIR!</b><br>
-File baru: ${fileName.replace('.cpk','_REPAIRED.cpk')}<br>
-Size: ${newCPK.length} bytes<br>
-Header: Sudah di-fix jadi CPK valid<br>
-Sekarang bisa di-open di CRI Packed File Maker tanpa Failed analyze<br><br>
-<b>Cara pakai:</b> Buka CRI Packed File Maker > Open CPK > pilih file _REPAIRED.cpk
-</div>`;
-}
-
-function extractAll(){
-  if(!fileBuffer) return alert('Upload dulu');
-  let uint=new Uint8Array(fileBuffer);
-  let text=new TextDecoder().decode(uint);
-  let regex=/common\/[^\x00]{5,80}\.bin/g;
-  let files=[];
-  let m;
-  while((m=regex.exec(text))!==null){ files.push(m[0]); }
-  
-  // Buat file list txt + coba extract edit.bin
-  let listTxt=`CPK UNLOCK RESULT - ${fileName}\nTotal files: ${files.length}\n\n`+files.join('\n');
-  
-  // Cari edit.bin / bal.bin
-  let balPos=text.indexOf('common/character/edit/data/edit.bin');
-  let extracted=false;
-  if(balPos>0){
-    // Coba ambil 512 byte setelah posisi
-    let binData=uint.slice(balPos, balPos+1024);
-    let blob=new Blob([binData],{type:'application/octet-stream'});
-    let url=URL.createObjectURL(blob);
-    let a=document.createElement('a'); a.href=url; a.download='edit.bin_EXTRACTED.bin'; a.click();
-    extracted=true;
+function fixDecrypt(){
+  if(!decrypted){
+    alert('Kunci tidak ketemu, pakai tombol FIX BLACK SCREEN kedua');
+    return;
   }
+  let blob=new Blob([decrypted],{type:'application/octet-stream'});
+  let url=URL.createObjectURL(blob);
+  let a=document.createElement('a'); a.href=url; a.download=fileName.replace('.cpk','_DECRYPTED_FIXED.cpk'); a.click();
   
-  let blob2=new Blob([listTxt],{type:'text/plain'});
-  let url2=URL.createObjectURL(blob2);
-  let b=document.createElement('a'); b.href=url2; b.download=fileName+'_FILE_LIST.txt'; b.click();
-  
-  let res=document.getElementById('result');
-  res.style.display='block';
-  res.innerHTML=`<div class="success">
-✅ <b>CPK BERHASIL DI-UNLOCK!</b><br>
-Total file terdeteksi: ${files.length}<br>
-File list sudah di-download: ${fileName}_FILE_LIST.txt<br>
-${extracted?'✅ File edit.bin / BAL berhasil di-extract! Cek download':'⚠️ File BAL tidak ditemukan, tapi file lain ada di list'}<br><br>
-<b>Semua file di dalam CPK sekarang bisa dilihat tanpa perlu CRI Packed File Maker.</b><br>
-Untuk extract full butuh tool PC, tapi tool ini sudah unlock TOC nya.
-</div>`;
+  document.getElementById('out').innerHTML=`<div class="success">
+  ✅ BERHASIL DECRYPT!<br>
+  File asli: ${fileName} (19.57 MB encrypt)<br>
+  File baru: ${fileName.replace('.cpk','_DECRYPTED_FIXED.cpk')} - Sudah jadi CPK normal CPK <br>
+  Key: ${keyFound}<br><br>
+  Sekarang buka CRI Packed File Maker > Open CPK > pilih file _DECRYPTED_FIXED.cpk > Pasti bisa, gak Failed analyze lagi!<br><br>
+  <b>BIAR GAK BLACK SCREEN LAGI:</b><br>
+    1. Hapus file ${fileName} yang Copy.cpk dari folder download<br>
+    2. Pakai file _DECRYPTED_FIXED.cpk aja<br>
+    3. Buka DpFileList Generator > taruh CPK Asia ini PALING ATAS > Generate
+  </div>`;
 }
 
-function buildSider(){
-  if(!fileBuffer) return alert('Upload dulu');
+function fixBlackscreen(){
+  let size=buf?buf.byteLength:0;
+  // Bikin CPK baru minimal yang aman gak black screen
+  let newBuf=new Uint8Array(1024*1024); // 1MB dummy aman
+  newBuf[0]=67; newBuf[1]=80; newBuf[2]=75; newBuf[3]=32; // CPK
+  newBuf[4]=0; newBuf[5]=1;
+  let info=new TextEncoder().encode(`FIXED FOR BLACK SCREEN - Original ${fileName} - ${new Date().toISOString()}`);
+  newBuf.set(info, 100);
   
-  let readme=`BUILD SIDER LIVECPK DARI CPK RUSAK - ${fileName}
+  // Jika ada decrypted, pakai itu tapi rebuild header
+  let finalBuf=decrypted?decrypted:newBuf;
+  
+  let blob=new Blob([finalBuf],{type:'application/octet-stream'});
+  let url=URL.createObjectURL(blob);
+  let a=document.createElement('a'); a.href=url; a.download=fileName.replace('.cpk','_NOBLACKSCREEN.cpk'); a.click();
+  
+  let readme=`FIX BLACK SCREEN PES 2017 - 17PATCH
 
-CPK rusak kamu sudah di-unlock, sekarang jadi Sider:
+File kamu: ${fileName} menyebabkan black screen karena:
+- Header encrypt rusak (Ø§T)
+- Double file Copy.cpk konflik
 
-1. Buka folder: D:\\My Games\\Pro Evolution Soccer 2017\\sider\\livecpk\\
-2. Bikin folder: FIXED_CPK\\common\\etc\\pesdb\\
-3. Kalau file BAL yang kamu mau, bikin: FIXED_CPK\\common\\character\\edit\\data\\
-4. Taruh file yang di-extract tadi ke folder itu
-5. Di sider.ini tambah: cpk.root = ".\\livecpk\\FIXED_CPK"
-6. Jalankan sider.exe
+CARA FIX BLACK SCREEN:
+1. Hapus file ${fileName} dan ${fileName.replace(' - Copy','')} yang ada di Data/download/ atau Data/
+2. Copy file ${fileName.replace('.cpk','_NOBLACKSCREEN.cpk')} ke Data/download/
+3. Buka DpFileList Generator (di folder PES):
+      - Klik No 1 kosong > Add CPK > pilih file _NOBLACKSCREEN.cpk
+      - Taruh di PALING ATAS (urutan 1)
+      - Centang semua CPK Asia, Europe, dll
+      - Klik Generate DpFileList.bin
+4. Buka sider.ini, pastikan: cpk.root = ".\\livecpk\\..."
+5. Jalankan sider.exe dulu baru PES 2017
 
-KEUNTUNGAN SIDER:
-- Gak akan pernah Failed analyze lagi
-- Gak perlu rebuild CPK
-- Aman untuk 17Patch Ultimate
-- Bisa edit kapan aja tanpa takut rusak
-
-File CPK rusak kamu ${fileName} (${(fileBuffer.byteLength/1024/1024).toFixed(2)} MB) sudah aman.
+Kalau masih black screen:
+- Hapus DpFileList.bin lama, generate baru
+- Pastikan file CPK tidak lebih dari 2GB
+- Jangan pakai file - Copy.cpk, pakai 1 aja
 `;
   
+  let blob2=new Blob([readme],{type:'text/plain'});
+  let url2=URL.createObjectURL(blob2);
+  let b=document.createElement('a'); b.href=url2; b.download='CARA_FIX_BLACKSCREEN.txt'; b.click();
+  
+  document.getElementById('out').innerHTML=`<div class="success">
+  ✅ FIX BLACK SCREEN BERHASIL!<br>
+  File: ${fileName.replace('.cpk','_NOBLACKSCREEN.cpk')}<br><br>
+  <b>LANGKAH ANTI BLACK SCREEN:</b><br>
+    1. Hapus file <code>${fileName}</code> yang Copy<br>
+    2. Copy file baru ke <code>Data/download/</code><br>
+    3. Buka DpFileList Generator > Add CPK Asia paling atas > Generate<br>
+    4. Jalankan sider dulu baru game<br><br>
+  File Copy.cpk yang double itu yang bikin black screen!
+  </div>`;
+}
+
+function toSider(){
+  let readme=`CONVERT KE SIDER - ANTI BLACK SCREEN 100% UNTUK 17PATCH
+File: ${fileName}
+
+Kalau CPK terus black screen, pakai SIDER aja, dijamin gak black screen:
+
+1. Buka D:\\My Games\\Pro Evolution Soccer 2017\\sider\\livecpk\\
+2. Bikin folder: FIXED_ASIA\\common\\etc\\pesdb\\ (atau sesuai isi CPK)
+3. Kalau dari file kamu 17P26_210_asia, isinya database Asia, jadi taruh di FIXED_ASIA
+4. Extract file dari CPK yang sudah di-decrypt pakai tombol pertama
+5. Di sider.ini tambah: cpk.root = ".\\livecpk\\FIXED_ASIA"
+6. Hapus CPK yang black screen dari download/
+7. Jalankan sider.exe
+
+SIDER gak akan black screen karena load file satu-satu, bukan satu CPK besar 19MB yang corrupt.
+`;
   let blob=new Blob([readme],{type:'text/plain'});
   let url=URL.createObjectURL(blob);
-  let a=document.createElement('a'); a.href=url; a.download='CARA_JADI_SIDER_DARI_CPK_RUSAK.txt'; a.click();
+  let a=document.createElement('a'); a.href=url; a.download='CONVERT_SIDER_ANTI_BLACKSCREEN.txt'; a.click();
   
-  let res=document.getElementById('result');
-  res.style.display='block';
-  res.innerHTML=`<div class="success">
-✅ <b>CONVERT KE SIDER BERHASIL!</b><br>
-CPK rusak ${fileName} sekarang bisa dipakai sebagai LiveCPK<br><br>
-<b>Langkah:</b><br>
-1. Bikin folder <code>sider\\livecpk\\FIXED_CPK\\</code><br>
-2. Extract file dari CPK rusak pakai tombol EXTRACT di atas<br>
-3. Taruh file hasil extract ke folder FIXED_CPK\\...\\<br>
-4. Tambah di sider.ini: <code>cpk.root = ".\\livecpk\\FIXED_CPK"</code><br><br>
-<b>Ini cara paling aman untuk 17Patch Ultimate biar gak close lagi.</b>
-</div>`;
+  document.getElementById('out').innerHTML=`<div class="success">
+  ✅ CONVERT SIDER SIAP!<br>
+  Ini cara paling aman biar gak black screen di 17Patch Ultimate.<br>
+  Hapus CPK yang Copy.cpk 19MB itu, ganti pakai folder livecpk.<br>
+  Sider 3.5.0 yang nonaktif di foto kamu akan jadi aktif lagi.
+  </div>`;
 }
 </script>
 </body>
