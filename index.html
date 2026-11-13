@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PES 2017 BAL Save Editor — Cheat Engine Memory Edition</title>
+  <title>PES 2017 BAL Save Editor — Pro Edit Mode</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700;800&display=swap');
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #0b0e14;
+      background-color: #090d16;
       color: #e2e8f0;
     }
     .mono {
@@ -33,246 +33,270 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-  <!-- Top Memory Scanner Header -->
+  <!-- Top Bar -->
   <header class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex flex-wrap items-center justify-between gap-3 sticky top-0 z-30">
     <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded bg-emerald-500/10 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold mono">
-        CE
+      <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-extrabold mono text-sm">
+        PES17
       </div>
       <div>
         <h1 class="text-sm md:text-base font-bold text-white tracking-wide flex items-center gap-2">
-          PES 2017 BAL MEMORY EDITOR
-          <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mono">RAW FILE MODE</span>
+          PES 2017 BECOME A LEGEND — EDIT PLAYER SUITE
+          <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mono">EXACT STRUCT SCANNER</span>
         </h1>
-        <p class="text-xs text-slate-400">Auto-Detect Player • Nationality • 28 Skills • 7 COM Styles • Stats (Club Locked)</p>
+        <p class="text-xs text-slate-400">Edit Nama • Negara • Umur • Tinggi & Berat • Ability • 28 Skills • 7 COM Styles (Club Locked)</p>
       </div>
     </div>
 
     <div class="flex flex-wrap items-center gap-2">
       <input type="file" id="fileInput" class="hidden" />
-      <button onclick="document.getElementById('fileInput').click()" class="px-3 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer">
-        <span>📂</span> Open Save (BL0000000x)
+      <button onclick="document.getElementById('fileInput').click()" class="px-3.5 py-2 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-lg shadow-emerald-900/30">
+        <span>📂</span> Load Save (BL0000000x)
       </button>
-      <button onclick="loadSampleSave()" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition cursor-pointer">
-        🧪 Load Sample Save
+      <button onclick="loadSampleSave()" class="px-3 py-2 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition cursor-pointer">
+        🧪 Demo Data
       </button>
-      <button id="btnBackup" onclick="downloadBackup()" disabled class="px-3 py-1.5 rounded bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/40 text-amber-300 disabled:opacity-40 text-xs font-semibold transition cursor-pointer">
+      <button id="btnBackup" onclick="downloadBackup()" disabled class="px-3 py-2 rounded bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/40 text-amber-300 disabled:opacity-40 text-xs font-semibold transition cursor-pointer">
         🛡️ Backup Asli
       </button>
     </div>
   </header>
 
-  <!-- Process / File Status Bar -->
-  <div class="bg-slate-950 border-b border-slate-800/80 px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs mono">
-    <div class="flex flex-wrap items-center gap-4">
+  <!-- Memory & Name Search Bar -->
+  <div class="bg-slate-950 border-b border-slate-800 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+    <div class="flex flex-wrap items-center gap-4 mono">
       <span class="flex items-center gap-1.5">
-        <span id="statusDot" class="w-2 h-2 rounded-full bg-rose-500"></span>
-        <span class="text-slate-400">PROCESS:</span>
-        <span id="fileNameLabel" class="text-slate-200 font-semibold">NO FILE ATTACHED</span>
+        <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+        <span class="text-slate-400">FILE:</span>
+        <span id="fileNameLabel" class="text-white font-bold">BELUM DIMUAT</span>
       </span>
       <span><span class="text-slate-500">SIZE:</span> <span id="fileSizeLabel" class="text-cyan-400">0 KB</span></span>
-      <span><span class="text-slate-500">BASE OFFSET:</span> <span id="baseOffsetLabel" class="text-emerald-400">0x00000000</span></span>
+      <span><span class="text-slate-500">PLAYER OFFSET:</span> <span id="baseOffsetLabel" class="text-emerald-400 font-bold">0x00000000</span></span>
     </div>
 
-    <!-- Kandidat Struktur & Manual Offset Override -->
-    <div class="flex items-center gap-2">
-      <div id="candidateContainer" class="hidden flex items-center gap-1">
-        <span class="text-slate-400 text-[11px]">Kandidat:</span>
-        <select id="candidateSelect" onchange="selectCandidate(this.value)" class="bg-slate-900 border border-emerald-500/50 rounded px-2 py-1 text-xs text-emerald-300 focus:outline-none">
-        </select>
+    <!-- Direct Player Name Search (Seperti Cheat Engine String Scan) -->
+    <div class="flex flex-wrap items-center gap-2">
+      <div class="flex items-center bg-slate-900 border border-emerald-500/40 rounded overflow-hidden">
+        <span class="px-2 text-emerald-400 mono text-[11px]">🔍 Cari Nama BAL:</span>
+        <input type="text" id="searchPlayerNameInput" placeholder="Ketik nama pemain..." class="bg-transparent px-2 py-1 text-xs text-white focus:outline-none w-40" onkeydown="if(event.key==='Enter') searchPlayerByName()" />
+        <button onclick="searchPlayerByName()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs cursor-pointer">
+          Scan
+        </button>
       </div>
-      <span class="text-slate-500">Manual Hex:</span>
-      <input type="text" id="manualOffsetInput" placeholder="0x00A01234" class="w-28 bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-xs text-emerald-300 focus:outline-none focus:border-emerald-500" />
-      <button onclick="applyManualOffset()" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-slate-300 cursor-pointer">Jump</button>
+
+      <select id="searchMatchSelect" onchange="jumpToMatch(this.value)" class="hidden bg-slate-900 border border-cyan-500/50 rounded px-2 py-1 text-xs text-cyan-300 mono">
+      </select>
     </div>
   </div>
 
-  <!-- Main Workspace -->
+  <!-- Main Content -->
   <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-4 max-w-[1600px] w-full mx-auto">
 
-    <!-- Left Panel: Detected Player & Editor Tabs (8 cols) -->
+    <!-- Left Column: PES 2017 Edit Menu Style (8 Cols) -->
     <section class="lg:col-span-8 flex flex-col gap-4">
 
-      <!-- Detected Player Card -->
-      <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-4 flex flex-wrap items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 flex items-center justify-center text-xl font-bold text-emerald-400 mono" id="ovrBadge">
-            --
+      <!-- Player Banner Card -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-800 border border-slate-700/80 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-xl bg-emerald-500/15 border-2 border-emerald-500/50 flex flex-col items-center justify-center">
+            <span class="text-[9px] text-emerald-300 font-bold uppercase tracking-wider">OVR</span>
+            <span class="text-2xl font-extrabold text-white mono leading-none" id="ovrBadge">--</span>
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 mono">Detected BAL Player</span>
-              <span id="detectConfidence" class="text-[11px] text-slate-400 mono">Waiting for scan...</span>
+              <span id="scanStatusBadge" class="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 mono">
+                Menunggu File Save
+              </span>
+              <span id="encryptWarning" class="hidden text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 mono">
+                ⚠️ File Terenkripsi (Gunakan PES17 Save Decrypter jika nama tidak ketemu)
+              </span>
             </div>
-            <h2 id="summaryName" class="text-lg font-bold text-white mt-0.5">Belum ada save dimuat</h2>
-            <p id="summaryMeta" class="text-xs text-slate-400">Klik "Open Save" dan pilih file BL00000000 / BL00000001 di folder Documents\KONAMI\Pro Evolution Soccer 2017\save</p>
+            <h2 id="summaryName" class="text-xl font-extrabold text-white tracking-tight mt-1">Silakan Load File Save BAL</h2>
+            <p id="summaryMeta" class="text-xs text-slate-400">Pilih file BL00000000 / BL00000001 di Documents\KONAMI\Pro Evolution Soccer 2017\save</p>
           </div>
         </div>
 
-        <!-- Export Controls -->
-        <div class="flex flex-wrap items-center gap-2 bg-slate-950 p-2 rounded border border-slate-800">
-          <div class="flex flex-col">
-            <label class="text-[10px] text-slate-400 mono">EXPORT FILENAME (TYPE: FILE)</label>
-            <div class="flex items-center gap-1 mt-0.5">
-              <input type="text" id="exportFileName" value="BL00000000" class="w-32 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-xs mono text-emerald-300 focus:outline-none focus:border-emerald-500" />
-              <button onclick="setExportName('BL00000000')" class="px-1.5 py-1 text-[10px] mono bg-slate-800 hover:bg-slate-700 rounded text-slate-300 cursor-pointer">00</button>
-              <button onclick="setExportName('BL00000001')" class="px-1.5 py-1 text-[10px] mono bg-slate-800 hover:bg-slate-700 rounded text-slate-300 cursor-pointer">01</button>
+        <!-- Export Box -->
+        <div class="flex items-center gap-2 bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+          <div>
+            <label class="block text-[10px] text-slate-400 mono">NAMA FILE EXPORT (TYPE: FILE)</label>
+            <div class="flex items-center gap-1 mt-1">
+              <input type="text" id="exportFileName" value="BL00000000" class="w-28 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-xs mono text-emerald-300 focus:outline-none" />
+              <button onclick="document.getElementById('exportFileName').value='BL00000000'" class="px-1.5 py-1 text-[10px] mono bg-slate-800 hover:bg-slate-700 rounded text-slate-300 cursor-pointer">00</button>
+              <button onclick="document.getElementById('exportFileName').value='BL00000001'" class="px-1.5 py-1 text-[10px] mono bg-slate-800 hover:bg-slate-700 rounded text-slate-300 cursor-pointer">01</button>
             </div>
           </div>
-          <button id="btnExport" onclick="exportSaveFile()" disabled class="px-4 py-2.5 rounded bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-500 text-white text-xs font-bold transition cursor-pointer">
-            💾 Save & Export File
+          <button id="btnExport" onclick="exportSaveFile()" disabled class="px-4 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-500 text-white text-xs font-bold transition cursor-pointer">
+            💾 Simpan Save
           </button>
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
+      <!-- PES 2017 Edit Menu Tabs -->
       <div class="flex border-b border-slate-800 gap-1 overflow-x-auto">
-        <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-4 py-2 text-xs font-semibold border-b-2 border-emerald-500 text-emerald-400 bg-slate-900/60 rounded-t cursor-pointer">
-          1. Profil & Negara (Club Locked)
+        <button onclick="switchTab('basic')" id="tab-basic" class="tab-btn px-4 py-2.5 text-xs font-bold border-b-2 border-emerald-500 text-emerald-400 bg-slate-900/80 rounded-t cursor-pointer">
+          Basic Settings & Negara
         </button>
-        <button onclick="switchTab('skills')" id="tab-skills" class="tab-btn px-4 py-2 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 cursor-pointer">
-          2. Player Skills (28)
+        <button onclick="switchTab('ability')" id="tab-ability" class="tab-btn px-4 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-white cursor-pointer">
+          Ability Settings (40–99)
         </button>
-        <button onclick="switchTab('com')" id="tab-com" class="tab-btn px-4 py-2 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 cursor-pointer">
-          3. COM Playing Styles (7)
+        <button onclick="switchTab('skills')" id="tab-skills" class="tab-btn px-4 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-white cursor-pointer">
+          Player Skills (28 Kartu)
         </button>
-        <button onclick="switchTab('abilities')" id="tab-abilities" class="tab-btn px-4 py-2 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 cursor-pointer">
-          4. Player Abilities (40–99)
+        <button onclick="switchTab('com')" id="tab-com" class="tab-btn px-4 py-2.5 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-white cursor-pointer">
+          COM Playing Styles (7)
         </button>
       </div>
 
-      <!-- Tab Content Container -->
-      <div id="editorContainer" class="bg-slate-900/80 border border-slate-800 rounded-lg p-4 min-h-[420px]">
+      <!-- Tab Panels -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-5 min-h-[440px]">
 
-        <!-- TAB 1: PROFILE & NATIONALITY -->
-        <div id="panel-profile" class="space-y-4">
+        <!-- 1. BASIC SETTINGS (Seperti Edit PES 2017) -->
+        <div id="panel-basic" class="space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Nama Pemain (UTF-8 / ASCII)</label>
-              <input type="text" id="inputName" maxlength="24" oninput="updatePlayerField('name', this.value)" class="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none" />
+              <label class="block text-xs text-slate-400 mb-1">Player Name (Nama di Jersey / Punggung)</label>
+              <input type="text" id="inputName" maxlength="24" oninput="updateField('name', this.value)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm font-semibold text-white focus:border-emerald-500 focus:outline-none" />
             </div>
 
             <div>
-              <label class="block text-xs text-emerald-400 font-semibold mb-1">Kebangsaan / Nationality (Bisa Diedit)</label>
+              <label class="block text-xs text-emerald-400 font-bold mb-1">Nationality / Kebangsaan (Bisa Diedit)</label>
               <div class="flex gap-2">
-                <select id="selectNationality" onchange="onNationalitySelect(this.value)" class="flex-1 bg-slate-950 border border-emerald-500/50 rounded px-3 py-2 text-sm text-white focus:outline-none">
+                <select id="selectNationality" onchange="if(this.value) updateField('nationality', parseInt(this.value))" class="flex-1 bg-slate-950 border border-emerald-500/50 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
                 </select>
-                <input type="number" id="inputNationalityId" min="0" max="65535" oninput="updatePlayerField('nationality', parseInt(this.value)||0)" class="w-24 bg-slate-950 border border-slate-700 rounded px-2 py-2 text-sm mono text-emerald-300" title="Custom Nation ID (Patch)" />
+                <input type="number" id="inputNationalityId" min="0" max="65535" oninput="updateField('nationality', parseInt(this.value)||0)" class="w-24 bg-slate-950 border border-slate-700 rounded-lg px-2 py-2 text-sm mono text-emerald-300 text-center" title="ID Negara" />
               </div>
             </div>
 
-            <!-- CLUB LOCKED FIELD -->
-            <div class="md:col-span-2 bg-rose-950/20 border border-rose-500/30 rounded-lg p-3 flex items-center justify-between">
+            <!-- CLUB LOCKED -->
+            <div class="md:col-span-2 bg-rose-950/25 border border-rose-500/40 rounded-lg p-3.5 flex items-center justify-between">
               <div>
-                <label class="block text-xs text-rose-300 font-semibold flex items-center gap-1.5">
-                  🔒 Klub Saat Ini (Read-Only / Tidak Dapat Diedit)
-                </label>
-                <p id="clubReadOnlyValue" class="text-sm font-bold text-slate-300 mt-0.5 mono">Locked by Memory Guard (Club ID: --)</p>
+                <span class="text-xs font-bold text-rose-300 flex items-center gap-1.5">
+                  🔒 Club Team (Terkunci / Tidak Bisa Diedit)
+                </span>
+                <p id="clubReadOnlyValue" class="text-xs text-slate-300 mt-1 mono">Club Slot Terproteksi — Mencegah Save Corrupt saat Transfer Liga</p>
               </div>
-              <span class="text-[11px] px-2.5 py-1 rounded bg-rose-500/10 border border-rose-500/30 text-rose-300 mono">PROTECTED</span>
+              <span class="text-[10px] px-2.5 py-1 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 mono font-bold">LOCKED</span>
             </div>
 
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Umur (Age: 15–50)</label>
-              <input type="number" id="inputAge" min="15" max="50" oninput="updatePlayerField('age', parseInt(this.value)||17)" class="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm mono text-white" />
+              <label class="block text-xs text-slate-400 mb-1">Age (Umur: 15 – 50 Tahun)</label>
+              <input type="number" id="inputAge" min="15" max="50" oninput="updateField('age', parseInt(this.value)||17)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm mono text-white" />
             </div>
 
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Kaki Terkuat (Stronger Foot)</label>
-              <select id="inputFoot" onchange="updatePlayerField('foot', parseInt(this.value))" class="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm text-white">
-                <option value="0">Kanan (Right Foot)</option>
-                <option value="1">Kiri (Left Foot)</option>
+              <label class="block text-xs text-slate-400 mb-1">Stronger Foot (Kaki Terkuat)</label>
+              <select id="inputFoot" onchange="updateField('foot', parseInt(this.value))" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                <option value="0">Right Foot (Kanan)</option>
+                <option value="1">Left Foot (Kiri)</option>
               </select>
             </div>
 
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Tinggi Badan (cm)</label>
-              <input type="number" id="inputHeight" min="145" max="215" oninput="updatePlayerField('height', parseInt(this.value)||175)" class="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm mono text-white" />
+              <label class="block text-xs text-slate-400 mb-1">Height (Tinggi Badan: 148 – 210 cm)</label>
+              <div class="flex items-center gap-2">
+                <input type="range" id="rangeHeight" min="148" max="210" oninput="updateField('height', parseInt(this.value))" class="flex-1 accent-emerald-500" />
+                <input type="number" id="inputHeight" min="148" max="210" oninput="updateField('height', parseInt(this.value)||175)" class="w-20 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-sm mono text-white text-center" />
+              </div>
             </div>
 
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Berat Badan (kg)</label>
-              <input type="number" id="inputWeight" min="45" max="125" oninput="updatePlayerField('weight', parseInt(this.value)||70)" class="w-full bg-slate-950 border border-slate-700 rounded px-3 py-2 text-sm mono text-white" />
+              <label class="block text-xs text-slate-400 mb-1">Weight (Berat Badan: 45 – 120 kg)</label>
+              <div class="flex items-center gap-2">
+                <input type="range" id="rangeWeight" min="45" max="120" oninput="updateField('weight', parseInt(this.value))" class="flex-1 accent-emerald-500" />
+                <input type="number" id="inputWeight" min="45" max="120" oninput="updateField('weight', parseInt(this.value)||70)" class="w-20 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-sm mono text-white text-center" />
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- TAB 2: 28 PLAYER SKILLS -->
+        <!-- 2. ABILITY SETTINGS (Seperti Menu Edit PES 2017) -->
+        <div id="panel-ability" class="hidden space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-800">
+            <span class="text-xs text-slate-400">Warna angka otomatis berubah (Putih / Kuning / Oranye / Merah) persis seperti di PES 2017</span>
+            <div class="flex gap-2">
+              <button onclick="setAllAbilities(85)" class="px-2.5 py-1 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-semibold cursor-pointer">Set 85 (Pro)</button>
+              <button onclick="setAllAbilities(95)" class="px-2.5 py-1 rounded bg-orange-500/20 border border-orange-500/40 text-orange-300 text-xs font-semibold cursor-pointer">Set 95 (Legend)</button>
+              <button onclick="setAllAbilities(99)" class="px-2.5 py-1 rounded bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs font-semibold cursor-pointer">Max 99</button>
+            </div>
+          </div>
+          <div id="abilitiesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-h-[430px] overflow-y-auto pr-1"></div>
+        </div>
+
+        <!-- 3. PLAYER SKILLS (28 Kartu Skill PES 2017) -->
         <div id="panel-skills" class="hidden space-y-3">
           <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-800">
-            <div class="text-xs text-slate-400">
-              Bitmask Hex: <span id="skillsBitmaskHex" class="mono text-emerald-400 font-bold">0x00000000</span>
-            </div>
+            <span class="text-xs text-slate-400">Aktif: <strong id="activeSkillsCount" class="text-emerald-400 mono">0 / 28</strong> • Mask: <span id="skillsBitmaskHex" class="mono text-slate-300">0x00000000</span></span>
             <div class="flex gap-2">
-              <button onclick="setAllSkills(true)" class="px-2.5 py-1 rounded bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs cursor-pointer">Aktifkan Semua (28)</button>
-              <button onclick="setAllSkills(false)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer">Reset Semua</button>
+              <button onclick="setAllSkills(true)" class="px-2.5 py-1 rounded bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 text-xs cursor-pointer">Centang Semua</button>
+              <button onclick="setAllSkills(false)" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 text-xs cursor-pointer">Kosongkan</button>
             </div>
           </div>
           <div id="skillsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2"></div>
         </div>
 
-        <!-- TAB 3: 7 COM PLAYING STYLES -->
+        <!-- 4. COM PLAYING STYLES (7 Gaya Bermain COM PES 2017) -->
         <div id="panel-com" class="hidden space-y-3">
           <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-800">
-            <div class="text-xs text-slate-400">
-              COM Flags Byte: <span id="comBitmaskHex" class="mono text-cyan-400 font-bold">0x00</span>
-            </div>
+            <span class="text-xs text-slate-400">Aktif: <strong id="activeComCount" class="text-cyan-400 mono">0 / 7</strong> • Byte: <span id="comBitmaskHex" class="mono text-slate-300">0x00</span></span>
             <div class="flex gap-2">
-              <button onclick="setAllCom(true)" class="px-2.5 py-1 rounded bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/40 text-cyan-300 text-xs cursor-pointer">Aktifkan Semua (7)</button>
-              <button onclick="setAllCom(false)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer">Reset Semua</button>
+              <button onclick="setAllCom(true)" class="px-2.5 py-1 rounded bg-cyan-600/20 border border-cyan-500/40 text-cyan-300 text-xs cursor-pointer">Centang Semua</button>
+              <button onclick="setAllCom(false)" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 text-xs cursor-pointer">Kosongkan</button>
             </div>
           </div>
           <div id="comGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
         </div>
 
-        <!-- TAB 4: PLAYER ABILITIES -->
-        <div id="panel-abilities" class="hidden space-y-3">
-          <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-800">
-            <span class="text-xs text-slate-400">Rentang nilai valid PES 2017: <strong class="text-white">40 – 99</strong></span>
-            <div class="flex gap-2">
-              <button onclick="applyStatPreset(88)" class="px-2.5 py-1 rounded bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/40 text-cyan-300 text-xs cursor-pointer">Preset Star (88)</button>
-              <button onclick="applyStatPreset(99)" class="px-2.5 py-1 rounded bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs cursor-pointer">Max All (99)</button>
-            </div>
-          </div>
-          <div id="abilitiesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 max-h-[420px] overflow-y-auto pr-1"></div>
-        </div>
-
       </div>
     </section>
 
-    <!-- Right Panel: Cheat Engine Address Table & Live Hex View (4 cols) -->
+    <!-- Right Column: Memory Inspector & Offset Calibration (4 Cols) -->
     <aside class="lg:col-span-4 flex flex-col gap-4">
 
-      <!-- Cheat Engine Address Table -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden flex flex-col">
-        <div class="bg-slate-950 px-3 py-2 border-b border-slate-800 flex items-center justify-between">
-          <span class="text-xs font-bold text-emerald-400 mono">MEMORY ADDRESS TABLE</span>
-          <span class="text-[10px] text-slate-500 mono">LIVE PATCHING</span>
+      <!-- Offset Calibration Panel (Jika posisi struktur patch berbeda) -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-amber-400 mono">⚙️ OFFSET CALIBRATION (JIKA PATCH BEDA)</span>
         </div>
-        <div class="overflow-x-auto max-h-[270px]">
-          <table class="w-full text-left border-collapse mono text-[11px]">
-            <thead class="bg-slate-950/80 text-slate-400 sticky top-0">
-              <tr>
-                <th class="py-1.5 px-2 border-b border-slate-800">Address</th>
-                <th class="py-1.5 px-2 border-b border-slate-800">Description</th>
-                <th class="py-1.5 px-2 border-b border-slate-800">Type</th>
-                <th class="py-1.5 px-2 border-b border-slate-800">Value</th>
-              </tr>
-            </thead>
-            <tbody id="ceAddressTable" class="divide-y divide-slate-800/60 text-slate-300">
-              <tr><td colspan="4" class="p-3 text-center text-slate-500">No memory loaded</td></tr>
-            </tbody>
-          </table>
+        <p class="text-[11px] text-slate-400 leading-relaxed">
+          Jika nama pemain sudah ketemu lewat tombol <strong>Scan</strong> namun tinggi/umur bergeser beberapa byte (karena perbedaan versi Patch PTE/Smoke/T99), geser offset manual di bawah:
+        </p>
+        <div class="flex items-center gap-1.5 mono text-xs">
+          <button onclick="nudgeOffset(-16)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 cursor-pointer">-0x10</button>
+          <button onclick="nudgeOffset(-1)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 cursor-pointer">-1B</button>
+          <input type="text" id="manualHexInput" placeholder="0x00000000" class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-1 text-center text-emerald-300" />
+          <button onclick="nudgeOffset(1)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 cursor-pointer">+1B</button>
+          <button onclick="nudgeOffset(16)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 cursor-pointer">+0x10</button>
+          <button onclick="jumpManualHex()" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 rounded text-white font-bold cursor-pointer">Go</button>
         </div>
       </div>
 
-      <!-- Live Hex Viewer -->
-      <div class="bg-slate-900 border border-slate-800 rounded-lg overflow-hidden flex flex-col flex-1">
+      <!-- Cheat Engine Table -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
         <div class="bg-slate-950 px-3 py-2 border-b border-slate-800 flex items-center justify-between">
-          <span class="text-xs font-bold text-cyan-400 mono">HEX INSPECTOR (PLAYER STRUCT)</span>
-          <span class="text-[10px] text-slate-500 mono">16 BYTES/ROW</span>
+          <span class="text-xs font-bold text-emerald-400 mono">MEMORY ADDRESS LIST</span>
+          <span class="text-[10px] text-slate-500 mono">REAL-TIME</span>
         </div>
-        <pre id="hexDumpView" class="p-3 text-[11px] mono text-slate-300 overflow-auto leading-relaxed flex-1 bg-slate-950/60">Load save file BL00000000 / BL00000001 untuk melihat struktur biner...</pre>
+        <table class="w-full text-left border-collapse mono text-[11px]">
+          <thead class="bg-slate-950/80 text-slate-400">
+            <tr>
+              <th class="py-1.5 px-2 border-b border-slate-800">Address</th>
+              <th class="py-1.5 px-2 border-b border-slate-800">Field</th>
+              <th class="py-1.5 px-2 border-b border-slate-800">Value</th>
+            </tr>
+          </thead>
+          <tbody id="ceAddressTable" class="divide-y divide-slate-800/60 text-slate-300">
+            <tr><td colspan="3" class="p-3 text-center text-slate-500">Belum ada memori dimuat</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Hex Dump -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex-1 flex flex-col">
+        <div class="bg-slate-950 px-3 py-2 border-b border-slate-800 flex items-center justify-between">
+          <span class="text-xs font-bold text-cyan-400 mono">HEX VIEWER (ASCII & BYTES)</span>
+        </div>
+        <pre id="hexDumpView" class="p-3 text-[11px] mono text-slate-300 overflow-auto leading-relaxed flex-1 bg-slate-950/60">Muat file save untuk melihat isi hex...</pre>
       </div>
 
     </aside>
@@ -296,21 +320,6 @@
       { id: 21,  name: "Spain (ID: 21)" }
     ];
 
-    const PLAYER_SKILLS = [
-      "Scissors Feint", "Flip Flap", "Marseille Turn", "Sombrero",
-      "Cut Behind & Turn", "Scotch Move", "Heading", "Long Range Drive",
-      "Knuckle Shot", "Acrobatic Finishing", "Heel Trick", "First-time Shot",
-      "One-touch Pass", "Weighted Pass", "Pinpoint Crossing", "Outside Curler",
-      "Rabona", "Low Lofted Pass", "Low Punt Trajectory", "Long Throw",
-      "GK Long Throw", "Malicia", "Man Marking", "Track Back",
-      "Acrobatic Clear", "Captaincy", "Super-sub", "Fighting Spirit"
-    ];
-
-    const COM_STYLES = [
-      "Trickster", "Mazing Run", "Speeding Bullet",
-      "Incisive Run", "Long Ball Expert", "Early Cross", "Long Ranger"
-    ];
-
     const ABILITY_LIST = [
       "Attacking Prowess", "Ball Control", "Dribbling", "Low Pass",
       "Lofted Pass", "Finishing", "Place Kicking", "Swerve",
@@ -318,6 +327,21 @@
       "Speed", "Explosive Power", "Body Control", "Physical Contact",
       "Jump", "Goalkeeping", "Catching", "Clearing",
       "Reflexes", "Coverage", "Stamina"
+    ];
+
+    const PLAYER_SKILLS = [
+      "01. Scissors Feint", "02. Flip Flap", "03. Marseille Turn", "04. Sombrero",
+      "05. Cut Behind & Turn", "06. Scotch Move", "07. Heading", "08. Long Range Drive",
+      "09. Knuckle Shot", "10. Acrobatic Finishing", "11. Heel Trick", "12. First-time Shot",
+      "13. One-touch Pass", "14. Weighted Pass", "15. Pinpoint Crossing", "16. Outside Curler",
+      "17. Rabona", "18. Low Lofted Pass", "19. Low Punt Trajectory", "20. Long Throw",
+      "21. GK Long Throw", "22. Malicia", "23. Man Marking", "24. Track Back",
+      "25. Acrobatic Clear", "26. Captaincy", "27. Super-sub", "28. Fighting Spirit"
+    ];
+
+    const COM_STYLES = [
+      "01. Trickster", "02. Mazing Run", "03. Speeding Bullet",
+      "04. Incisive Run", "05. Long Ball Expert", "06. Early Cross", "07. Long Ranger"
     ];
 
     const OFFSETS = {
@@ -336,8 +360,14 @@
     let rawBuffer = null;
     let backupBuffer = null;
     let baseOffset = 0;
-    let candidates = [];
     let currentOriginalName = "BL00000000";
+
+    function getStatColorClass(val) {
+      if (val >= 95) return "text-rose-400 font-extrabold";
+      if (val >= 85) return "text-orange-400 font-bold";
+      if (val >= 75) return "text-amber-300 font-semibold";
+      return "text-slate-200";
+    }
 
     function initUI() {
       const natSelect = document.getElementById("selectNationality");
@@ -348,11 +378,22 @@
         natSelect.appendChild(opt);
       });
 
+      const abilitiesGrid = document.getElementById("abilitiesGrid");
+      ABILITY_LIST.forEach((stat, idx) => {
+        abilitiesGrid.innerHTML += `
+          <div class="flex items-center justify-between gap-2 bg-slate-950/70 px-3 py-1.5 rounded-lg border border-slate-800">
+            <span class="text-xs text-slate-300 w-36 truncate">${stat}</span>
+            <input type="range" id="statRange_${idx}" min="40" max="99" value="75" oninput="updateAbility(${idx}, this.value)" class="flex-1 accent-emerald-500 cursor-pointer" />
+            <input type="number" id="statNum_${idx}" min="40" max="99" value="75" oninput="updateAbility(${idx}, this.value)" class="w-12 bg-slate-900 border border-slate-700 rounded px-1 py-0.5 text-center text-xs mono text-amber-300" />
+          </div>
+        `;
+      });
+
       const skillsGrid = document.getElementById("skillsGrid");
       PLAYER_SKILLS.forEach((skill, idx) => {
         skillsGrid.innerHTML += `
-          <label class="flex items-center justify-between bg-slate-950 border border-slate-800 hover:border-emerald-500/40 rounded px-2.5 py-2 cursor-pointer text-xs">
-            <span class="text-slate-200">${idx + 1}. ${skill}</span>
+          <label class="flex items-center justify-between bg-slate-950 border border-slate-800 hover:border-emerald-500/40 rounded-lg px-3 py-2 cursor-pointer text-xs">
+            <span class="text-slate-200">${skill}</span>
             <input type="checkbox" id="skill_${idx}" onchange="toggleSkill(${idx}, this.checked)" class="accent-emerald-500 w-4 h-4 cursor-pointer" />
           </label>
         `;
@@ -361,21 +402,10 @@
       const comGrid = document.getElementById("comGrid");
       COM_STYLES.forEach((style, idx) => {
         comGrid.innerHTML += `
-          <label class="flex items-center justify-between bg-slate-950 border border-slate-800 hover:border-cyan-500/40 rounded px-3 py-2.5 cursor-pointer text-xs">
+          <label class="flex items-center justify-between bg-slate-950 border border-slate-800 hover:border-cyan-500/40 rounded-lg px-3 py-2.5 cursor-pointer text-xs">
             <span class="text-slate-200 font-medium">${style}</span>
             <input type="checkbox" id="com_${idx}" onchange="toggleCom(${idx}, this.checked)" class="accent-cyan-500 w-4 h-4 cursor-pointer" />
           </label>
-        `;
-      });
-
-      const abilitiesGrid = document.getElementById("abilitiesGrid");
-      ABILITY_LIST.forEach((stat, idx) => {
-        abilitiesGrid.innerHTML += `
-          <div class="flex items-center justify-between gap-2 bg-slate-950/60 px-2.5 py-1.5 rounded border border-slate-800/80">
-            <span class="text-xs text-slate-300 truncate w-36">${stat}</span>
-            <input type="range" id="statRange_${idx}" min="40" max="99" value="75" oninput="updateAbility(${idx}, this.value)" class="flex-1 accent-emerald-500 cursor-pointer" />
-            <input type="number" id="statNum_${idx}" min="40" max="99" value="75" oninput="updateAbility(${idx}, this.value)" class="w-12 bg-slate-900 border border-slate-700 rounded px-1 py-0.5 text-center text-xs mono text-emerald-400" />
-          </div>
         `;
       });
     }
@@ -387,98 +417,146 @@
       const arrayBuf = await file.arrayBuffer();
       rawBuffer = new Uint8Array(arrayBuf);
       backupBuffer = new Uint8Array(arrayBuf.slice(0));
-
       currentOriginalName = file.name;
+
       document.getElementById("fileNameLabel").textContent = file.name;
       document.getElementById("fileSizeLabel").textContent = (rawBuffer.length / 1024).toFixed(1) + " KB";
       document.getElementById("exportFileName").value = file.name;
-      document.getElementById("statusDot").className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+      document.getElementById("statusDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
       document.getElementById("btnExport").disabled = false;
       document.getElementById("btnBackup").disabled = false;
 
-      scanForBalPlayer();
+      // Cek apakah file masih terenkripsi Konami (entropy tinggi di seluruh file)
+      checkEncryptionAndAutoScan();
     });
 
-    // Peningkatan Scanner: Mencari struktur valid dengan nama karakter huruf besar/kecil yang sahih
-    function scanForBalPlayer() {
-      candidates = [];
-      const len = rawBuffer.length;
+    function checkEncryptionAndAutoScan() {
+      // Cari string ASCII terbaca (minimal 4 huruf berurutan) di area data pemain
+      let readableHits = 0;
+      for (let i = 0x1000; i < Math.min(rawBuffer.length, 0x50000); i++) {
+        if (rawBuffer[i] >= 65 && rawBuffer[i] <= 90 &&
+            rawBuffer[i+1] >= 65 && rawBuffer[i+1] <= 122 &&
+            rawBuffer[i+2] >= 65 && rawBuffer[i+2] <= 122 &&
+            rawBuffer[i+3] >= 65 && rawBuffer[i+3] <= 122) {
+          readableHits++;
+        }
+      }
 
-      // Mulai scan dari offset 0x1000 untuk melewati header biner game
-      for (let i = 0x1000; i < len - 0x50; i += 2) {
+      const warnEl = document.getElementById("encryptWarning");
+      if (readableHits < 5) {
+        warnEl.classList.remove("hidden");
+        document.getElementById("scanStatusBadge").textContent = "Terdeteksi Enkripsi Konami Save";
+      } else {
+        warnEl.classList.add("hidden");
+        document.getElementById("scanStatusBadge").textContent = "Decrypted Save Ready — Ketik Nama Pemain di Atas";
+      }
+
+      // Auto-scan awal
+      autoScanValidPlayer();
+    }
+
+    function autoScanValidPlayer() {
+      const len = rawBuffer.length;
+      for (let i = 0x1000; i < len - 0x50; i++) {
         const age = rawBuffer[i + OFFSETS.AGE];
         const height = rawBuffer[i + OFFSETS.HEIGHT];
         const weight = rawBuffer[i + OFFSETS.WEIGHT];
         const foot = rawBuffer[i + OFFSETS.FOOT];
 
-        // Validasi fisik manusia yang logis untuk PES 2017 BAL
-        if (age >= 15 && age <= 45 && height >= 150 && height <= 210 && weight >= 45 && weight <= 115 && (foot === 0 || foot === 1)) {
-          let validStats = true;
-          for (let s = 0; s < ABILITY_LIST.length; s++) {
-            const val = rawBuffer[i + OFFSETS.ABILITIES + s];
-            if (val < 40 || val > 99) {
-              validStats = false;
+        if (age >= 15 && age <= 42 && height >= 155 && height <= 205 && weight >= 50 && weight <= 105 && (foot === 0 || foot === 1)) {
+          // Pastikan ada minimal 3 huruf ASCII valid sebagai nama di awal struct
+          let nameValid = true;
+          for (let c = 0; c < 3; c++) {
+            const ch = rawBuffer[i + c];
+            if (!((ch >= 65 && ch <= 90) || (ch >= 97 && ch <= 122))) {
+              nameValid = false;
               break;
             }
           }
-
-          if (validStats) {
-            // Periksa apakah byte pertama berupa huruf alfabet ASCII (nama pemain)
-            const firstChar = rawBuffer[i];
-            if ((firstChar >= 65 && firstChar <= 90) || (firstChar >= 97 && firstChar <= 122)) {
-              candidates.push(i);
-            }
+          if (nameValid) {
+            baseOffset = i;
+            readStructToUI();
+            return;
           }
         }
       }
+      baseOffset = 0x1000;
+      readStructToUI();
+    }
 
-      const candidateContainer = document.getElementById("candidateContainer");
-      const sel = document.getElementById("candidateSelect");
-      sel.innerHTML = "";
+    // Pencarian Langsung Berdasarkan Nama Pemain (Sama seperti String Scan di Cheat Engine)
+    function searchPlayerByName() {
+      if (!rawBuffer) return alert("Muat file save BL0000000x terlebih dahulu!");
+      const query = document.getElementById("searchPlayerNameInput").value.trim();
+      if (query.length < 2) return alert("Masukkan minimal 2 huruf nama pemain Anda.");
 
-      if (candidates.length > 0) {
-        baseOffset = candidates[0];
-        document.getElementById("detectConfidence").textContent = `Auto-Detected (${candidates.length} kandidat ditemukan)`;
-        candidateContainer.classList.remove("hidden");
-        candidates.forEach((off, idx) => {
-          const opt = document.createElement("option");
-          opt.value = off;
-          opt.textContent = `Kandidat #${idx + 1} (0x${off.toString(16).toUpperCase()})`;
-          sel.appendChild(opt);
-        });
-      } else {
-        baseOffset = 0x4000; // Fallback umum
-        document.getElementById("detectConfidence").textContent = "Tidak ditemukan otomatis. Gunakan Manual Hex.";
-        candidateContainer.classList.add("hidden");
+      const matches = [];
+      const qLower = query.toLowerCase();
+
+      for (let i = 0; i < rawBuffer.length - query.length; i++) {
+        let match = true;
+        for (let j = 0; j < query.length; j++) {
+          const byteChar = String.fromCharCode(rawBuffer[i + j]).toLowerCase();
+          if (byteChar !== qLower[j]) {
+            match = false;
+            break;
+          }
+        }
+        if (match) {
+          matches.push(i);
+          i += 16;
+        }
       }
 
+      const sel = document.getElementById("searchMatchSelect");
+      sel.innerHTML = "";
+
+      if (matches.length === 0) {
+        alert(`Nama "${query}" tidak ditemukan di dalam file.\n\nCatatan: File save asli PES 2017 di folder Documents memiliki lapisan enkripsi Konami. Jika Anda membuka file langsung tanpa didekripsi terlebih dahulu menggunakan "PES 2017 Save Decrypter", teks nama tidak akan terbaca dalam bentuk ASCII biasa.`);
+        sel.classList.add("hidden");
+        return;
+      }
+
+      sel.classList.remove("hidden");
+      matches.forEach((off, idx) => {
+        const opt = document.createElement("option");
+        opt.value = off;
+        opt.textContent = `Hasil #${idx + 1} @ 0x${off.toString(16).toUpperCase()}`;
+        sel.appendChild(opt);
+      });
+
+      baseOffset = matches[0];
+      document.getElementById("scanStatusBadge").textContent = `Ditemukan ${matches.length} kecocokan nama!`;
       readStructToUI();
     }
 
-    function selectCandidate(offsetStr) {
-      baseOffset = parseInt(offsetStr, 10);
+    function jumpToMatch(val) {
+      baseOffset = parseInt(val, 10);
       readStructToUI();
     }
 
-    function applyManualOffset() {
+    function nudgeOffset(delta) {
       if (!rawBuffer) return;
-      let val = document.getElementById("manualOffsetInput").value.trim();
-      if (val.toLowerCase().startsWith("0x")) val = val.slice(2);
+      baseOffset = Math.max(0, Math.min(rawBuffer.length - 0x50, baseOffset + delta));
+      readStructToUI();
+    }
+
+    function jumpManualHex() {
+      if (!rawBuffer) return;
+      let val = document.getElementById("manualHexInput").value.trim().replace(/^0x/i, "");
       const parsed = parseInt(val, 16);
       if (!isNaN(parsed) && parsed >= 0 && parsed < rawBuffer.length - 0x50) {
         baseOffset = parsed;
-        document.getElementById("detectConfidence").textContent = "Manual Offset Dipakai";
         readStructToUI();
-      } else {
-        alert("Offset hex tidak valid atau di luar ukuran file.");
       }
     }
 
     function readStructToUI() {
       if (!rawBuffer) return;
       const view = new DataView(rawBuffer.buffer);
-
-      document.getElementById("baseOffsetLabel").textContent = "0x" + baseOffset.toString(16).toUpperCase().padStart(8, "0");
+      const hexAddr = "0x" + baseOffset.toString(16).toUpperCase().padStart(8, "0");
+      document.getElementById("baseOffsetLabel").textContent = hexAddr;
+      document.getElementById("manualHexInput").value = hexAddr;
 
       let nameStr = "";
       for (let i = 0; i < 24; i++) {
@@ -486,7 +564,7 @@
         if (ch === 0) break;
         if (ch >= 32 && ch <= 126) nameStr += String.fromCharCode(ch);
       }
-      if (!nameStr) nameStr = "BAL_PLAYER";
+      if (!nameStr) nameStr = "UNKNOWN_OFFSET";
 
       const natId = view.getUint16(baseOffset + OFFSETS.NATIONALITY, true);
       const clubId = view.getUint16(baseOffset + OFFSETS.CLUB_ID, true);
@@ -498,41 +576,53 @@
       document.getElementById("inputName").value = nameStr;
       document.getElementById("inputNationalityId").value = natId;
       document.getElementById("selectNationality").value = NATIONS.some(n => n.id === natId) ? natId : "";
-      document.getElementById("clubReadOnlyValue").textContent = `Locked Club Slot (Internal Club ID: ${clubId} / 0x${clubId.toString(16).toUpperCase()})`;
+      document.getElementById("clubReadOnlyValue").textContent = `Club ID Terdeteksi: ${clubId} (0x${clubId.toString(16).toUpperCase()}) — TERKUNCI`;
+
       document.getElementById("inputAge").value = age;
       document.getElementById("inputHeight").value = height;
+      document.getElementById("rangeHeight").value = Math.min(210, Math.max(148, height));
       document.getElementById("inputWeight").value = weight;
-      document.getElementById("inputFoot").value = foot;
+      document.getElementById("rangeWeight").value = Math.min(120, Math.max(45, weight));
+      document.getElementById("inputFoot").value = foot === 1 ? "1" : "0";
 
-      let totalStats = 0;
+      let sum = 0;
       ABILITY_LIST.forEach((_, idx) => {
         const val = Math.min(99, Math.max(40, rawBuffer[baseOffset + OFFSETS.ABILITIES + idx]));
-        totalStats += val;
+        sum += val;
         document.getElementById(`statRange_${idx}`).value = val;
-        document.getElementById(`statNum_${idx}`).value = val;
+        const numEl = document.getElementById(`statNum_${idx}`);
+        numEl.value = val;
+        numEl.className = `w-12 bg-slate-900 border border-slate-700 rounded px-1 py-0.5 text-center text-xs mono ${getStatColorClass(val)}`;
       });
-      const estOvr = Math.round(totalStats / ABILITY_LIST.length);
-      document.getElementById("ovrBadge").textContent = estOvr;
+      document.getElementById("ovrBadge").textContent = Math.round(sum / ABILITY_LIST.length);
 
       const skillsMask = view.getUint32(baseOffset + OFFSETS.SKILLS_MASK, true);
       document.getElementById("skillsBitmaskHex").textContent = "0x" + skillsMask.toString(16).toUpperCase().padStart(8, "0");
+      let activeSkills = 0;
       PLAYER_SKILLS.forEach((_, idx) => {
-        document.getElementById(`skill_${idx}`).checked = Boolean((skillsMask >>> idx) & 1);
+        const has = Boolean((skillsMask >>> idx) & 1);
+        if (has) activeSkills++;
+        document.getElementById(`skill_${idx}`).checked = has;
       });
+      document.getElementById("activeSkillsCount").textContent = `${activeSkills} / 28`;
 
       const comMask = rawBuffer[baseOffset + OFFSETS.COM_MASK];
       document.getElementById("comBitmaskHex").textContent = "0x" + comMask.toString(16).toUpperCase().padStart(2, "0");
+      let activeCom = 0;
       COM_STYLES.forEach((_, idx) => {
-        document.getElementById(`com_${idx}`).checked = Boolean((comMask >>> idx) & 1);
+        const has = Boolean((comMask >>> idx) & 1);
+        if (has) activeCom++;
+        document.getElementById(`com_${idx}`).checked = has;
       });
+      document.getElementById("activeComCount").textContent = `${activeCom} / 7`;
 
       document.getElementById("summaryName").textContent = nameStr;
-      document.getElementById("summaryMeta").textContent = `Nation ID: ${natId} • Age: ${age} • ${height}cm / ${weight}kg • Club Locked`;
+      document.getElementById("summaryMeta").textContent = `Nation ID: ${natId} • Umur: ${age} thn • Tinggi: ${height} cm • Berat: ${weight} kg`;
 
       renderMemoryPanels();
     }
 
-    function updatePlayerField(field, value) {
+    function updateField(field, value) {
       if (!rawBuffer) return;
       const view = new DataView(rawBuffer.buffer);
 
@@ -542,13 +632,12 @@
         }
       } else if (field === "nationality") {
         view.setUint16(baseOffset + OFFSETS.NATIONALITY, Math.min(65535, Math.max(0, value)), true);
-        document.getElementById("inputNationalityId").value = value;
       } else if (field === "age") {
         rawBuffer[baseOffset + OFFSETS.AGE] = Math.min(50, Math.max(15, value));
       } else if (field === "height") {
-        rawBuffer[baseOffset + OFFSETS.HEIGHT] = Math.min(215, Math.max(145, value));
+        rawBuffer[baseOffset + OFFSETS.HEIGHT] = Math.min(210, Math.max(148, value));
       } else if (field === "weight") {
-        rawBuffer[baseOffset + OFFSETS.WEIGHT] = Math.min(125, Math.max(45, value));
+        rawBuffer[baseOffset + OFFSETS.WEIGHT] = Math.min(120, Math.max(45, value));
       } else if (field === "foot") {
         rawBuffer[baseOffset + OFFSETS.FOOT] = value ? 1 : 0;
       }
@@ -556,9 +645,18 @@
       readStructToUI();
     }
 
-    function onNationalitySelect(val) {
-      if (!val) return;
-      updatePlayerField("nationality", parseInt(val, 10));
+    function updateAbility(idx, val) {
+      if (!rawBuffer) return;
+      rawBuffer[baseOffset + OFFSETS.ABILITIES + idx] = Math.min(99, Math.max(40, parseInt(val, 10) || 40));
+      readStructToUI();
+    }
+
+    function setAllAbilities(val) {
+      if (!rawBuffer) return;
+      ABILITY_LIST.forEach((_, idx) => {
+        rawBuffer[baseOffset + OFFSETS.ABILITIES + idx] = val;
+      });
+      readStructToUI();
     }
 
     function toggleSkill(idx, active) {
@@ -593,40 +691,23 @@
       readStructToUI();
     }
 
-    function updateAbility(idx, val) {
-      if (!rawBuffer) return;
-      const clamped = Math.min(99, Math.max(40, parseInt(val, 10) || 40));
-      rawBuffer[baseOffset + OFFSETS.ABILITIES + idx] = clamped;
-      readStructToUI();
-    }
-
-    function applyStatPreset(targetVal) {
-      if (!rawBuffer) return;
-      ABILITY_LIST.forEach((_, idx) => {
-        rawBuffer[baseOffset + OFFSETS.ABILITIES + idx] = targetVal;
-      });
-      readStructToUI();
-    }
-
     function renderMemoryPanels() {
       if (!rawBuffer) return;
       const view = new DataView(rawBuffer.buffer);
       const rows = [
-        { off: OFFSETS.NAME, desc: "Player Name", type: "String[24]", val: document.getElementById("inputName").value },
-        { off: OFFSETS.NATIONALITY, desc: "Nationality ID", type: "2 Bytes", val: view.getUint16(baseOffset + OFFSETS.NATIONALITY, true) },
-        { off: OFFSETS.CLUB_ID, desc: "Club ID (LOCKED)", type: "2 Bytes", val: view.getUint16(baseOffset + OFFSETS.CLUB_ID, true) + " 🔒" },
-        { off: OFFSETS.AGE, desc: "Player Age", type: "Byte", val: rawBuffer[baseOffset + OFFSETS.AGE] },
-        { off: OFFSETS.HEIGHT, desc: "Height", type: "Byte", val: rawBuffer[baseOffset + OFFSETS.HEIGHT] },
-        { off: OFFSETS.WEIGHT, desc: "Weight", type: "Byte", val: rawBuffer[baseOffset + OFFSETS.WEIGHT] },
-        { off: OFFSETS.SKILLS_MASK, desc: "28 Skills Bitmask", type: "4 Bytes", val: "0x" + view.getUint32(baseOffset + OFFSETS.SKILLS_MASK, true).toString(16).toUpperCase().padStart(8, "0") }
+        { off: OFFSETS.NAME, desc: "Player Name", val: document.getElementById("inputName").value },
+        { off: OFFSETS.NATIONALITY, desc: "Nationality ID", val: view.getUint16(baseOffset + OFFSETS.NATIONALITY, true) },
+        { off: OFFSETS.CLUB_ID, desc: "Club ID (Locked)", val: view.getUint16(baseOffset + OFFSETS.CLUB_ID, true) + " 🔒" },
+        { off: OFFSETS.AGE, desc: "Age", val: rawBuffer[baseOffset + OFFSETS.AGE] },
+        { off: OFFSETS.HEIGHT, desc: "Height (cm)", val: rawBuffer[baseOffset + OFFSETS.HEIGHT] },
+        { off: OFFSETS.WEIGHT, desc: "Weight (kg)", val: rawBuffer[baseOffset + OFFSETS.WEIGHT] },
+        { off: OFFSETS.SKILLS_MASK, desc: "Skills Bitmask", val: "0x" + view.getUint32(baseOffset + OFFSETS.SKILLS_MASK, true).toString(16).toUpperCase().padStart(8, "0") }
       ];
 
-      const tbody = document.getElementById("ceAddressTable");
-      tbody.innerHTML = rows.map(r => `
+      document.getElementById("ceAddressTable").innerHTML = rows.map(r => `
         <tr class="hover:bg-slate-800/50">
           <td class="py-1.5 px-2 text-emerald-400">0x${(baseOffset + r.off).toString(16).toUpperCase().padStart(6, "0")}</td>
           <td class="py-1.5 px-2 text-slate-200">${r.desc}</td>
-          <td class="py-1.5 px-2 text-slate-400">${r.type}</td>
           <td class="py-1.5 px-2 text-cyan-300 font-semibold">${r.val}</td>
         </tr>
       `).join("");
@@ -663,7 +744,7 @@
       rawBuffer[baseOffset + OFFSETS.FOOT] = 0;
 
       for (let i = 0; i < ABILITY_LIST.length; i++) {
-        rawBuffer[baseOffset + OFFSETS.ABILITIES + i] = 82;
+        rawBuffer[baseOffset + OFFSETS.ABILITIES + i] = 86;
       }
       view.setUint32(baseOffset + OFFSETS.SKILLS_MASK, 0x00000105, true);
       rawBuffer[baseOffset + OFFSETS.COM_MASK] = 0x07;
@@ -673,22 +754,16 @@
       document.getElementById("fileNameLabel").textContent = "BL00000000 (DEMO)";
       document.getElementById("fileSizeLabel").textContent = "64.0 KB";
       document.getElementById("exportFileName").value = "BL00000000";
-      document.getElementById("statusDot").className = "w-2 h-2 rounded-full bg-emerald-400";
+      document.getElementById("statusDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
       document.getElementById("btnExport").disabled = false;
       document.getElementById("btnBackup").disabled = false;
 
       readStructToUI();
     }
 
-    function setExportName(name) {
-      document.getElementById("exportFileName").value = name;
-    }
-
     function exportSaveFile() {
       if (!rawBuffer) return;
-      let cleanName = document.getElementById("exportFileName").value.trim() || "BL00000000";
-      cleanName = cleanName.replace(/\.[^/.]+$/, "");
-
+      let cleanName = (document.getElementById("exportFileName").value.trim() || "BL00000000").replace(/\.[^/.]+$/, "");
       const blob = new Blob([rawBuffer], { type: "application/octet-stream" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -714,14 +789,14 @@
     }
 
     function switchTab(tabId) {
-      ["profile", "skills", "com", "abilities"].forEach(id => {
+      ["basic", "ability", "skills", "com"].forEach(id => {
         document.getElementById(`panel-${id}`).classList.toggle("hidden", id !== tabId);
         const btn = document.getElementById(`tab-${id}`);
         if (id === tabId) {
-          btn.classList.add("border-emerald-500", "text-emerald-400", "bg-slate-900/60");
+          btn.classList.add("border-emerald-500", "text-emerald-400", "bg-slate-900/80");
           btn.classList.remove("border-transparent", "text-slate-400");
         } else {
-          btn.classList.remove("border-emerald-500", "text-emerald-400", "bg-slate-900/60");
+          btn.classList.remove("border-emerald-500", "text-emerald-400", "bg-slate-900/80");
           btn.classList.add("border-transparent", "text-slate-400");
         }
       });
