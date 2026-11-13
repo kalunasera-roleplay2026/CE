@@ -49,7 +49,6 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-2">
-      <!-- Tanpa filter accept agar file tanpa ekstensi (BL00000000 / BL00000001) langsung muncul -->
       <input type="file" id="fileInput" class="hidden" />
       <button onclick="document.getElementById('fileInput').click()" class="px-3 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer">
         <span>📂</span> Open Save (BL0000000x)
@@ -75,12 +74,15 @@
       <span><span class="text-slate-500">BASE OFFSET:</span> <span id="baseOffsetLabel" class="text-emerald-400">0x00000000</span></span>
     </div>
 
-    <!-- Manual Offset Override & Candidate Selector -->
+    <!-- Kandidat Struktur & Manual Offset Override -->
     <div class="flex items-center gap-2">
-      <select id="candidateSelect" onchange="selectCandidate(this.value)" class="hidden bg-slate-900 border border-slate-700 rounded px-2 py-1 text-xs text-amber-300">
-      </select>
+      <div id="candidateContainer" class="hidden flex items-center gap-1">
+        <span class="text-slate-400 text-[11px]">Kandidat:</span>
+        <select id="candidateSelect" onchange="selectCandidate(this.value)" class="bg-slate-900 border border-emerald-500/50 rounded px-2 py-1 text-xs text-emerald-300 focus:outline-none">
+        </select>
+      </div>
       <span class="text-slate-500">Manual Hex:</span>
-      <input type="text" id="manualOffsetInput" placeholder="0x0004A200" class="w-28 bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-xs text-emerald-300 focus:outline-none focus:border-emerald-500" />
+      <input type="text" id="manualOffsetInput" placeholder="0x00A01234" class="w-28 bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-xs text-emerald-300 focus:outline-none focus:border-emerald-500" />
       <button onclick="applyManualOffset()" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-slate-300 cursor-pointer">Jump</button>
     </div>
   </div>
@@ -107,7 +109,7 @@
           </div>
         </div>
 
-        <!-- Export Controls (Raw File Tanpa Ekstensi) -->
+        <!-- Export Controls -->
         <div class="flex flex-wrap items-center gap-2 bg-slate-950 p-2 rounded border border-slate-800">
           <div class="flex flex-col">
             <label class="text-[10px] text-slate-400 mono">EXPORT FILENAME (TYPE: FILE)</label>
@@ -277,7 +279,6 @@
   </main>
 
   <script>
-    // === DATA KONSTANTA PES 2017 ===
     const NATIONS = [
       { id: 139, name: "Indonesia (ID: 139)" },
       { id: 145, name: "Japan (ID: 145)" },
@@ -319,18 +320,17 @@
       "Reflexes", "Coverage", "Stamina"
     ];
 
-    // Relative offset dalam blok struktur pemain BAL
     const OFFSETS = {
-      NAME: 0x00,         // 24 bytes
-      NATIONALITY: 0x18,  // uint16
-      CLUB_ID: 0x1A,      // uint16 (LOCKED)
-      AGE: 0x1C,          // uint8
-      HEIGHT: 0x1D,       // uint8
-      WEIGHT: 0x1E,       // uint8
-      FOOT: 0x1F,         // uint8
-      ABILITIES: 0x20,    // 23 bytes (40..99)
-      SKILLS_MASK: 0x38,  // uint32 (28 bits)
-      COM_MASK: 0x3C      // uint8 (7 bits)
+      NAME: 0x00,
+      NATIONALITY: 0x18,
+      CLUB_ID: 0x1A,
+      AGE: 0x1C,
+      HEIGHT: 0x1D,
+      WEIGHT: 0x1E,
+      FOOT: 0x1F,
+      ABILITIES: 0x20,
+      SKILLS_MASK: 0x38,
+      COM_MASK: 0x3C
     };
 
     let rawBuffer = null;
@@ -339,7 +339,6 @@
     let candidates = [];
     let currentOriginalName = "BL00000000";
 
-    // Inisialisasi Dropdown & Grid
     function initUI() {
       const natSelect = document.getElementById("selectNationality");
       NATIONS.forEach(n => {
@@ -381,7 +380,6 @@
       });
     }
 
-    // Load File dari Windows Explorer (tanpa filter ekstensi)
     document.getElementById("fileInput").addEventListener("change", async (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -401,60 +399,57 @@
       scanForBalPlayer();
     });
 
-    // Pemindai Pola Otomatis Struktur Pemain BAL
+    // Peningkatan Scanner: Mencari struktur valid dengan nama karakter huruf besar/kecil yang sahih
     function scanForBalPlayer() {
       candidates = [];
       const len = rawBuffer.length;
 
-      for (let i = 0; i < len - 0x45; i++) {
+      // Mulai scan dari offset 0x1000 untuk melewati header biner game
+      for (let i = 0x1000; i < len - 0x50; i += 2) {
         const age = rawBuffer[i + OFFSETS.AGE];
         const height = rawBuffer[i + OFFSETS.HEIGHT];
         const weight = rawBuffer[i + OFFSETS.WEIGHT];
         const foot = rawBuffer[i + OFFSETS.FOOT];
 
-        if (age >= 15 && age <= 45 && height >= 150 && height <= 210 && weight >= 50 && weight <= 115 && (foot === 0 || foot === 1)) {
+        // Validasi fisik manusia yang logis untuk PES 2017 BAL
+        if (age >= 15 && age <= 45 && height >= 150 && height <= 210 && weight >= 45 && weight <= 115 && (foot === 0 || foot === 1)) {
           let validStats = true;
-          let sumStats = 0;
           for (let s = 0; s < ABILITY_LIST.length; s++) {
             const val = rawBuffer[i + OFFSETS.ABILITIES + s];
             if (val < 40 || val > 99) {
               validStats = false;
               break;
             }
-            sumStats += val;
           }
 
-          if (validStats && sumStats > 1100) {
-            // Cek karakter nama valid ASCII
+          if (validStats) {
+            // Periksa apakah byte pertama berupa huruf alfabet ASCII (nama pemain)
             const firstChar = rawBuffer[i];
-            if (firstChar >= 65 && firstChar <= 122) {
+            if ((firstChar >= 65 && firstChar <= 90) || (firstChar >= 97 && firstChar <= 122)) {
               candidates.push(i);
-              i += 0x40;
             }
           }
         }
       }
 
+      const candidateContainer = document.getElementById("candidateContainer");
       const sel = document.getElementById("candidateSelect");
       sel.innerHTML = "";
+
       if (candidates.length > 0) {
         baseOffset = candidates[0];
-        document.getElementById("detectConfidence").textContent = `Auto-Detected (${candidates.length} struct found)`;
-        if (candidates.length > 1) {
-          sel.classList.remove("hidden");
-          candidates.forEach((off, idx) => {
-            const opt = document.createElement("option");
-            opt.value = off;
-            opt.textContent = `Kandidat #${idx + 1} (0x${off.toString(16).toUpperCase()})`;
-            sel.appendChild(opt);
-          });
-        } else {
-          sel.classList.add("hidden");
-        }
+        document.getElementById("detectConfidence").textContent = `Auto-Detected (${candidates.length} kandidat ditemukan)`;
+        candidateContainer.classList.remove("hidden");
+        candidates.forEach((off, idx) => {
+          const opt = document.createElement("option");
+          opt.value = off;
+          opt.textContent = `Kandidat #${idx + 1} (0x${off.toString(16).toUpperCase()})`;
+          sel.appendChild(opt);
+        });
       } else {
-        baseOffset = Math.min(0x400, Math.max(0, len - 0x50));
-        document.getElementById("detectConfidence").textContent = "Fallback Offset (Gunakan Manual Hex jika perlu)";
-        sel.classList.add("hidden");
+        baseOffset = 0x4000; // Fallback umum
+        document.getElementById("detectConfidence").textContent = "Tidak ditemukan otomatis. Gunakan Manual Hex.";
+        candidateContainer.classList.add("hidden");
       }
 
       readStructToUI();
@@ -466,26 +461,25 @@
     }
 
     function applyManualOffset() {
-      if (!rawBuffer) return alert("Muat file save terlebih dahulu.");
-      const val = document.getElementById("manualOffsetInput").value.trim();
-      const parsed = val.startsWith("0x") ? parseInt(val, 16) : parseInt(val, 16);
-      if (!isNaN(parsed) && parsed >= 0 && parsed < rawBuffer.length - 0x45) {
+      if (!rawBuffer) return;
+      let val = document.getElementById("manualOffsetInput").value.trim();
+      if (val.toLowerCase().startsWith("0x")) val = val.slice(2);
+      const parsed = parseInt(val, 16);
+      if (!isNaN(parsed) && parsed >= 0 && parsed < rawBuffer.length - 0x50) {
         baseOffset = parsed;
-        document.getElementById("detectConfidence").textContent = "Manual Offset Applied";
+        document.getElementById("detectConfidence").textContent = "Manual Offset Dipakai";
         readStructToUI();
       } else {
-        alert("Offset hex di luar jangkauan ukuran file.");
+        alert("Offset hex tidak valid atau di luar ukuran file.");
       }
     }
 
-    // Membaca Data Biner ke Antarmuka
     function readStructToUI() {
       if (!rawBuffer) return;
       const view = new DataView(rawBuffer.buffer);
 
       document.getElementById("baseOffsetLabel").textContent = "0x" + baseOffset.toString(16).toUpperCase().padStart(8, "0");
 
-      // Nama
       let nameStr = "";
       for (let i = 0; i < 24; i++) {
         const ch = rawBuffer[baseOffset + OFFSETS.NAME + i];
@@ -510,7 +504,6 @@
       document.getElementById("inputWeight").value = weight;
       document.getElementById("inputFoot").value = foot;
 
-      // Abilities
       let totalStats = 0;
       ABILITY_LIST.forEach((_, idx) => {
         const val = Math.min(99, Math.max(40, rawBuffer[baseOffset + OFFSETS.ABILITIES + idx]));
@@ -521,14 +514,12 @@
       const estOvr = Math.round(totalStats / ABILITY_LIST.length);
       document.getElementById("ovrBadge").textContent = estOvr;
 
-      // Skills Bitmask
       const skillsMask = view.getUint32(baseOffset + OFFSETS.SKILLS_MASK, true);
       document.getElementById("skillsBitmaskHex").textContent = "0x" + skillsMask.toString(16).toUpperCase().padStart(8, "0");
       PLAYER_SKILLS.forEach((_, idx) => {
         document.getElementById(`skill_${idx}`).checked = Boolean((skillsMask >>> idx) & 1);
       });
 
-      // COM Styles Bitmask
       const comMask = rawBuffer[baseOffset + OFFSETS.COM_MASK];
       document.getElementById("comBitmaskHex").textContent = "0x" + comMask.toString(16).toUpperCase().padStart(2, "0");
       COM_STYLES.forEach((_, idx) => {
@@ -541,7 +532,6 @@
       renderMemoryPanels();
     }
 
-    // Update Field ke Buffer Biner
     function updatePlayerField(field, value) {
       if (!rawBuffer) return;
       const view = new DataView(rawBuffer.buffer);
@@ -618,7 +608,6 @@
       readStructToUI();
     }
 
-    // Render Cheat Engine Table & Hex Dump
     function renderMemoryPanels() {
       if (!rawBuffer) return;
       const view = new DataView(rawBuffer.buffer);
@@ -627,11 +616,9 @@
         { off: OFFSETS.NATIONALITY, desc: "Nationality ID", type: "2 Bytes", val: view.getUint16(baseOffset + OFFSETS.NATIONALITY, true) },
         { off: OFFSETS.CLUB_ID, desc: "Club ID (LOCKED)", type: "2 Bytes", val: view.getUint16(baseOffset + OFFSETS.CLUB_ID, true) + " 🔒" },
         { off: OFFSETS.AGE, desc: "Player Age", type: "Byte", val: rawBuffer[baseOffset + OFFSETS.AGE] },
-        { off: OFFSETS.ABILITIES, desc: "Attacking Prowess", type: "Byte", val: rawBuffer[baseOffset + OFFSETS.ABILITIES] },
-        { off: OFFSETS.ABILITIES + 5, desc: "Finishing", type: "Byte", val: rawBuffer[baseOffset + OFFSETS.ABILITIES + 5] },
-        { off: OFFSETS.ABILITIES + 12, desc: "Speed", type: "Byte", val: rawBuffer[baseOffset + OFFSETS.ABILITIES + 12] },
-        { off: OFFSETS.SKILLS_MASK, desc: "28 Skills Bitmask", type: "4 Bytes", val: "0x" + view.getUint32(baseOffset + OFFSETS.SKILLS_MASK, true).toString(16).toUpperCase().padStart(8, "0") },
-        { off: OFFSETS.COM_MASK, desc: "7 COM Styles Flags", type: "Byte", val: "0x" + rawBuffer[baseOffset + OFFSETS.COM_MASK].toString(16).toUpperCase().padStart(2, "0") }
+        { off: OFFSETS.HEIGHT, desc: "Height", type: "Byte", val: rawBuffer[baseOffset + OFFSETS.HEIGHT] },
+        { off: OFFSETS.WEIGHT, desc: "Weight", type: "Byte", val: rawBuffer[baseOffset + OFFSETS.WEIGHT] },
+        { off: OFFSETS.SKILLS_MASK, desc: "28 Skills Bitmask", type: "4 Bytes", val: "0x" + view.getUint32(baseOffset + OFFSETS.SKILLS_MASK, true).toString(16).toUpperCase().padStart(8, "0") }
       ];
 
       const tbody = document.getElementById("ceAddressTable");
@@ -644,7 +631,6 @@
         </tr>
       `).join("");
 
-      // Hex Inspector (64 bytes dari baseOffset)
       let hexLines = [];
       for (let row = 0; row < 4; row++) {
         const addr = baseOffset + row * 16;
@@ -660,7 +646,6 @@
       document.getElementById("hexDumpView").textContent = hexLines.join("\n");
     }
 
-    // Demo Sample Save Generator
     function loadSampleSave() {
       rawBuffer = new Uint8Array(65536);
       baseOffset = 0x0400;
@@ -670,8 +655,8 @@
       for (let i = 0; i < sampleName.length; i++) {
         rawBuffer[baseOffset + OFFSETS.NAME + i] = sampleName.charCodeAt(i);
       }
-      view.setUint16(baseOffset + OFFSETS.NATIONALITY, 139, true); // Indonesia
-      view.setUint16(baseOffset + OFFSETS.CLUB_ID, 108, true);     // Locked Club
+      view.setUint16(baseOffset + OFFSETS.NATIONALITY, 139, true);
+      view.setUint16(baseOffset + OFFSETS.CLUB_ID, 108, true);
       rawBuffer[baseOffset + OFFSETS.AGE] = 19;
       rawBuffer[baseOffset + OFFSETS.HEIGHT] = 176;
       rawBuffer[baseOffset + OFFSETS.WEIGHT] = 68;
@@ -699,11 +684,10 @@
       document.getElementById("exportFileName").value = name;
     }
 
-    // Export Murni Tanpa Ekstensi (Type: File)
     function exportSaveFile() {
       if (!rawBuffer) return;
       let cleanName = document.getElementById("exportFileName").value.trim() || "BL00000000";
-      cleanName = cleanName.replace(/\.[^/.]+$/, ""); // Hapus ekstensi jika ada
+      cleanName = cleanName.replace(/\.[^/.]+$/, "");
 
       const blob = new Blob([rawBuffer], { type: "application/octet-stream" });
       const url = URL.createObjectURL(blob);
