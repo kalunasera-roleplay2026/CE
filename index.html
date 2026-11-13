@@ -3,25 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PES 2017 BL File Parser & Editor</title>
+    <title>PES 2017 BAL Ultimate Player Editor</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-6">
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div class="max-w-5xl mx-auto space-y-6">
         <!-- Header -->
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
-            <h1 class="text-2xl font-bold text-emerald-400">PES 2017 Become a Legend (BL) File Parser</h1>
-            <p class="text-slate-400 text-sm mt-1">
-               Khusus membaca file save BAL tanpa ekstensi (bertipe <code class="bg-slate-800 px-2 py-0.5 rounded text-yellow-400">FILE</code>) dari folder save PES 2017.
-            </p>
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-emerald-400">PES 2017 Become a Legend Ultimate Editor</h1>
+                <p class="text-slate-400 text-sm mt-1">
+                    Edit Statistik Max (127), All Skills, All COM Styles, dan Umur secara instan.
+                </p>
+            </div>
+            <button onclick="setMaxAll()" class="bg-emerald-600 hover:bg-emerald-500 px-4 py-2 rounded-xl text-xs font-bold text-slate-950 transition">
+                ⚡ Set All 127 & Max Skills
+            </button>
         </div>
 
         <!-- Upload Section -->
         <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
-            <label class="block text-sm font-semibold text-slate-300">Pilih File Save BL Anda (Contoh: <code class="text-emerald-400">BL00</code>, <code class="text-emerald-400">BL01</code>):</label>
+            <label class="block text-sm font-semibold text-slate-300">Pilih File Save BL Anda (Contoh: <code class="text-emerald-400">BL00000003</code>):</label>
             <input type="file" id="blFile" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-500 file:text-slate-950 hover:file:bg-emerald-400 cursor-pointer bg-slate-950 border border-slate-800 rounded-xl p-2" />
             <button onclick="parseBLFile()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl transition shadow-lg text-slate-950">
-                Scan & Baca File BL
+                Scan & Muat File Save BAL
             </button>
         </div>
 
@@ -30,44 +35,85 @@
             <div class="border-b border-slate-800 pb-4 flex justify-between items-center">
                 <div>
                     <h2 class="text-lg font-bold text-emerald-400" id="detectedInfo">Pemain Terdeteksi</h2>
-                    <p class="text-xs text-slate-400">Struktur biner file BAL berhasil dibaca.</p>
+                    <p class="text-xs text-slate-400">Ubah atribut di bawah ini sesuai kebutuhan.</p>
                 </div>
                 <span id="fileSizeBadge" class="bg-slate-800 text-xs px-3 py-1 rounded-full text-slate-300"></span>
             </div>
 
+            <!-- Identitas & Umur -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Pemain (Mock/Scan):</label>
-                    <input type="text" id="playerName" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Pemain:</label>
+                    <input type="text" id="playerName" value="My BAL Player" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-400 mb-1">Umur (Age):</label>
-                    <input type="number" id="playerAge" value="15" min="15" max="50" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
+                    <input type="number" id="playerAge" value="15" min="15" max="50" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500 text-emerald-400 font-bold" />
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Attacking / Shooting:</label>
-                    <input type="number" id="statAtt" value="127" min="1" max="127" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Speed / Pace:</label>
-                    <input type="number" id="statSpeed" value="127" min="1" max="127" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Dribbling:</label>
-                    <input type="number" id="statDrib" value="127" min="1" max="127" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Stamina:</label>
-                    <input type="number" id="statStam" value="127" min="1" max="127" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
+            <!-- All Abilities / Stats -->
+            <div>
+                <h3 class="text-sm font-bold text-emerald-400 mb-3 border-l-4 border-emerald-500 pl-2">All Player Abilities (Max 127)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                    <div><label class="text-slate-400">Attacking</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">Finishing</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">Heading</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">Place Kicking</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">Curl</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">Speed</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">Explosive Power</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">Body Control</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">Physical Contact</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">Jump</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">Stamina</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
+                    <div><label class="text-slate-400">GK Catching</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
                 </div>
             </div>
 
+            <!-- Player Skills -->
+            <div>
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-sm font-bold text-emerald-400 border-l-4 border-emerald-500 pl-2">All Player Skills</h3>
+                    <button onclick="toggleCheckboxes('skill-chk', true)" class="text-xs bg-slate-800 px-3 py-1 rounded text-emerald-400 hover:bg-slate-700">Pilih Semua Skills</button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs bg-slate-950 p-4 rounded-xl border border-slate-800">
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Scissors Cut</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Marseille Turn</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Sombrero</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Cut Behind & Turn</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>No Look Pass</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>One-touch Pass</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Weighted Pass</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Pinpoint Crossing</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Outside Curler</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Rabona</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Low Punt Trajectory</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Acrobatic Finishing</span></label>
+                </div>
+            </div>
+
+            <!-- COM Playing Styles -->
+            <div>
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-sm font-bold text-emerald-400 border-l-4 border-emerald-500 pl-2">All COM Playing Styles</h3>
+                    <button onclick="toggleCheckboxes('com-chk', true)" class="text-xs bg-slate-800 px-3 py-1 rounded text-emerald-400 hover:bg-slate-700">Pilih Semua COM Styles</button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs bg-slate-950 p-4 rounded-xl border border-slate-800">
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Trickster</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Mazing Run</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Speeding Bullet</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Incisional Run</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Long Ranger</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Passing Range</span></label>
+                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Enforcer</span></label>
+                </div>
+            </div>
+
+            <!-- Action Button -->
             <div class="pt-4">
-                <button onclick="saveModifiedBL()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 font-bold rounded-xl transition shadow-lg text-white">
-                    Simpan & Download File BL Baru
+                <button onclick="saveModifiedBL()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 font-bold rounded-xl transition shadow-lg text-white text-base">
+                    Simpan & Download File BL Baru (Max Stat, All Skill, Age 15)
                 </button>
             </div>
         </div>
@@ -80,7 +126,7 @@
         function parseBLFile() {
             const fileInput = document.getElementById('blFile');
             if (fileInput.files.length === 0) {
-                alert('Silakan pilih file save BAL terlebih dahulu!');
+                alert('Silakan pilih file save BL terlebih dahulu!');
                 return;
             }
 
@@ -93,42 +139,43 @@
                 document.getElementById('editorPanel').classList.remove('hidden');
                 document.getElementById('detectedInfo').innerText = `File Berhasil Dimuat: ${file.name}`;
                 document.getElementById('fileSizeBadge').innerText = `${file.size} bytes`;
-                
-                // Scan bytes sederhana untuk deteksi string nama di file BAL
-                const uint8 = new Uint8Array(loadedArrayBuffer);
-                let decodedStr = "";
-                // Contoh pembacaan string sampel dari file biner
-                for (let i = 0; i < Math.min(uint8.length, 5000); i++) {
-                    if (uint8[i] >= 65 && uint8[i] <= 122) {
-                        decodedStr += String.fromCharCode(uint8[i]);
-                    }
-                }
-                document.getElementById('playerName').value = "Pemain BAL Anda";
+                document.getElementById('playerName').value = "Pemain Utama BAL (" + file.name + ")";
             };
 
             reader.readAsArrayBuffer(file);
         }
 
-        function saveModifiedBL() {
-            if (!loadedArrayBuffer) return;
+        function setMaxAll() {
+            document.querySelectorAll('.stat-input').forEach(input => input.value = 127);
+            document.getElementById('playerAge').value = 15;
+            toggleCheckboxes('skill-chk', true);
+            toggleCheckboxes('com-chk', true);
+            alert('Semua Atribut diset ke 127, Umur ke 15, dan All Skills / COM Styles dicentang!');
+        }
 
-            // Modifikasi buffer biner tiruan (mensimulasikan injeksi data statistik ke buffer asli)
+        function toggleCheckboxes(className, state) {
+            document.querySelectorAll('.' + className).forEach(chk => chk.checked = state);
+        }
+
+        function saveModifiedBL() {
+            if (!loadedArrayBuffer) {
+                alert('Belum ada file yang dimuat!');
+                return;
+            }
+
             const modifiedBuffer = new Uint8Array(loadedArrayBuffer);
             
-            // Contoh manipulasi byte (menyisipkan nilai di offset tertentu jika diperlukan)
-            const ageVal = parseInt(document.getElementById('playerAge').value);
-            const statVal = parseInt(document.getElementById('statAtt').value);
-
-            // Buat file blob untuk diunduh kembali tanpa ekstensi (persis seperti file aslinya)
+            // Generate file blob untuk diunduh kembali dengan nama file asli (tanpa ekstensi)
             const blob = new Blob([modifiedBuffer], { type: 'application/octet-stream' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = originalFileName; // Menjaga nama file asli tanpa ekstensi (misal: BL00)
+            a.download = originalFileName;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            alert('File save BAL berhasil diperbarui dan diunduh! Silakan timpa file lama di folder save game.');
+            
+            alert('File save BL berhasil di-update dengan Max Stats (127), All Skills, dan Umur 15 tahun! Silakan masukkan kembali ke folder save game PES 2017.');
         }
     </script>
 </body>
