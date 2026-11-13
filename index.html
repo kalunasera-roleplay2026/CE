@@ -1,130 +1,57 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BAL ULTIMATE v6 FINAL - PES 2017</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#070a0f;color:#e6edf3;font-family:Arial}
-header{background:linear-gradient(90deg,#00ff88,#0088ff);padding:12px;text-align:center;color:#000;font-weight:bold}
-.tabs{display:flex;overflow-x:auto;background:#0d1117;border-bottom:1px solid #30363d}
-.tabs button{background:none;border:none;color:#8b949e;padding:10px 12px;font-size:10px;white-space:nowrap;cursor:pointer}
-.tabs button.active{color:#00ff88;border-bottom:2px solid #00ff88}
-.card{background:#161b22;border:1px solid #30363d;border-radius:8px;margin:8px;padding:12px}
-label{font-size:10px;color:#8b949e;text-transform:uppercase;display:block;margin-top:8px}
-input,select{width:100%;background:#0d1117;border:1px solid #30363d;color:#fff;padding:8px;border-radius:5px;margin-top:3px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-.btn{width:100%;padding:12px;border:none;border-radius:7px;font-weight:bold;cursor:pointer;margin-top:8px}
-.green{background:#00ff88;color:#000}.blue{background:#1f6feb;color:#fff}
-.badge{background:#00ff88;color:#000;padding:2px 6px;border-radius:10px;font-size:9px}
-.small{font-size:10px;color:#8b949e} .check{font-size:11px;display:flex;align-items:center;gap:5px;margin:4px 0}
-.upload{border:2px dashed #30363d;padding:14px;border-radius:10px;text-align:center}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PES 2017 BAL Save Editor — Cheat Engine Memory Edition</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0b0e14;
+      color: #e2e8f0;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #10b981;
+    }
+  </style>
 </head>
-<body>
-<header>BAL ULTIMATE v6 FINAL - PES 2017<br><span style="font-size:10px">Pindah Negara + Club + Skill + Style + Ability 127 + Umur 15</span></header>
+<body class="min-h-screen flex flex-col">
 
-<div class="card upload">
-<input type="file" id="f" style="display:none">
-<button class="btn blue" onclick="document.getElementById('f').click()">📂 UPLOAD BAL00000000 (Tipe File)</button>
-<div id="stat" class="small" style="margin-top:6px">File tipe "File" itu VALID PES 2017</div>
-</div>
+  <!-- Top Memory Scanner Header -->
+  <header class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex flex-wrap items-center justify-between gap-3 sticky top-0 z-30">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded bg-emerald-500/10 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold mono">
+        CE
+      </div>
+      <div>
+        <h1 class="text-sm md:text-base font-bold text-white tracking-wide flex items-center gap-2">
+          PES 2017 BAL MEMORY EDITOR
+          <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mono">RAW FILE MODE</span>
+        </h1>
+        <p class="text-xs text-slate-400">Auto-Detect Player • Nationality • 28 Skills • 7 COM Styles • Stats (Club Locked)</p>
+      </div>
+    </div>
 
-<div class="tabs">
-<button class="active" onclick="showTab('basic',this)">BASIC</button>
-<button onclick="showTab('nation',this)">NEGARA</button>
-<button onclick="showTab('club',this)">CLUB</button>
-<button onclick="showTab('ability',this)">ABILITY</button>
-<button onclick="showTab('skill',this)">SKILL</button>
-<button onclick="showTab('style',this)">STYLE</button>
-</div>
-
-<div id="editor" style="display:none">
-
-<div id="tab-basic" class="tab">
-<div class="card"><b>BASIC <span class="badge" id="ageD">DETECT</span></b>
-<div class="grid2">
-<div><label>Nama</label><input id="pName" value="KALUNASERA"></div>
-<div><label>Umur (Bisa 15) <span class="badge" id="ageVal">15</span></label><input id="pAge" type="range" min="15" max="40" value="15" oninput="document.getElementById('ageVal').innerText=this.value+' Tahun'"></div>
-<div><label>Skin 1-4</label><select id="skin"><option value="1">1 Putih</option><option value="2" selected>2 Sawo Matang</option><option value="3">3 Coklat</option><option value="4">4 Hitam</option></select></div>
-<div><label>Foot</label><select id="foot"><option>Right</option><option>Left</option></select></div>
-</div></div>
-</div>
-
-<div id="tab-nation" class="tab" style="display:none">
-<div class="card"><b>PINDAH NEGARA <span class="badge">NEW</span></b>
-<p class="small">Ganti nationality biar dipanggil timnas lain</p>
-<label>Negara Baru</label><select id="newNation"><option>Indonesia</option><option>Brazil</option><option>Spain</option><option>England</option><option>Germany</option><option>Argentina</option><option>France</option><option>Japan</option><option>Portugal</option><option>Netherlands</option></select>
-<label><input type="checkbox" id="autoCall" checked> Auto Call-up Timnas Utama</label>
-<div id="nationRes" class="small" style="color:#00ff88;margin-top:6px"></div>
-<button class="btn green" onclick="document.getElementById('nationRes').innerText='✅ Akan pindah ke '+document.getElementById('newNation').value">TERAPKAN PINDAH NEGARA</button>
-</div>
-</div>
-
-<div id="tab-club" class="tab" style="display:none">
-<div class="card"><b>PINDAH CLUB <span class="badge">NEW</span></b>
-<label>Club Baru</label><select id="newClub"><option>Barcelona</option><option>Real Madrid</option><option>Man United</option><option>Man City</option><option>Bayern Munich</option><option>Juventus</option><option>PSG</option><option>Liverpool</option><option>Persib Bandung</option><option>Persija</option></select>
-<div class="grid2"><div><label>No Punggung</label><input id="newNum" type="number" value="10"></div><div><label>Status</label><select id="newStatus"><option>Key Player</option><option>Super Star</option><option>Regular</option></select></div></div>
-<div id="clubRes" class="small" style="color:#00ff88;margin-top:6px"></div>
-<button class="btn green" onclick="document.getElementById('clubRes').innerText='✅ Akan pindah ke '+document.getElementById('newClub').value">TERAPKAN PINDAH CLUB</button>
-</div>
-</div>
-
-<div id="tab-ability" class="tab" style="display:none">
-<div class="card"><b>ABILITY 18 + 2 <span class="badge">DETECTED</span></b>
-<div class="grid3" id="abGrid"></div>
-<button class="btn blue" onclick="for(let i=0;i<20;i++){let e=document.getElementById('ab'+i); if(e) e.value=127}">MAX ALL 127 🔥</button>
-</div>
-</div>
-
-<div id="tab-skill" class="tab" style="display:none">
-<div class="card"><b>28 SKILL CARDS</b>
-<div class="small">Centang semua biar OP</div>
-<div id="skillGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px"></div>
-<button class="btn blue" onclick="document.querySelectorAll('#skillGrid input').forEach(c=>c.checked=true)">AKTIFKAN SEMUA 28 SKILL</button>
-</div>
-</div>
-
-<div id="tab-style" class="tab" style="display:none">
-<div class="card"><b>15 COM PLAYING STYLE - PLAYER STYLE</b>
-<div class="small">Gaya main kaya di menu Edit PES</div>
-<div id="styleGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px"></div>
-<button class="btn blue" onclick="document.querySelectorAll('#styleGrid input').forEach(c=>c.checked=true)">AKTIFKAN SEMUA STYLE</button>
-</div>
-</div>
-
-<button class="btn green" style="font-size:16px;padding:16px" onclick="downloadBAL()">💾 DOWNLOAD FILE BAL BARU FINAL</button>
-<div class="small" style="text-align:center;padding:8px">File hasil tetap BAL00000000 tipe File tanpa ekstensi - NORMAL - Timpa ke Documents\KONAMI\PES2017\save\</div>
-
-</div>
-
-<script>
-let buf;
-function showTab(id,btn){document.querySelectorAll('.tab').forEach(t=>t.style.display='none');document.getElementById('tab-'+id).style.display='block';document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active')}
-const abNames=["Attack","Ball Control","Dribbling","Low Pass","Lofted Pass","Finishing","Place Kicking","Swerve","Header","Def Aware","Ball Winning","Kicking Power","Speed","Explosive","Body Control","Physical Contact","Jump","Stamina","Form","Injury Resist"];
-const skills=["Scissors Feint","Double Touch","Flip Flap","Marseille Turn","Sombrero","Crossover Turn","Cut Behind & Turn","Scottish Move","Step On Skill","Heading","Long Range Drive","Knuckle Shot","Acrobatic Finishing","Heel Trick","First-time Shot","One-touch Pass","Weighted Pass","Pinpoint Crossing","Outside Curler","Rabona","No Look Pass","Low Lofted Pass","Long Throw","GK Long Throw","Malicia","Super-Sub","Fighting Spirit","Captaincy"];
-const styles=["Trickster","Mazing Run","Speeding Bullet","Incisive Run","Long Ball Expert","Early Cross","Long Ranger","Enforcer","Battle Tank","Fox In The Box","Goal Poacher","Dummy Runner","Free Roaming","Track Back","Anchor Man"];
-
-document.getElementById('f').addEventListener('change',async e=>{
-  const file=e.target.files[0]; buf=await file.arrayBuffer(); const v=new Uint8Array(buf);
-  document.getElementById('stat').innerHTML=`✅ ${file.name} | ${buf.byteLength} bytes | VALID`;
-  document.getElementById('editor').style.display='block';
-  let age=17; for(let i=0;i<100;i++) if(v[i]>=15&&v[i]<=40) age=v[i]; document.getElementById('ageD').innerText='Asli:'+age+' -> Set 15';
-  let found=Array(20).fill(75); for(let i=0;i<v.length-20;i++){let ok=true,tmp=[]; for(let j=0;j<20;j++){let b=v[i+j]; if(b<40||b>99){ok=false;break} tmp.push(b)} if(ok&&tmp.reduce((a,b)=>a+b,0)>1200){found=tmp; break;}}
-  const g=document.getElementById('abGrid'); g.innerHTML=''; found.forEach((val,idx)=>{g.innerHTML+=`<div><label>${abNames[idx]}<br><small style="color:#00ff88">Asli:${val}</small></label><input id="ab${idx}" type="number" min="40" max="127" value="${val}"></div>`});
-  const sg=document.getElementById('skillGrid'); sg.innerHTML=''; skills.forEach((s,i)=>{sg.innerHTML+=`<label class="check"><input type="checkbox" id="sk${i}" style="width:14px"> ${s}</label>`});
-  const stg=document.getElementById('styleGrid'); stg.innerHTML=''; styles.forEach((s,i)=>{stg.innerHTML+=`<label class="check"><input type="checkbox" id="st${i}" style="width:14px"> ${s}</label>`});
-});
-
-function downloadBAL(){
-  if(!buf) return alert('Upload BAL dulu'); let nv=new Uint8Array(buf); nv[32]=parseInt(document.getElementById('pAge').value);
-  for(let i=0;i<nv.length-20;i++){let ok=true; for(let j=0;j<5;j++) if(nv[i+j]<40||nv[i+j]>99) ok=false; if(ok){for(let k=0;k<20;k++){let el=document.getElementById('ab'+k); if(el) nv[i+k]=parseInt(el.value);} break;}}
-  let meta=`\n---FINAL v6---\nName:${document.getElementById('pName').value}\nAge:${document.getElementById('pAge').value}\nNation:${document.getElementById('newNation').value}\nClub:${document.getElementById('newClub').value}\nNumber:${document.getElementById('newNum').value}\nSkin:${document.getElementById('skin').value}\nSkills:${Array.from(document.querySelectorAll('#skillGrid input:checked')).length}/28\nStyles:${Array.from(document.querySelectorAll('#styleGrid input:checked')).length}/15\n`;
-  let enc=new TextEncoder().encode(meta); let finalBuf=new Uint8Array(nv.length+enc.length); finalBuf.set(nv,0); finalBuf.set(enc,nv.length);
-  let blob=new Blob([finalBuf],{type:'application/octet-stream'}); let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download='BAL00000000'; a.click();
-  alert('FINAL DONE! Nation:'+document.getElementById('newNation').value+' Club:'+document.getElementById('newClub').value+' Age:15 Ability:127 Skill:28 Style:15');
-}
-</script>
-</body>
-</html>
+    <div class="flex flex-wrap items-center gap-2">
+      <!-- Tanpa filter accept agar file tanpa ekstensi (BL00000000 / BL00000001) langsung muncul -->
+      <input type="file" id="fileInput" class="hidden" />
+      <button onclick="document.getElementById('fileInput').click()" class="px-3 py-1.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer">
+        <span>📂</span> Open Save (BL0000000x)
+      </button>
+      <button onclick="loadSampleSave()" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-
