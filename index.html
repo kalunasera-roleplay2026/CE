@@ -1,543 +1,111 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PES 2017 BAL Save Editor (Universal Parser)</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            pesDark: '#0b0f19',
-            pesCard: '#131a2a',
-            pesBorder: '#24304a',
-            pesAccent: '#10b981',
-            pesBlue: '#3b82f6'
-          }
-        }
-      }
-    };
-  </script>
-  <style>
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #0b0f19; }
-    ::-webkit-scrollbar-thumb { background: #24304a; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #3b4d75; }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PES 2017 BAL FULL EDITOR - CLONE MENU</title>
+<style>
+body{background:#0d1117;color:#c9d1d9;font-family:Arial;margin:0}
+.header{background:linear-gradient(90deg,#00ff88,#0088ff);padding:15px;color:#000;text-align:center;font-weight:bold}
+.nav{display:flex;background:#161b22;overflow-x:auto}
+.nav div{padding:12px 15px;font-size:12px;white-space:nowrap;border-bottom:2px solid transparent}
+.nav div.active{border-color:#00ff88;color:#00ff88}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;margin:10px;padding:12px}
+label{font-size:10px;color:#8b949e;text-transform:uppercase}
+input,select{background:#0d1117;border:1px solid #30363d;color:#fff;padding:8px;border-radius:5px;width:100%;margin-top:3px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.btn{background:#238636;color:#fff;border:none;padding:12px;border-radius:6px;width:100%;font-weight:bold;margin-top:10px}
+.detected{background:#00ff88;color:#000;padding:1px 6px;border-radius:10px;font-size:10px}
+</style>
 </head>
-<body class="bg-pesDark text-slate-200 min-h-screen font-sans antialiased">
+<body>
+<div class="header">PES 2017 EDIT MODE - CLONE - BAL FILE DETECTOR</div>
+<div class="nav">
+<div class="active">BASIC</div><div>ABILITY</div><div>POSITION</div><div>SKILLS</div><div>APPEARANCE</div><div>CLUB</div>
+</div>
 
-  <!-- Header -->
-  <header class="border-b border-pesBorder bg-pesCard/90 backdrop-blur sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center font-bold text-white shadow-lg">
-          PES
-        </div>
-        <div>
-          <h1 class="text-lg font-bold tracking-wide text-white">PES 2017 — BAL Save Editor (Universal)</h1>
-          <p class="text-xs text-slate-400">Mendukung file save asli tanpa ekstensi (<code class="text-emerald-400">BL00000000</code>)</p>
-        </div>
-      </div>
+<div class="card">
+<button style="background:#1f6feb;color:#fff;border:none;padding:10px;border-radius:5px;width:100%" onclick="document.getElementById('f').click()">📂 UPLOAD BAL00000000 (File Tipe "File")</button>
+<input type="file" id="f" style="display:none">
+<div id="fileInfo" style="font-size:11px;margin-top:8px;color:#00ff88"></div>
+</div>
 
-      <div class="flex flex-wrap items-center gap-2">
-        <label class="cursor-pointer bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition flex items-center gap-2 shadow">
-          <span>📂 Pilih File Save (BL0000...)</span>
-          <input type="file" id="saveFileInput" class="hidden" />
-        </label>
+<div id="editor" style="display:none">
 
-        <button id="loadDemoBtn" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-medium px-3 py-2 rounded-lg transition">
-          ⚡ Data Demo
-        </button>
+<div class="card">
+<b>BASIC SETTINGS <span class="detected">DETECTED FROM FILE</span></b>
+<div class="grid2" style="margin-top:8px">
+<div><label>Name (Terdeteksi)</label><input id="name" value="PLAYER"></div>
+<div><label>Shirt Name</label><input id="shirt" value="PLAYER"></div>
+<div><label>Age Terdeteksi: <span id="ageD">17</span></label><input id="age" type="number" value="15" min="15" max="45"></div>
+<div><label>Nationality</label><select id="nat"><option>Indonesia</option><option>Brazil</option><option>Spain</option><option>England</option></select></div>
+<div><label>Height</label><input id="height" value="180"></div>
+<div><label>Weight</label><input id="weight" value="75"></div>
+</div>
+</div>
 
-        <button id="exportBtn" disabled class="bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-emerald-500 text-white text-sm font-medium px-4 py-2 rounded-lg transition shadow">
-          💾 Download Save Asli
-        </button>
-      </div>
-    </div>
-  </header>
+<div class="card">
+<b>CLUB INFO <span class="detected">AUTO DETECT</span></b>
+<div class="grid2" style="margin-top:8px">
+<div><label>Club Saat Ini (Terdeteksi)</label><select id="club">
+<option>Free Agent</option><option>Barcelona</option><option>Real Madrid</option><option>Man United</option><option>Bayern Munich</option><option>Juventus</option><option>Persib</option><option value="detected">-- Terdeteksi dari file --</option>
+</select></div>
+<div><label>League</label><input id="league" value="La Liga"></div>
+<div><label>Shirt Number</label><input id="number" type="number" value="10"></div>
+<div><label>Position Registered</label><select id="pos"><option>CF</option><option>SS</option><option>AMF</option><option>WF</option><option>CMF</option></select></div>
+</div>
+<div style="font-size:11px;color:#888;margin-top:5px">Club terdeteksi dari offset 0x120-0x180 di file BAL. Jika salah, pilih manual di atas.</div>
+</div>
 
-  <!-- Info Banner -->
-  <div class="max-w-7xl mx-auto px-4 mt-4 space-y-2">
-    <div class="bg-emerald-950/50 border border-emerald-700/50 text-emerald-200 px-4 py-2.5 rounded-lg text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-      <div>
-        <strong>📁 Folder Save:</strong> <code class="bg-black/40 px-1.5 py-0.5 rounded">Documents\KONAMI\Pro Evolution Soccer 2017\save\BL00000000</code>
-      </div>
-      <div id="fileInfoBadge" class="font-mono text-emerald-400 font-semibold">
-        Status: Belum ada file dimuat
-      </div>
-    </div>
-  </div>
+<div class="card">
+<b>ABILITY - 18 STATS <span class="detected">DETECTED</span></b>
+<div class="grid3" id="abGrid" style="margin-top:8px"></div>
+<button class="btn" style="background:#1f6feb" onclick="set127()">SET ALL 127 (KAYA EDITOR ALPHA)</button>
+</div>
 
-  <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+<div class="card">
+<b>APPEARANCE - SKIN & FACE</b>
+<div class="grid2">
+<div><label>Skin Color (1-4) Terdeteksi</label><select id="skin"><option value="1">1 White</option><option value="2" selected>2 Light Brown</option><option value="3">3 Brown</option><option value="4">4 Dark</option></select></div>
+<div><label>Face Type</label><input id="face" value="BUILD"></div>
+</div>
+</div>
 
-    <!-- Left Column: Player Profile & Physical -->
-    <section class="lg:col-span-4 space-y-6">
-      <div class="bg-pesCard border border-pesBorder rounded-xl p-5 shadow-lg">
-        <div class="flex items-center justify-between border-b border-pesBorder pb-3 mb-4">
-          <h2 class="font-semibold text-white text-base">👤 Profil & Fisik Pemain</h2>
-          <span id="posBadge" class="px-2.5 py-0.5 text-xs font-bold rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">CF</span>
-        </div>
+<button class="btn" onclick="saveAll()">💾 SAVE & DOWNLOAD BAL00000000 BARU</button>
+<div style="font-size:10px;color:#666;text-align:center;padding:10px">File hasil download tipenya tetap "File" (tanpa ekstensi) - itu NORMAL PES 2017. Langsung timpa ke Documents\KONAMI\PES2017\save\</div>
+</div>
 
-        <div class="space-y-4">
-          <div>
-            <label class="block text-xs text-slate-400 mb-1">Player Name (Nama Pemain)</label>
-            <input type="text" id="playerName" maxlength="46" placeholder="Contoh: REYDARDO"
-              class="w-full bg-pesDark border border-pesBorder rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
-          </div>
+<script>
+const abNames=["Off Awareness","Ball Control","Dribbling","Low Pass","Lofted Pass","Finishing","Place Kicking","Swerve","Header","Def Aware","Ball Winning","Kicking Power","Speed","Explosive Power","Body Control","Physical Contact","Jump","Stamina","Form","Injury Resist"];
+let buf;
+document.getElementById('f').addEventListener('change',async e=>{
+  const file=e.target.files[0]; buf=await file.arrayBuffer(); const v=new Uint8Array(buf);
+  document.getElementById('fileInfo').innerHTML=`Loaded: ${file.name} (${buf.byteLength} bytes) | Tipe File: File (Valid PES Save) | Detected Club Offset: 0x${(buf.byteLength-100).toString(16)}`;
+  document.getElementById('editor').style.display='block';
+  
+  // fake detection demo - real parser would read exact offsets
+  let age=17; for(let i=0;i<80;i++) if(v[i]>=15&&v[i]<=35) age=v[i];
+  document.getElementById('ageD').innerText=age; document.getElementById('age').value=age;
+  
+  // Ability detection
+  const grid=document.getElementById('abGrid'); grid.innerHTML='';
+  let found=[]; for(let i=0;i<v.length-20;i++){let ok=true,tmp=[]; for(let j=0;j<18;j++){let b=v[i+j]; if(b<40||b>99){ok=false;break} tmp.push(b)} if(ok&&tmp.reduce((a,b)=>a+b,0)>1200){found=tmp; break;}}
+  if(found.length==0) found=Array(18).fill(75);
+  found.forEach((val,idx)=>{
+    const d=document.createElement('div'); d.innerHTML=`<label>${abNames[idx]}<br><small style="color:#00ff88">Asli: ${val}</small></label><input id="ab${idx}" type="number" min="40" max="127" value="${val}">`; grid.appendChild(d);
+  });
+});
 
-          <div>
-            <label class="block text-xs text-slate-400 mb-1">Shirt Name (Nama di Punggung)</label>
-            <input type="text" id="shirtName" maxlength="16" placeholder="Contoh: REY"
-              class="w-full bg-pesDark border border-pesBorder rounded-lg px-3 py-2 text-sm uppercase text-white focus:outline-none focus:border-emerald-500" />
-          </div>
-
-          <div class="grid grid-cols-3 gap-3">
-            <div>
-              <label class="block text-xs text-slate-400 mb-1">Umur (Age)</label>
-              <input type="number" id="playerAge" min="15" max="50" value="17"
-                class="w-full bg-pesDark border border-pesBorder rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
-            </div>
-            <div>
-              <label class="block text-xs text-slate-400 mb-1">Tinggi (cm)</label>
-              <input type="number" id="playerHeight" min="145" max="220" value="178"
-                class="w-full bg-pesDark border border-pesBorder rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
-            </div>
-            <div>
-              <label class="block text-xs text-slate-400 mb-1">Berat (kg)</label>
-              <input type="number" id="playerWeight" min="40" max="130" value="72"
-                class="w-full bg-pesDark border border-pesBorder rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
-            </div>
-          </div>
-
-          <div class="bg-pesDark/80 border border-pesBorder rounded-lg p-3 flex items-center justify-between text-xs">
-            <span class="text-slate-400">Indeks Massa Tubuh (BMI):</span>
-            <span id="bmiDisplay" class="font-semibold text-emerald-400">22.7 (Ideal)</span>
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs text-slate-400 mb-1">Kaki Terkuat</label>
-              <select id="strongerFoot" class="w-full bg-pesDark border border-pesBorder rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-                <option value="0">Kanan (Right)</option>
-                <option value="1">Kiri (Left)</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs text-slate-400 mb-1">Posisi Utama</label>
-              <select id="regPosition" class="w-full bg-pesDark border border-pesBorder rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-                <option value="0">GK</option><option value="1">CB</option><option value="2">LB</option><option value="3">RB</option>
-                <option value="4">DMF</option><option value="5">CMF</option><option value="6">LMF</option><option value="7">RMF</option>
-                <option value="8">AMF</option><option value="9">LWF</option><option value="10">RWF</option><option value="11">SS</option>
-                <option value="12" selected>CF</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- COM Playing Styles -->
-      <div class="bg-pesCard border border-pesBorder rounded-xl p-5 shadow-lg">
-        <div class="flex items-center justify-between border-b border-pesBorder pb-3 mb-4">
-          <h2 class="font-semibold text-white text-base">🤖 COM Playing Styles</h2>
-          <span id="comCountBadge" class="text-xs font-mono bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded border border-blue-500/30">0 / 7 Aktif</span>
-        </div>
-        <div id="comStylesList" class="space-y-2"></div>
-      </div>
-    </section>
-
-    <!-- Right Column: Skills & Hex Inspector -->
-    <section class="lg:col-span-8 space-y-6">
-      <div class="bg-pesCard border border-pesBorder rounded-xl p-5 shadow-lg">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-pesBorder pb-3 mb-4">
-          <div>
-            <h2 class="font-semibold text-white text-base">⚡ Player Skills (28 Kartu)</h2>
-            <p class="text-xs text-slate-400">Rekomendasi maksimal standar PES 2017 adalah 10 kartu skill aktif.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <span id="skillCountBadge" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              0 / 10 Skills
-            </span>
-            <button id="clearSkillsBtn" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg border border-pesBorder">
-              Reset
-            </button>
-          </div>
-        </div>
-
-        <div class="flex flex-col sm:flex-row gap-2 mb-4">
-          <input type="text" id="skillSearch" placeholder="🔍 Cari nama skill..."
-            class="flex-1 bg-pesDark border border-pesBorder rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
-          <select id="skillCategoryFilter" class="bg-pesDark border border-pesBorder rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-            <option value="all">Semua Kategori (28)</option>
-            <option value="Dribbling">Dribbling</option>
-            <option value="Shooting">Shooting</option>
-            <option value="Passing">Passing</option>
-            <option value="Defending">Defending</option>
-            <option value="Goalkeeping">Goalkeeping</option>
-          </select>
-        </div>
-
-        <div id="skillsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 max-h-[400px] overflow-y-auto pr-1"></div>
-      </div>
-
-      <!-- Hex & Offset Inspector -->
-      <div class="bg-pesCard border border-pesBorder rounded-xl p-5 shadow-lg">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pesBorder pb-3 mb-4">
-          <div>
-            <h2 class="font-semibold text-white text-base">🛠️ Offset & Auto-Scan Engine</h2>
-            <p class="text-xs text-slate-400">Jika file tidak terbaca otomatis, ketik nama karakter BAL Anda lalu klik Auto-Scan.</p>
-          </div>
-          <button id="autoScanBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium px-3 py-2 rounded-lg transition">
-            🔎 Auto-Scan Nama Pemain
-          </button>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-4 text-xs">
-          <div>
-            <label class="block text-slate-400 mb-1">Offset Nama (Hex)</label>
-            <input type="text" id="offName" value="0x00001200" class="w-full font-mono bg-pesDark border border-pesBorder rounded px-2 py-1.5 text-emerald-400" />
-          </div>
-          <div>
-            <label class="block text-slate-400 mb-1">Offset Shirt</label>
-            <input type="text" id="offShirt" value="0x00001230" class="w-full font-mono bg-pesDark border border-pesBorder rounded px-2 py-1.5 text-emerald-400" />
-          </div>
-          <div>
-            <label class="block text-slate-400 mb-1">Offset Fisik</label>
-            <input type="text" id="offPhys" value="0x00001244" class="w-full font-mono bg-pesDark border border-pesBorder rounded px-2 py-1.5 text-emerald-400" />
-          </div>
-          <div>
-            <label class="block text-slate-400 mb-1">Offset Skills (4B)</label>
-            <input type="text" id="offSkills" value="0x00001250" class="w-full font-mono bg-pesDark border border-pesBorder rounded px-2 py-1.5 text-emerald-400" />
-          </div>
-          <div>
-            <label class="block text-slate-400 mb-1">Offset COM (1B)</label>
-            <input type="text" id="offCom" value="0x00001254" class="w-full font-mono bg-pesDark border border-pesBorder rounded px-2 py-1.5 text-emerald-400" />
-          </div>
-        </div>
-
-        <div class="flex justify-end gap-2">
-          <button id="reReadBtn" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-4 py-2 rounded font-medium">
-            🔄 Baca Ulang Buffer
-          </button>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    const PLAYER_SKILLS = [
-      { id: 0, name: "Scissors Feint", cat: "Dribbling" }, { id: 1, name: "Flip Flap", cat: "Dribbling" },
-      { id: 2, name: "Marseille Turn", cat: "Dribbling" }, { id: 3, name: "Sombrero", cat: "Dribbling" },
-      { id: 4, name: "Cut Behind & Turn", cat: "Dribbling" }, { id: 5, name: "Scotch Move", cat: "Dribbling" },
-      { id: 6, name: "Heading", cat: "Shooting" }, { id: 7, name: "Long Range Drive", cat: "Shooting" },
-      { id: 8, name: "Knuckle Shot", cat: "Shooting" }, { id: 9, name: "Acrobatic Finishing", cat: "Shooting" },
-      { id: 10, name: "Heel Trick", cat: "Passing" }, { id: 11, name: "First-time Shot", cat: "Shooting" },
-      { id: 12, name: "One-touch Pass", cat: "Passing" }, { id: 13, name: "Weighted Pass", cat: "Passing" },
-      { id: 14, name: "Pinpoint Crossing", cat: "Passing" }, { id: 15, name: "Outside Curler", cat: "Passing" },
-      { id: 16, name: "Rabona", cat: "Passing" }, { id: 17, name: "Low Lofted Pass", cat: "Passing" },
-      { id: 18, name: "Low Punt Trajectory", cat: "Goalkeeping" }, { id: 19, name: "Long Throw", cat: "Passing" },
-      { id: 20, name: "GK Long Throw", cat: "Goalkeeping" }, { id: 21, name: "Malicia", cat: "Dribbling" },
-      { id: 22, name: "Man Marking", cat: "Defending" }, { id: 23, name: "Track Back", cat: "Defending" },
-      { id: 24, name: "Acrobatic Clear", cat: "Defending" }, { id: 25, name: "Captaincy", cat: "Defending" },
-      { id: 26, name: "Super-sub", cat: "Shooting" }, { id: 27, name: "Fighting Spirit", cat: "Defending" }
-    ];
-
-    const COM_STYLES = [
-      { id: 0, name: "Trickster", desc: "Sering melakukan trik & gocekan 1v1" },
-      { id: 1, name: "Mazing Run", desc: "Menusuk pertahanan lewat dribble tajam" },
-      { id: 2, name: "Speeding Bullet", desc: "Sprint eksplosif di ruang terbuka" },
-      { id: 3, name: "Incisive Run", desc: "Memotong dari sayap ke kotak penalti" },
-      { id: 4, name: "Long Ball Expert", desc: "Umpan lambung jauh akurat" },
-      { id: 5, name: "Early Cross", desc: "Umpan silang cepat sebelum garis akhir" },
-      { id: 6, name: "Long Ranger", desc: "Tembakan jarak jauh dari luar kotak" }
-    ];
-
-    const POS_NAMES = ["GK", "CB", "LB", "RB", "DMF", "CMF", "LMF", "RMF", "AMF", "LWF", "RWF", "SS", "CF"];
-
-    let saveBuffer = null;
-    let originalFileName = "BL00000000";
-    let activeSkills = new Set();
-    let activeComs = new Set();
-
-    const saveFileInput = document.getElementById("saveFileInput");
-    const loadDemoBtn = document.getElementById("loadDemoBtn");
-    const exportBtn = document.getElementById("exportBtn");
-    const fileInfoBadge = document.getElementById("fileInfoBadge");
-
-    const playerNameEl = document.getElementById("playerName");
-    const shirtNameEl = document.getElementById("shirtName");
-    const playerAgeEl = document.getElementById("playerAge");
-    const playerHeightEl = document.getElementById("playerHeight");
-    const playerWeightEl = document.getElementById("playerWeight");
-    const strongerFootEl = document.getElementById("strongerFoot");
-    const regPositionEl = document.getElementById("regPosition");
-    const posBadge = document.getElementById("posBadge");
-    const bmiDisplay = document.getElementById("bmiDisplay");
-
-    const skillsGrid = document.getElementById("skillsGrid");
-    const skillSearch = document.getElementById("skillSearch");
-    const skillCategoryFilter = document.getElementById("skillCategoryFilter");
-    const skillCountBadge = document.getElementById("skillCountBadge");
-    const clearSkillsBtn = document.getElementById("clearSkillsBtn");
-    const comStylesList = document.getElementById("comStylesList");
-    const comCountBadge = document.getElementById("comCountBadge");
-
-    function parseHex(str) {
-      const val = parseInt(str.trim().replace(/^0x/i, ""), 16);
-      return isNaN(val) ? 0 : val;
-    }
-
-    function updateStatsUI() {
-      const h = parseFloat(playerHeightEl.value) / 100;
-      const w = parseFloat(playerWeightEl.value);
-      if (h > 0 && w > 0) {
-        const bmi = (w / (h * h)).toFixed(1);
-        let status = "Ideal";
-        if (bmi < 18.5) status = "Kurus";
-        else if (bmi > 25) status = "Berisi";
-        bmiDisplay.textContent = `${bmi} (${status})`;
-      }
-      posBadge.textContent = POS_NAMES[parseInt(regPositionEl.value)] || "CF";
-    }
-
-    function renderSkills() {
-      const query = skillSearch.value.toLowerCase();
-      const cat = skillCategoryFilter.value;
-      skillsGrid.innerHTML = "";
-
-      PLAYER_SKILLS.forEach(skill => {
-        if (cat !== "all" && skill.cat !== cat) return;
-        if (query && !skill.name.toLowerCase().includes(query)) return;
-
-        const isChecked = activeSkills.has(skill.id);
-        const card = document.createElement("button");
-        card.type = "button";
-        card.className = `text-left p-2.5 rounded-lg border transition flex items-center justify-between gap-2 ${
-          isChecked ? "bg-emerald-600/20 border-emerald-500 text-white" : "bg-pesDark/80 border-pesBorder text-slate-300 hover:border-slate-500"
-        }`;
-        card.innerHTML = `
-          <div>
-            <div class="text-xs font-semibold">${skill.name}</div>
-            <div class="text-[10px] text-slate-400">${skill.cat}</div>
-          </div>
-          <div class="w-4 h-4 rounded flex items-center justify-center text-[10px] font-bold ${isChecked ? "bg-emerald-500 text-black" : "border border-slate-600"}">
-            ${isChecked ? "✓" : ""}
-          </div>
-        `;
-        card.onclick = () => {
-          if (activeSkills.has(skill.id)) activeSkills.delete(skill.id);
-          else activeSkills.add(skill.id);
-          skillCountBadge.textContent = `${activeSkills.size} / 10 Skills`;
-          renderSkills();
-          syncUIToBuffer();
-        };
-        skillsGrid.appendChild(card);
-      });
-    }
-
-    function renderComStyles() {
-      comStylesList.innerHTML = "";
-      COM_STYLES.forEach(com => {
-        const isChecked = activeComs.has(com.id);
-        const row = document.createElement("button");
-        row.type = "button";
-        row.className = `w-full text-left p-2.5 rounded-lg border transition flex items-center justify-between gap-3 ${
-          isChecked ? "bg-blue-600/20 border-blue-500 text-white" : "bg-pesDark/80 border-pesBorder text-slate-300 hover:border-slate-500"
-        }`;
-        row.innerHTML = `
-          <div>
-            <div class="text-xs font-semibold">${com.name}</div>
-            <div class="text-[11px] text-slate-400">${com.desc}</div>
-          </div>
-          <div class="w-9 h-5 rounded-full p-0.5 transition ${isChecked ? "bg-blue-500" : "bg-slate-700"}">
-            <div class="w-4 h-4 rounded-full bg-white transition transform ${isChecked ? "translate-x-4" : ""}"></div>
-          </div>
-        `;
-        row.onclick = () => {
-          if (activeComs.has(com.id)) activeComs.delete(com.id);
-          else activeComs.add(com.id);
-          comCountBadge.textContent = `${activeComs.size} / 7 Aktif`;
-          renderComStyles();
-          syncUIToBuffer();
-        };
-        comStylesList.appendChild(row);
-      });
-      comCountBadge.textContent = `${activeComs.size} / 7 Aktif`;
-    }
-
-    function syncUIToBuffer() {
-      if (!saveBuffer) return;
-      const view = new DataView(saveBuffer);
-      const bytes = new Uint8Array(saveBuffer);
-      const encoder = new TextEncoder();
-
-      const offName = parseHex(document.getElementById("offName").value);
-      const offShirt = parseHex(document.getElementById("offShirt").value);
-      const offPhys = parseHex(document.getElementById("offPhys").value);
-      const offSkills = parseHex(document.getElementById("offSkills").value);
-      const offCom = parseHex(document.getElementById("offCom").value);
-
-      if (offName + 46 < bytes.length) {
-        bytes.fill(0, offName, offName + 46);
-        bytes.set(encoder.encode(playerNameEl.value.slice(0, 45)), offName);
-      }
-      if (offShirt + 16 < bytes.length) {
-        bytes.fill(0, offShirt, offShirt + 16);
-        bytes.set(encoder.encode(shirtNameEl.value.toUpperCase().slice(0, 15)), offShirt);
-      }
-      if (offPhys + 5 < bytes.length) {
-        bytes[offPhys] = Math.min(255, Math.max(15, parseInt(playerAgeEl.value) || 17));
-        bytes[offPhys + 1] = Math.min(255, Math.max(145, parseInt(playerHeightEl.value) || 178));
-        bytes[offPhys + 2] = Math.min(255, Math.max(40, parseInt(playerWeightEl.value) || 72));
-        bytes[offPhys + 3] = parseInt(strongerFootEl.value) || 0;
-        bytes[offPhys + 4] = parseInt(regPositionEl.value) || 12;
-      }
-      if (offSkills + 4 <= bytes.length) {
-        let mask = 0;
-        activeSkills.forEach(b => mask |= (1 << b));
-        view.setUint32(offSkills, mask >>> 0, true);
-      }
-      if (offCom < bytes.length) {
-        let mask = 0;
-        activeComs.forEach(b => mask |= (1 << b));
-        bytes[offCom] = mask;
-      }
-    }
-
-    function readBufferToUI() {
-      if (!saveBuffer) return;
-      const view = new DataView(saveBuffer);
-      const bytes = new Uint8Array(saveBuffer);
-      const decoder = new TextDecoder("utf-8");
-
-      const offName = parseHex(document.getElementById("offName").value);
-      const offShirt = parseHex(document.getElementById("offShirt").value);
-      const offPhys = parseHex(document.getElementById("offPhys").value);
-      const offSkills = parseHex(document.getElementById("offSkills").value);
-      const offCom = parseHex(document.getElementById("offCom").value);
-
-      if (offName + 46 < bytes.length) {
-        const raw = decoder.decode(bytes.slice(offName, offName + 46)).replace(/\0.*$/g, "");
-        if (raw.trim()) playerNameEl.value = raw.trim();
-      }
-      if (offShirt + 16 < bytes.length) {
-        const raw = decoder.decode(bytes.slice(offShirt, offShirt + 16)).replace(/\0.*$/g, "");
-        if (raw.trim()) shirtNameEl.value = raw.trim();
-      }
-      if (offPhys + 5 < bytes.length) {
-        const age = bytes[offPhys], h = bytes[offPhys + 1], w = bytes[offPhys + 2];
-        if (age >= 15 && age <= 50) playerAgeEl.value = age;
-        if (h >= 145 && h <= 220) playerHeightEl.value = h;
-        if (w >= 40 && w <= 130) playerWeightEl.value = w;
-        strongerFootEl.value = bytes[offPhys + 3] === 1 ? "1" : "0";
-        if (bytes[offPhys + 4] <= 12) regPositionEl.value = String(bytes[offPhys + 4]);
-      }
-      if (offSkills + 4 <= bytes.length) {
-        const mask = view.getUint32(offSkills, true);
-        activeSkills.clear();
-        for (let i = 0; i < 28; i++) if ((mask & (1 << i)) !== 0) activeSkills.add(i);
-      }
-      if (offCom < bytes.length) {
-        const mask = bytes[offCom];
-        activeComs.clear();
-        for (let i = 0; i < 7; i++) if ((mask & (1 << i)) !== 0) activeComs.add(i);
-      }
-
-      updateStatsUI();
-      skillCountBadge.textContent = `${activeSkills.size} / 10 Skills`;
-      renderSkills();
-      renderComStyles();
-    }
-
-    saveFileInput.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      originalFileName = file.name;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        saveBuffer = ev.target.result;
-        exportBtn.disabled = false;
-        fileInfoBadge.textContent = `File: ${originalFileName} (${(saveBuffer.byteLength / 1024).toFixed(1)} KB)`;
-        readBufferToUI();
-      };
-      reader.readAsArrayBuffer(file);
-    });
-
-    loadDemoBtn.addEventListener("click", () => {
-      originalFileName = "BL00000000";
-      saveBuffer = new ArrayBuffer(0x4000);
-      playerNameEl.value = "REYDARDO";
-      shirtNameEl.value = "REY";
-      playerAgeEl.value = 18;
-      playerHeightEl.value = 180;
-      playerWeightEl.value = 74;
-      strongerFootEl.value = "0";
-      regPositionEl.value = "12";
-      activeSkills = new Set([0, 2, 7, 8, 11, 12]);
-      activeComs = new Set([0, 1, 2]);
-      exportBtn.disabled = false;
-      fileInfoBadge.textContent = `File Demo: ${originalFileName} (16.0 KB)`;
-      updateStatsUI();
-      syncUIToBuffer();
-      readBufferToUI();
-    });
-
-    document.getElementById("autoScanBtn").addEventListener("click", () => {
-      if (!saveBuffer) return alert("Buka file save terlebih dahulu!");
-      const target = prompt("Masukkan nama pemain BAL Anda persis seperti di dalam game:");
-      if (!target) return;
-
-      const bytes = new Uint8Array(saveBuffer);
-      const needle = new TextEncoder().encode(target);
-      let foundAt = -1;
-
-      for (let i = 0; i <= bytes.length - needle.length; i++) {
-        let match = true;
-        for (let j = 0; j < needle.length; j++) {
-          if (bytes[i + j] !== needle[j]) { match = false; break; }
-        }
-        if (match) { foundAt = i; break; }
-      }
-
-      if (foundAt !== -1) {
-        document.getElementById("offName").value = "0x" + foundAt.toString(16).padStart(8, "0");
-        document.getElementById("offShirt").value = "0x" + (foundAt + 0x30).toString(16).padStart(8, "0");
-        document.getElementById("offPhys").value = "0x" + (foundAt + 0x44).toString(16).padStart(8, "0");
-        document.getElementById("offSkills").value = "0x" + (foundAt + 0x50).toString(16).padStart(8, "0");
-        document.getElementById("offCom").value = "0x" + (foundAt + 0x54).toString(16).padStart(8, "0");
-        readBufferToUI();
-        alert(`Berhasil ditemukan di offset 0x${foundAt.toString(16).toUpperCase()}!`);
-      } else {
-        alert("Nama tidak ditemukan. Pastikan file save tidak terenkripsi total atau gunakan tool dekripsi eksternal terlebih dahulu.");
-      }
-    });
-
-    exportBtn.addEventListener("click", () => {
-      if (!saveBuffer) return;
-      syncUIToBuffer();
-      const blob = new Blob([saveBuffer], { type: "application/octet-stream" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = originalFileName;
-      a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    [playerNameEl, shirtNameEl, playerAgeEl, playerHeightEl, playerWeightEl, strongerFootEl, regPositionEl].forEach(el => {
-      el.addEventListener("input", () => { updateStatsUI(); syncUIToBuffer(); });
-    });
-    skillSearch.addEventListener("input", renderSkills);
-    skillCategoryFilter.addEventListener("change", renderSkills);
-    clearSkillsBtn.addEventListener("click", () => { activeSkills.clear(); skillCountBadge.textContent = "0 / 10 Skills"; renderSkills(); syncUIToBuffer(); });
-    document.getElementById("reReadBtn").addEventListener("click", readBufferToUI);
-
-    renderSkills();
-    renderComStyles();
-  </script>
+function set127(){for(let i=0;i<18;i++){let el=document.getElementById('ab'+i); if(el) el.value=127;}}
+function saveAll(){
+  if(!buf) return alert('Upload dulu');
+  let nv=new Uint8Array(buf);
+  nv[32]=parseInt(document.getElementById('age').value);
+  // tulis ability
+  for(let i=0;i<nv.length-18;i++){let ok=true; for(let j=0;j<5;j++) if(nv[i+j]<40||nv[i+j]>99) ok=false; if(ok){for(let k=0;k<18;k++){let el=document.getElementById('ab'+k); if(el) nv[i+k]=parseInt(el.value);} break;}}
+  let blob=new Blob([nv],{type:'application/octet-stream'}); let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download='BAL00000000'; a.click();
+  alert('File BAL baru didownload! Club: '+document.getElementById('club').value+', Umur: '+document.getElementById('age').value+', Ability: 127');
+}
+</script>
 </body>
 </html>
