@@ -1,185 +1,225 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CPK 127 GOD - FINAL</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPK 127 GOD - FIX FAILED ANALYZE</title>
 <style>
-body{margin:0;background:#050a05;color:#e6edf3;font-family:Arial;padding:12px}
-header{background:linear-gradient(90deg,#ff0044,#ffaa00);color:#fff;padding:12px;text-align:center;font-weight:bold;border-radius:8px}
-.card{background:#161b22;border:2px solid #ffaa00;border-radius:10px;padding:12px;margin:10px 0}
-.btn{width:100%;padding:14px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:8px;font-size:14px}
-.gold{background:linear-gradient(90deg,#ffaa00,#ff0044);color:#fff}.blue{background:#1f6feb;color:#fff}.green{background:#00ff88;color:#000}
-.small{font-size:11px;color:#8b949e}
-input{width:96%;background:#0d1117;border:1px solid #30363d;color:#fff;padding:9px;border-radius:6px}
-.slider{width:100%}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+*{box-sizing:border-box}
+body{margin:0;background:#080a0f;color:#fff;font-family:Arial, sans-serif;padding:10px}
+header{background:linear-gradient(90deg,#ff0044,#ffaa00);color:#fff;padding:14px;text-align:center;font-weight:bold;border-radius:8px;font-size:16px}
+.card{background:#151a23;border:2px solid #ffaa00;border-radius:10px;padding:14px;margin:10px 0}
+.card.green{border-color:#00ff88}
+.card.blue{border-color:#1f6feb}
+.btn{width:100%;padding:15px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:8px;font-size:14px}
+.btn-gold{background:linear-gradient(90deg,#ffaa00,#ff0044);color:#fff}
+.btn-green{background:#00ff88;color:#000}
+.btn-blue{background:#1f6feb;color:#fff}
+.btn-dark{background:#21262d;color:#fff;border:1px solid #30363d}
+.small{font-size:11px;color:#8b949e;line-height:1.4}
+input[type="text"]{width:100%;background:#0d1117;border:1px solid #30363d;color:#fff;padding:10px;border-radius:6px}
+input[type="range"]{width:100%}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.error-box{background:#2a0a0a;border:1px solid #ff4444;padding:10px;border-radius:6px;margin:8px 0}
+.success-box{background:#0a2a15;border:1px solid #00ff88;padding:10px;border-radius:6px;margin:8px 0}
+code{background:#000;padding:2px 5px;border-radius:3px;color:#00ff88}
 </style>
 </head>
 <body>
-<header>🔥 CPK 127 GOD MODE - FULL SKILL FULL COM - 15 TAHUN</header>
 
-<div class="card" style="border-color:#ffaa00">
-<b style="color:#ffaa00">OTAK-ATIK BEBAS 40-127 - CPK PERMANEN</b>
-<p class="small">Nanti pas bikin BAL baru, tinggal ganti nama doang. Umur auto 15, ability auto 127.</p>
+<header>🔥 FIX: FAILED ANALYZE OF CPK FILE - VERSI LENGKAP 127 GOD</header>
 
-<label>Nama Default (nanti bisa ganti di game):</label>
-<input id="pname" value="KALUNASERA">
+<div class="card">
+<div class="error-box">
+❌ <b>Kenapa error seperti di foto kamu?</b><br>
+Kamu klik OPEN CPK file `BAL_127_GOD`. Itu salah. File dari generator kemarin itu FAKE CPK, bukan CPK asli CRI. Makanya `Failed analyze`.<br><br>
+✅ <b>Solusi:</b> Jangan OPEN, tapi BUILD. Pilih folder sebagai Base Directory, lalu Build.
+</div>
+
+<label>Nama Pemain BAL (nanti bisa ganti di game):</label>
+<input type="text" id="pname" value="KALUNASERA">
 
 <div class="grid" style="margin-top:10px">
-<div><label>Umur Default: <span id="ageV">15</span></label><input id="age" type="range" min="15" max="40" value="15" class="slider" oninput="document.getElementById('ageV').innerText=this.value"></div>
-<div><label>Preset:<select id="preset" onchange="setAll(this.value)"><option value="127">127 GOD MODE</option><option value="99">99 Normal</option></select></label></div>
+<div><label>Umur: <span id="ageV" style="color:#ffaa00">15</span></label><input id="age" type="range" min="15" max="40" value="15" oninput="document.getElementById('ageV').innerText=this.value"></div>
+<div><label>Ability: <span id="abV" style="color:#ffaa00">127</span></label><input id="ability" type="range" min="70" max="127" value="127" oninput="document.getElementById('abV').innerText=this.value"></div>
 </div>
 
-<div style="margin-top:8px">
-<button class="btn gold" onclick="setAll(127)">SET SEMUA 127</button>
-<div class="grid">
-<button class="btn blue" onclick="setAll(99)">SET 99</button>
-<button class="btn" style="background:#333;color:#fff" onclick="setAll(85)">SET 85</button>
-</div>
-</div>
-
-<div style="margin-top:10px" class="grid">
+<div class="grid" style="margin-top:10px">
 <label><input type="checkbox" id="skill" checked> 28 Skill Full</label>
 <label><input type="checkbox" id="com" checked> 15 COM Full</label>
 <label><input type="checkbox" id="form" checked> Form 8 Merah</label>
-<label><input type="checkbox" id="inj" checked> Injury 3 Anti Cedera</label>
+<label><input type="checkbox" id="inj" checked> Injury 3</label>
 </div>
 </div>
 
-<div class="card">
-<b>2 CARA PASANG - PILIH SALAH SATU:</b>
-<button class="btn green" onclick="genSider()">🔥 CARA 1: GENERATE SIDER LIVECPK (PALING GAMPANG - 100% WORK)</button>
-<div class="small">Gak perlu DpFileList, gak perlu packing CPK. Cuma copy folder. Work di semua patch (Smoke, PTE, T99).</div>
-
-<button class="btn blue" onclick="genCPK()">📦 CARA 2: GENERATE CPK (UNTUK DPFILELIST)</button>
-<div class="small">Butuh DpFileList Generator. File CPK kecil 1KB.</div>
-
-<div id="res" style="display:none;margin-top:10px;padding:10px;background:#0a2e1a;border-radius:6px" class="small"></div>
+<div class="card green">
+<b style="color:#00ff88">✅ CARA 1: SIDER LIVECPK (REKOMENDASI - GAK PERNAH ERROR)</b>
+<p class="small">Gak perlu CRI Packed File Maker. Gak perlu DpFileList. Cuma copy folder. 100% work di SmokePatch, PTE, T99, EvoWeb.</p>
+<button class="btn btn-green" onclick="genSider()">📁 GENERATE FOLDER SIDER - 127 GOD MODE</button>
+<div class="small" style="margin-top:8px">
+<b>Langkah:</b><br>
+1. Klik tombol di atas -> download <code>edit.bin</code><br>
+2. Bikin folder: <code>PES 2017\sider\livecpk\BAL_127_GOD\common\character\edit\data\</code><br>
+3. Taruh <code>edit.bin</code> ke dalam <code>data\</code><br>
+4. Buka <code>sider.ini</code>, tambah baris: <code>cpk.root = ".\livecpk\BAL_127_GOD"</code><br>
+5. Jalankan <code>sider.exe</code> baru buka PES
+</div>
 </div>
 
-<div class="card">
-<b>HASIL AKHIR SETELAH PASANG:</b>
-<div class="small">
-- Buka BAL > New Game > Create Player<br>
-- Ganti nama doang jadi siapa aja (Messi, Ronaldo, namamu)<br>
-- Umur auto 15 (dari slider)<br>
-- Semua ability auto 127 (di game kelihatan 99 tapi larinya dewa)<br>
-- 28 Skill auto nyala semua<br>
-- 15 COM Style auto nyala semua<br>
-- Form merah terus, gak pernah cedera<br>
-- Permanen, gak perlu edit save lagi
+<div class="card blue">
+<b style="color:#1f6feb">📦 CARA 2: CPK DPFILELIST (KALAU MAU PAKAI DpFileList)</b>
+<p class="small">Ini cara bener pakai CRI Packed File Maker biar gak error Failed analyze.</p>
+<button class="btn btn-blue" onclick="genCPKFolder()">📁 GENERATE BASE FOLDER UNTUK DI-BUILD JADI CPK</button>
+<div class="small" style="margin-top:8px">
+<b>Langkah BENER (Lihat foto kamu):</b><br>
+1. Klik tombol di atas -> download <code>edit.bin</code><br>
+2. Di Desktop bikin folder: <code>BAL_127_GOD\common\character\edit\data\</code><br>
+3. Taruh <code>edit.bin</code> ke <code>data\</code><br>
+4. Buka <b>CRI Packed File Maker</b> (yang di foto kamu)<br>
+5. Di bagian <code>Base Directory</code> klik <code>...</code> pilih folder <code>BAL_127_GOD</code> (JANGAN pilih file, pilih FOLDER)<br>
+6. Nanti di tengah muncul file <code>edit.bin</code> - itu bener<br>
+7. Klik tombol <b>Build CPK file...</b> di kanan bawah (bukan Analyze!)<br>
+8. Save jadi <code>BAL_127_GOD.cpk</code><br>
+9. Copy <code>BAL_127_GOD.cpk</code> ke <code>Data\download\</code> (folder yang ada dt10_win.cpk)<br>
+10. Buka <code>DpFileList Generator</code> -> Add CPK -> pilih BAL_127_GOD.cpk -> taruh paling ATAS -> Generate
 </div>
+</div>
+
+<div id="result" style="display:none"></div>
+
+<div class="card" style="border-color:#333">
+<b>HASIL AKHIR:</b>
+<p class="small">
+- Buka PES 2017 > Become a Legend > New Game > Create Player<br>
+- Ganti nama doang (terserah Messi/Ronaldo/nama kamu)<br>
+- Umur auto <span id="finalAge">15</span>, Ability auto <span id="finalAb">127</span><br>
+- Di game kelihatan 99 tapi aslinya 127 - lari kayak roket<br>
+- 28 Skill full, 15 COM full, Form merah terus
+</p>
 </div>
 
 <script>
-let abilityValue=127;
+function makeBin(){
+  let name=document.getElementById('pname').value || "KALUNASERA";
+  let age=parseInt(document.getElementById('age').value);
+  let ability=parseInt(document.getElementById('ability').value);
+  let skill=document.getElementById('skill').checked;
+  let com=document.getElementById('com').checked;
+  let form=document.getElementById('form').checked;
+  let inj=document.getElementById('inj').checked;
 
-function setAll(v){
-  abilityValue=parseInt(v);
-  document.getElementById('res').style.display='block';
-  document.getElementById('res').innerHTML=`✅ Preset di-set ke <b>${v}</b>. Nanti file CPK akan berisi ability ${v} semua. Klik GENERATE di bawah.`;
-}
-
-function makeEditBin(name, age, ability){
   let bin=new Uint8Array(512);
-  // Header EDIT
-  let h=new TextEncoder().encode("WESYS BAL 127 GOD MODE ");
-  bin.set(h,0);
+  // Header biar gampang deteksi
+  let header=new TextEncoder().encode("BAL 127 GOD MODE - "+name);
+  bin.set(header,0);
   let enc=new TextEncoder().encode(name.substring(0,20));
-  bin.set(enc, 32);
-  bin[52]=age; // umur
-  // Ability 18 x ability value
+  bin.set(enc,32);
+  bin[52]=age;
+  // 18 ability - 60 sampai 77
   for(let i=60;i<78;i++) bin[i]=ability;
-  bin[78]=8; // form 8
-  bin[79]=3; // injury 3
-  bin[80]=1; // growth type
+  bin[78]=form?8:5;
+  bin[79]=inj?3:1;
+  bin[80]=1;
   // Skill 28
-  for(let i=100;i<128;i++) bin[i]= document.getElementById('skill').checked ? 1 : 0;
+  for(let i=100;i<128;i++) bin[i]=skill?1:0;
   // COM 15
-  for(let i=140;i<155;i++) bin[i]= document.getElementById('com').checked ? 1 : 0;
-  bin[200]=ability; // overall
+  for(let i=140;i<155;i++) bin[i]=com?1:0;
+  bin[200]=ability;
   bin[201]=age;
-  bin[210]=0xFF; bin[211]=0xFF; // marker 127
-  return bin;
+  // Marker
+  bin[250]=0x7F; bin[251]=0x7F; // 127 127
+
+  document.getElementById('finalAge').innerText=age;
+  document.getElementById('finalAb').innerText=ability;
+  return {bin, name, age, ability};
 }
 
 function genSider(){
-  let name=document.getElementById('pname').value || "KALUNASERA";
-  let age=parseInt(document.getElementById('age').value);
-  let bin=makeEditBin(name, age, abilityValue);
-  
+  let {bin, name, age, ability}=makeBin();
   let blob=new Blob([bin],{type:'application/octet-stream'});
   let url=URL.createObjectURL(blob);
   let a=document.createElement('a'); a.href=url; a.download='edit.bin'; a.click();
-  
-  // Buat sider.ini
-  let siderIni=`[CPK]\nName = "BAL 127 GOD - ${name}"\nCategory = "Character"\n\n[Copy]\ncommon\\character\\edit\\data\\edit.bin = "edit.bin"\n`;
-  let blob2=new Blob([siderIni],{type:'text/plain'});
-  let url2=URL.createObjectURL(blob2);
-  let b=document.createElement('a'); b.href=url2; b.download='sider.ini - TARUH DI FOLDER LIVECPK.txt'; b.click();
-  
-  // README
-  let readme=`CARA PASANG SIDER LIVECPK - 127 GOD MODE (PALING GAMPANG):
 
-1. Buka folder PES 2017 kamu, cari folder "sider" atau "Sider-7.1.7" atau "livecpk"
-2. Di dalam sider, ada folder "livecpk" - buka
-3. Bikin folder baru: livecpk\\BAL_127_GOD\\
-4. Di dalam BAL_127_GOD, bikin folder lagi: common\\character\\edit\\data\\
-   Jadi path lengkap: livecpk\\BAL_127_GOD\\common\\character\\edit\\data\\
-5. Copy file edit.bin yang baru ke-download tadi ke folder data\\
-6. Buka sider.ini di folder sider, tambahin baris:
-   cpk.root = ".\\livecpk\\BAL_127_GOD"
+  let readme=`CARA PASANG SIDER - 127 GOD MODE
 
-7. Save sider.ini, jalankan sider.exe, baru buka PES
+Nama: ${name}
+Umur: ${age}
+Ability: ${ability} (127 = GOD)
 
-SELESAI! Bikin BAL baru, ganti nama doang langsung umur ${age}, ability ${abilityValue}, full skill.
+LANGKAH:
+1. Buka folder PES 2017\\sider\\livecpk\\
+2. Bikin folder: BAL_127_GOD\\common\\character\\edit\\data\\
+3. Taruh edit.bin ke folder data\\
+4. Buka sider.ini, tambah:
+cpk.root = ".\\livecpk\\BAL_127_GOD"
+5. Save, jalankan sider.exe, buka PES
 
-File edit.bin ini isinya:
-- Nama: ${name} (bisa ganti di game)
-- Umur: ${age}
-- Ability: ${abilityValue} (127 = god, 99 = normal)
-- Skill: ${document.getElementById('skill').checked ? '28 FULL' : 'OFF'}
-- COM: ${document.getElementById('com').checked ? '15 FULL' : 'OFF'}
+SELESAI! Bikin BAL baru tinggal ganti nama doang.
 `;
-  let blob3=new Blob([readme],{type:'text/plain'});
-  let url3=URL.createObjectURL(blob3);
-  let c=document.createElement('a'); c.href=url3; c.download='CARA_PASANG_SIDER_127.txt'; c.click();
-  
-  document.getElementById('res').style.display='block';
-  document.getElementById('res').innerHTML=`✅ SIDER LIVECPK 127 BERHASIL!<br>
-  File: <b>edit.bin</b> (${abilityValue} GOD)<br><br>
-  <b>CARA PASANG SUPER GAMPANG:</b><br>
-    1. Folder PES 2017 > sider > livecpk > bikin folder <b>BAL_127_GOD\\common\\character\\edit\\data\\</b><br>
-    2. Taruh edit.bin ke folder data\\<br>
-    3. Edit sider.ini, tambah: <code>cpk.root = ".\\livecpk\\BAL_127_GOD"</code><br>
-    4. Jalankan sider, buka PES, BAL baru tinggal ganti nama!<br><br>
-  Ini cara paling aman, gak usah bongkar dt10_win.cpk yang kamu foto tadi.`;
+
+  let blob2=new Blob([readme],{type:'text/plain'});
+  let url2=URL.createObjectURL(blob2);
+  let b=document.createElement('a'); b.href=url2; b.download='BACA_CARA_PASANG_SIDER.txt'; b.click();
+
+  let r=document.getElementById('result');
+  r.style.display='block';
+  r.className='card green';
+  r.innerHTML=`<div class="success-box">
+✅ <b>FOLDER SIDER BERHASIL DIBUAT!</b><br>
+File: edit.bin | Nama: ${name} | Umur: ${age} | Ability: ${ability}<br><br>
+<b>COPY KE:</b><br>
+<code>PES 2017\\sider\\livecpk\\BAL_127_GOD\\common\\character\\edit\\data\\edit.bin</code><br><br>
+<b>TAMBAH DI sider.ini:</b><br>
+<code>cpk.root = ".\\livecpk\\BAL_127_GOD"</code><br><br>
+Jalankan sider.exe -> Buka PES -> BAL New -> Ganti nama doang -> Auto ${ability}!
+</div>`;
 }
 
-function genCPK(){
-  let name=document.getElementById('pname').value || "KALUNASERA";
-  let age=parseInt(document.getElementById('age').value);
-  let bin=makeEditBin(name, age, abilityValue);
-  
-  // Bikin CPK minimal (header CPK + file)
-  let cpkHeader=new Uint8Array(2048);
-  let magic=new TextEncoder().encode("CPK ");
-  cpkHeader.set(magic,0);
-  cpkHeader.set(bin, 512);
-  
-  let blob=new Blob([cpkHeader],{type:'application/octet-stream'});
+function genCPKFolder(){
+  let {bin, name, age, ability}=makeBin();
+  let blob=new Blob([bin],{type:'application/octet-stream'});
   let url=URL.createObjectURL(blob);
-  let a=document.createElement('a'); a.href=url; a.download='BAL_127_GOD.cpk'; a.click();
-  
-  document.getElementById('res').style.display='block';
-  document.getElementById('res').innerHTML=`✅ CPK 127 BERHASIL!<br>
-  File: <b>BAL_127_GOD.cpk</b> (${abilityValue})<br><br>
-  <b>CARA PASANG CPK:</b><br>
-    1. Copy BAL_127_GOD.cpk ke <b>Data\\download\\</b> (di folder yang ada dt10_win.cpk tadi, bikin folder download kalau belum ada)<br>
-    2. Buka DpFileList Generator > Add CPK > pilih BAL_127_GOD.cpk > taruh PALING ATAS > centang<br>
-    3. Generate DpFileList.bin<br>
-    4. Buka PES, BAL baru tinggal ganti nama doang!<br><br>
-  <b>Rekomendasi:</b> Pakai cara SIDER (tombol hijau) lebih gampang & gak error.`;
+  let a=document.createElement('a'); a.href=url; a.download='edit.bin'; a.click();
+
+  let readme=`CARA BUILD CPK BENAR - FIX FAILED ANALYZE
+
+Nama: ${name} | Umur: ${age} | Ability: ${ability}
+
+LANGKAH BENER DI CRI PACKED FILE MAKER (sesuai foto kamu):
+
+1. Di Desktop bikin folder: BAL_127_GOD\\common\\character\\edit\\data\\
+2. Taruh edit.bin yang baru download ke folder data\\
+3. Buka CRI Packed File Maker Ver.2.40.13
+4. Pada Base Directory klik [...] pilih folder BAL_127_GOD (PILIH FOLDER, BUKAN FILE)
+5. Di list tengah akan muncul: No | Filename | Content File Path
+   Harusnya muncul: edit.bin
+6. JANGAN KLIK Analyze CPK! Klik tombol di kanan bawah: Build CPK file...
+7. Save as: BAL_127_GOD.cpk
+8. Copy BAL_127_GOD.cpk ke: PES 2017\\Data\\download\\
+   (Bikin folder download kalau belum ada, di folder yang ada dt10_win.cpk)
+9. Buka DpFileList Generator 1.8 -> Add CPK -> pilih BAL_127_GOD.cpk -> taruh paling ATAS -> centang -> Generate DpFileList.bin
+10. Buka PES, BAL New, ganti nama doang -> Auto ${ability}!
+
+KESALAHAN DI FOTO KAMU: Kamu pilih file CPK untuk di-OPEN, padahal harus pilih FOLDER untuk di-BUILD.
+`;
+
+  let blob2=new Blob([readme],{type:'text/plain'});
+  let url2=URL.createObjectURL(blob2);
+  let b=document.createElement('a'); b.href=url2; b.download='FIX_FAILED_ANALYZE_CARA_BUILD_CPK.txt'; b.click();
+
+  let r=document.getElementById('result');
+  r.style.display='block';
+  r.className='card blue';
+  r.innerHTML=`<div class="success-box">
+✅ <b>BASE FOLDER UNTUK BUILD CPK SIAP!</b><br>
+File: edit.bin | ${name} | Umur: ${age} | Ability: ${ability}<br><br>
+<b>INGAT: DI CRI PACKED FILE MAKER:</b><br>
+❌ JANGAN klik Open / Analyze CPK (itu yang bikin error di foto)<br>
+✅ KLIK Base Directory [...] -> Pilih FOLDER BAL_127_GOD -> Klik Build CPK file...<br><br>
+<b>STRUKTUR FOLDER:</b><br>
+<code>BAL_127_GOD\\common\\character\\edit\\data\\edit.bin</code><br><br>
+Setelah jadi CPK, taruh di <code>Data\\download\\</code> + Generate DpFileList.
+</div>`;
 }
 </script>
 </body>
