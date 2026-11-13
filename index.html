@@ -1,62 +1,27 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BAL TRANSFER & EDITOR ULTIMATE - PES 2017</title>
-<style>
-*{box-sizing:border-box} body{margin:0;background:#0a0e13;color:#e6edf3;font-family:Arial}
-header{background:#161b22;padding:12px;text-align:center;border-bottom:2px solid #00ff88}
-.tabs{display:flex;background:#0d1117;overflow-x:auto;border-bottom:1px solid #30363d}
-.tabs button{background:none;border:none;color:#8b949e;padding:10px 14px;font-size:11px;cursor:pointer}
-.tabs button.active{color:#00ff88;border-bottom:2px solid #00ff88}
-.card{background:#161b22;border:1px solid #30363d;border-radius:8px;margin:8px;padding:12px}
-label{font-size:10px;color:#8b949e;text-transform:uppercase;display:block;margin-top:8px}
-input,select{width:100%;background:#0d1117;border:1px solid #30363d;color:#fff;padding:9px;border-radius:6px;margin-top:3px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-.btn{width:100%;padding:13px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px}
-.btn-green{background:#00ff88;color:#000} .btn-blue{background:#1f6feb;color:#fff}
-.badge{background:#00ff88;color:#000;padding:2px 7px;border-radius:10px;font-size:10px}
-.upload{border:2px dashed #30363d;padding:15px;border-radius:10px;text-align:center}
-.small{font-size:11px;color:#8b949e}
-</style>
-</head>
-<body>
-<header><h1>BAL TRANSFER & EDITOR ULTIMATE v5</h1><div class="small">Pindah Negara + Club + Ability 127</div></header>
-<div class="card upload">
-<input type="file" id="fileInput" style="display:none">
-<button class="btn btn-blue" onclick="document.getElementById('fileInput').click()">📂 UPLOAD BAL00000000 (Tipe File)</button>
-<div id="fileStat" class="small" style="margin-top:8px">File tipe "File" itu VALID</div>
+<div class="card">
+<b>SKILL CARDS - 28 SKILL</b>
+<div class="small">Centang skill yang mau aktif</div>
+<div id="skillGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:11px;margin-top:8px"></div>
+<button class="btn btn-blue" onclick="checkAllSkill()">AKTIFKAN SEMUA SKILL 🔥</button>
 </div>
-<div class="tabs">
-<button class="active" onclick="document.querySelectorAll('.tab').forEach(t=>t.style.display='none');document.getElementById('tab-basic').style.display='block'">BASIC</button>
-<button onclick="document.querySelectorAll('.tab').forEach(t=>t.style.display='none');document.getElementById('tab-nation').style.display='block'">NEGARA</button>
-<button onclick="document.querySelectorAll('.tab').forEach(t=>t.style.display='none');document.getElementById('tab-club').style.display='block'">CLUB</button>
-<button onclick="document.querySelectorAll('.tab').forEach(t=>t.style.display='none');document.getElementById('tab-ability').style.display='block'">ABILITY</button>
+
+<div class="card">
+<b>PLAYER STYLE - COM PLAYING STYLES</b>
+<div id="styleGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:11px;margin-top:8px"></div>
+<button class="btn btn-blue" onclick="checkAllStyle()">AKTIFKAN SEMUA STYLE 🔥</button>
 </div>
-<div id="editor" style="display:none">
-<div id="tab-basic" class="tab"><div class="card"><b>BASIC <span class="badge">DETECTED</span></b><div class="grid2"><div><label>Umur Terdeteksi <span id="ageDetect" class="badge">17</span></label><input id="pAge" type="range" min="15" max="40" value="15" oninput="document.getElementById('ageVal').innerText=this.value"><center><span id="ageVal" class="badge">15 Tahun</span></center></div><div><label>Skin</label><select id="skin"><option value="1">1 Putih</option><option value="2" selected>2 Sawo Matang</option><option value="3">3 Coklat</option><option value="4">4 Hitam</option></select></div></div></div></div>
-<div id="tab-nation" class="tab" style="display:none"><div class="card"><b>PINDAH NEGARA <span class="badge">NEW!</span></b><p class="small">Ganti timnas. Misal Indonesia -> Brazil, nanti kepanggil timnas Brazil.</p><label>Pindah Ke Negara Baru</label><select id="newNation"><option>Indonesia</option><option>Brazil</option><option>Spain</option><option>England</option><option>Germany</option><option>Argentina</option><option>France</option><option>Japan</option><option>Portugal</option></select><label><input type="checkbox" id="callup" checked> Auto Call-up Timnas Utama</label><div id="nationResult" class="small" style="color:#00ff88;margin-top:5px"></div><button class="btn btn-green" onclick="document.getElementById('nationResult').innerText='✅ Nation diganti ke '+document.getElementById('newNation').value">TERAPKAN PINDAH NEGARA</button></div></div>
-<div id="tab-club" class="tab" style="display:none"><div class="card"><b>PINDAH CLUB <span class="badge">NEW!</span></b><label>Club Baru</label><select id="newClub"><option>Barcelona</option><option>Real Madrid</option><option>Man United</option><option>Bayern Munich</option><option>PSG</option><option>Persib Bandung</option></select><label>Nomor</label><input id="newNumber" type="number" value="10"><div id="clubResult" class="small" style="color:#00ff88"></div><button class="btn btn-green" onclick="document.getElementById('clubResult').innerText='✅ Club diganti ke '+document.getElementById('newClub').value">TERAPKAN PINDAH CLUB</button></div></div>
-<div id="tab-ability" class="tab" style="display:none"><div class="card"><b>ABILITY <span class="badge">DETECT</span></b><div class="grid3" id="abGrid"></div><button class="btn btn-blue" onclick="for(let i=0;i<18;i++){let el=document.getElementById('ab'+i); if(el) el.value=127;}">MAX ALL 127</button></div></div>
-<button class="btn btn-green" style="font-size:16px;padding:16px" onclick="downloadFinal()">💾 DOWNLOAD FILE BAL BARU</button>
-</div>
+
 <script>
-let buf; const abNames=["Attack","Ball Ctrl","Dribble","Low Pass","Lofted Pass","Finishing","Place Kick","Swerve","Header","Def Aware","Ball Win","Kick Pow","Speed","Explosive","Body Ctrl","Physical","Jump","Stamina"];
-document.getElementById('fileInput').addEventListener('change',async e=>{
-  const file=e.target.files[0]; buf=await file.arrayBuffer(); const v=new Uint8Array(buf);
-  document.getElementById('fileStat').innerHTML=`✅ ${file.name} | ${buf.byteLength} bytes | VALID`;
-  document.getElementById('editor').style.display='block';
-  let age=17; for(let i=0;i<100;i++) if(v[i]>=15&&v[i]<=40) age=v[i]; document.getElementById('ageDetect').innerText=age;
-  let found=Array(18).fill(75); for(let i=0;i<v.length-20;i++){let ok=true,tmp=[]; for(let j=0;j<18;j++){let b=v[i+j]; if(b<40||b>99){ok=false;break} tmp.push(b)} if(ok&&tmp.reduce((a,b)=>a+b,0)>1200){found=tmp; break;}}
-  const grid=document.getElementById('abGrid'); grid.innerHTML=''; found.forEach((val,idx)=>{grid.innerHTML+=`<div><label>${abNames[idx]}<br><small style="color:#00ff88">Asli:${val}</small></label><input id="ab${idx}" type="number" value="${val}" min="40" max="127"></div>`});
-});
-function downloadFinal(){
-  if(!buf) return alert('Upload file BAL dulu'); let nv=new Uint8Array(buf); nv[32]=parseInt(document.getElementById('pAge').value);
-  for(let i=0;i<nv.length-18;i++){let ok=true; for(let j=0;j<5;j++) if(nv[i+j]<40||nv[i+j]>99) ok=false; if(ok){for(let k=0;k<18;k++){let el=document.getElementById('ab'+k); if(el) nv[i+k]=parseInt(el.value);} break;}}
-  let meta=`\n---TRANSFER---\nNation:${document.getElementById('newNation').value}\nClub:${document.getElementById('newClub').value}\n`; let enc=new TextEncoder().encode(meta); let finalBuf=new Uint8Array(nv.length+enc.length); finalBuf.set(nv,0); finalBuf.set(enc,nv.length);
-  let blob=new Blob([finalBuf],{type:'application/octet-stream'}); let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download='BAL00000000'; a.click(); alert('Berhasil! File BAL pindah negara & club sudah didownload!');
-}
+const skills=["Scissors Feint","Double Touch","Flip Flap","Marseille Turn","Sombrero","Crossover Turn","Cut Behind & Turn","Scottish Move","Step On Skill","Heading","Long Range Drive","Knuckle Shot","Acrobatic Finishing","Heel Trick","First-time Shot","One-touch Pass","Weighted Pass","Pinpoint Crossing","Outside Curler","Rabona","No Look Pass","Low Lofted Pass","Low Punt Trajectory","GK Long Throw","Long Throw","Super-Sub","Fighting Spirit","Captaincy"];
+
+const styles=["Trickster","Mazing Run","Speeding Bullet","Incisive Run","Long Ball Expert","Early Cross","Long Ranger","Enforcer","Battle Tank","Fox In The Box","Goal Poacher","Dummy Runner","Free Roaming","Track Back","Anchor Man"];
+
+const sGrid=document.getElementById('skillGrid');
+skills.forEach((s,i)=>{sGrid.innerHTML+=`<label style="display:flex;align-items:center;gap:5px"><input type="checkbox" id="skill${i}" style="width:15px"> ${s}</label>`});
+
+const stGrid=document.getElementById('styleGrid');
+styles.forEach((s,i)=>{stGrid.innerHTML+=`<label style="display:flex;align-items:center;gap:5px"><input type="checkbox" id="style${i}" style="width:15px"> ${s}</label>`});
+
+function checkAllSkill(){skills.forEach((s,i)=>{document.getElementById('skill'+i).checked=true})}
+function checkAllStyle(){styles.forEach((s,i)=>{document.getElementById('style'+i).checked=true})}
 </script>
-</body>
-</html>
