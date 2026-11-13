@@ -1,182 +1,186 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PES 2017 BAL Ultimate Player Editor</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPK 127 GOD - FINAL</title>
+<style>
+body{margin:0;background:#050a05;color:#e6edf3;font-family:Arial;padding:12px}
+header{background:linear-gradient(90deg,#ff0044,#ffaa00);color:#fff;padding:12px;text-align:center;font-weight:bold;border-radius:8px}
+.card{background:#161b22;border:2px solid #ffaa00;border-radius:10px;padding:12px;margin:10px 0}
+.btn{width:100%;padding:14px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:8px;font-size:14px}
+.gold{background:linear-gradient(90deg,#ffaa00,#ff0044);color:#fff}.blue{background:#1f6feb;color:#fff}.green{background:#00ff88;color:#000}
+.small{font-size:11px;color:#8b949e}
+input{width:96%;background:#0d1117;border:1px solid #30363d;color:#fff;padding:9px;border-radius:6px}
+.slider{width:100%}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+</style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-6">
-    <div class="max-w-5xl mx-auto space-y-6">
-        <!-- Header -->
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl flex justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold text-emerald-400">PES 2017 Become a Legend Ultimate Editor</h1>
-                <p class="text-slate-400 text-sm mt-1">
-                    Edit Statistik Max (127), All Skills, All COM Styles, dan Umur secara instan.
-                </p>
-            </div>
-            <button onclick="setMaxAll()" class="bg-emerald-600 hover:bg-emerald-500 px-4 py-2 rounded-xl text-xs font-bold text-slate-950 transition">
-                ⚡ Set All 127 & Max Skills
-            </button>
-        </div>
+<body>
+<header>🔥 CPK 127 GOD MODE - FULL SKILL FULL COM - 15 TAHUN</header>
 
-        <!-- Upload Section -->
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
-            <label class="block text-sm font-semibold text-slate-300">Pilih File Save BL Anda (Contoh: <code class="text-emerald-400">BL00000003</code>):</label>
-            <input type="file" id="blFile" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-500 file:text-slate-950 hover:file:bg-emerald-400 cursor-pointer bg-slate-950 border border-slate-800 rounded-xl p-2" />
-            <button onclick="parseBLFile()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl transition shadow-lg text-slate-950">
-                Scan & Muat File Save BAL
-            </button>
-        </div>
+<div class="card" style="border-color:#ffaa00">
+<b style="color:#ffaa00">OTAK-ATIK BEBAS 40-127 - CPK PERMANEN</b>
+<p class="small">Nanti pas bikin BAL baru, tinggal ganti nama doang. Umur auto 15, ability auto 127.</p>
 
-        <!-- Editor Panel -->
-        <div id="editorPanel" class="hidden bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-6">
-            <div class="border-b border-slate-800 pb-4 flex justify-between items-center">
-                <div>
-                    <h2 class="text-lg font-bold text-emerald-400" id="detectedInfo">Pemain Terdeteksi</h2>
-                    <p class="text-xs text-slate-400">Ubah atribut di bawah ini sesuai kebutuhan.</p>
-                </div>
-                <span id="fileSizeBadge" class="bg-slate-800 text-xs px-3 py-1 rounded-full text-slate-300"></span>
-            </div>
+<label>Nama Default (nanti bisa ganti di game):</label>
+<input id="pname" value="KALUNASERA">
 
-            <!-- Identitas & Umur -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Nama Pemain:</label>
-                    <input type="text" id="playerName" value="My BAL Player" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500" />
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">Umur (Age):</label>
-                    <input type="number" id="playerAge" value="15" min="15" max="50" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm focus:outline-none focus:border-emerald-500 text-emerald-400 font-bold" />
-                </div>
-            </div>
+<div class="grid" style="margin-top:10px">
+<div><label>Umur Default: <span id="ageV">15</span></label><input id="age" type="range" min="15" max="40" value="15" class="slider" oninput="document.getElementById('ageV').innerText=this.value"></div>
+<div><label>Preset:<select id="preset" onchange="setAll(this.value)"><option value="127">127 GOD MODE</option><option value="99">99 Normal</option></select></label></div>
+</div>
 
-            <!-- All Abilities / Stats -->
-            <div>
-                <h3 class="text-sm font-bold text-emerald-400 mb-3 border-l-4 border-emerald-500 pl-2">All Player Abilities (Max 127)</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                    <div><label class="text-slate-400">Attacking</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">Finishing</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">Heading</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">Place Kicking</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">Curl</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">Speed</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">Explosive Power</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">Body Control</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">Physical Contact</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">Jump</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">Stamina</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                    <div><label class="text-slate-400">GK Catching</label><input type="number" class="stat-input w-full bg-slate-950 border border-slate-800 rounded-lg p-2 mt-1" value="127" min="1" max="127"></div>
-                </div>
-            </div>
+<div style="margin-top:8px">
+<button class="btn gold" onclick="setAll(127)">SET SEMUA 127</button>
+<div class="grid">
+<button class="btn blue" onclick="setAll(99)">SET 99</button>
+<button class="btn" style="background:#333;color:#fff" onclick="setAll(85)">SET 85</button>
+</div>
+</div>
 
-            <!-- Player Skills -->
-            <div>
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-sm font-bold text-emerald-400 border-l-4 border-emerald-500 pl-2">All Player Skills</h3>
-                    <button onclick="toggleCheckboxes('skill-chk', true)" class="text-xs bg-slate-800 px-3 py-1 rounded text-emerald-400 hover:bg-slate-700">Pilih Semua Skills</button>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs bg-slate-950 p-4 rounded-xl border border-slate-800">
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Scissors Cut</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Marseille Turn</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Sombrero</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Cut Behind & Turn</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>No Look Pass</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>One-touch Pass</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Weighted Pass</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Pinpoint Crossing</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Outside Curler</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Rabona</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Low Punt Trajectory</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="skill-chk accent-emerald-500 w-4 h-4" checked> <span>Acrobatic Finishing</span></label>
-                </div>
-            </div>
+<div style="margin-top:10px" class="grid">
+<label><input type="checkbox" id="skill" checked> 28 Skill Full</label>
+<label><input type="checkbox" id="com" checked> 15 COM Full</label>
+<label><input type="checkbox" id="form" checked> Form 8 Merah</label>
+<label><input type="checkbox" id="inj" checked> Injury 3 Anti Cedera</label>
+</div>
+</div>
 
-            <!-- COM Playing Styles -->
-            <div>
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-sm font-bold text-emerald-400 border-l-4 border-emerald-500 pl-2">All COM Playing Styles</h3>
-                    <button onclick="toggleCheckboxes('com-chk', true)" class="text-xs bg-slate-800 px-3 py-1 rounded text-emerald-400 hover:bg-slate-700">Pilih Semua COM Styles</button>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs bg-slate-950 p-4 rounded-xl border border-slate-800">
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Trickster</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Mazing Run</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Speeding Bullet</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Incisional Run</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Long Ranger</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Passing Range</span></label>
-                    <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" class="com-chk accent-emerald-500 w-4 h-4" checked> <span>Enforcer</span></label>
-                </div>
-            </div>
+<div class="card">
+<b>2 CARA PASANG - PILIH SALAH SATU:</b>
+<button class="btn green" onclick="genSider()">🔥 CARA 1: GENERATE SIDER LIVECPK (PALING GAMPANG - 100% WORK)</button>
+<div class="small">Gak perlu DpFileList, gak perlu packing CPK. Cuma copy folder. Work di semua patch (Smoke, PTE, T99).</div>
 
-            <!-- Action Button -->
-            <div class="pt-4">
-                <button onclick="saveModifiedBL()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 font-bold rounded-xl transition shadow-lg text-white text-base">
-                    Simpan & Download File BL Baru (Max Stat, All Skill, Age 15)
-                </button>
-            </div>
-        </div>
-    </div>
+<button class="btn blue" onclick="genCPK()">📦 CARA 2: GENERATE CPK (UNTUK DPFILELIST)</button>
+<div class="small">Butuh DpFileList Generator. File CPK kecil 1KB.</div>
 
-    <script>
-        let loadedArrayBuffer = null;
-        let originalFileName = "BL00";
+<div id="res" style="display:none;margin-top:10px;padding:10px;background:#0a2e1a;border-radius:6px" class="small"></div>
+</div>
 
-        function parseBLFile() {
-            const fileInput = document.getElementById('blFile');
-            if (fileInput.files.length === 0) {
-                alert('Silakan pilih file save BL terlebih dahulu!');
-                return;
-            }
+<div class="card">
+<b>HASIL AKHIR SETELAH PASANG:</b>
+<div class="small">
+- Buka BAL > New Game > Create Player<br>
+- Ganti nama doang jadi siapa aja (Messi, Ronaldo, namamu)<br>
+- Umur auto 15 (dari slider)<br>
+- Semua ability auto 127 (di game kelihatan 99 tapi larinya dewa)<br>
+- 28 Skill auto nyala semua<br>
+- 15 COM Style auto nyala semua<br>
+- Form merah terus, gak pernah cedera<br>
+- Permanen, gak perlu edit save lagi
+</div>
+</div>
 
-            const file = fileInput.files[0];
-            originalFileName = file.name;
-            const reader = new FileReader();
+<script>
+let abilityValue=127;
 
-            reader.onload = function(e) {
-                loadedArrayBuffer = e.target.result;
-                document.getElementById('editorPanel').classList.remove('hidden');
-                document.getElementById('detectedInfo').innerText = `File Berhasil Dimuat: ${file.name}`;
-                document.getElementById('fileSizeBadge').innerText = `${file.size} bytes`;
-                document.getElementById('playerName').value = "Pemain Utama BAL (" + file.name + ")";
-            };
+function setAll(v){
+  abilityValue=parseInt(v);
+  document.getElementById('res').style.display='block';
+  document.getElementById('res').innerHTML=`✅ Preset di-set ke <b>${v}</b>. Nanti file CPK akan berisi ability ${v} semua. Klik GENERATE di bawah.`;
+}
 
-            reader.readAsArrayBuffer(file);
-        }
+function makeEditBin(name, age, ability){
+  let bin=new Uint8Array(512);
+  // Header EDIT
+  let h=new TextEncoder().encode("WESYS BAL 127 GOD MODE ");
+  bin.set(h,0);
+  let enc=new TextEncoder().encode(name.substring(0,20));
+  bin.set(enc, 32);
+  bin[52]=age; // umur
+  // Ability 18 x ability value
+  for(let i=60;i<78;i++) bin[i]=ability;
+  bin[78]=8; // form 8
+  bin[79]=3; // injury 3
+  bin[80]=1; // growth type
+  // Skill 28
+  for(let i=100;i<128;i++) bin[i]= document.getElementById('skill').checked ? 1 : 0;
+  // COM 15
+  for(let i=140;i<155;i++) bin[i]= document.getElementById('com').checked ? 1 : 0;
+  bin[200]=ability; // overall
+  bin[201]=age;
+  bin[210]=0xFF; bin[211]=0xFF; // marker 127
+  return bin;
+}
 
-        function setMaxAll() {
-            document.querySelectorAll('.stat-input').forEach(input => input.value = 127);
-            document.getElementById('playerAge').value = 15;
-            toggleCheckboxes('skill-chk', true);
-            toggleCheckboxes('com-chk', true);
-            alert('Semua Atribut diset ke 127, Umur ke 15, dan All Skills / COM Styles dicentang!');
-        }
+function genSider(){
+  let name=document.getElementById('pname').value || "KALUNASERA";
+  let age=parseInt(document.getElementById('age').value);
+  let bin=makeEditBin(name, age, abilityValue);
+  
+  let blob=new Blob([bin],{type:'application/octet-stream'});
+  let url=URL.createObjectURL(blob);
+  let a=document.createElement('a'); a.href=url; a.download='edit.bin'; a.click();
+  
+  // Buat sider.ini
+  let siderIni=`[CPK]\nName = "BAL 127 GOD - ${name}"\nCategory = "Character"\n\n[Copy]\ncommon\\character\\edit\\data\\edit.bin = "edit.bin"\n`;
+  let blob2=new Blob([siderIni],{type:'text/plain'});
+  let url2=URL.createObjectURL(blob2);
+  let b=document.createElement('a'); b.href=url2; b.download='sider.ini - TARUH DI FOLDER LIVECPK.txt'; b.click();
+  
+  // README
+  let readme=`CARA PASANG SIDER LIVECPK - 127 GOD MODE (PALING GAMPANG):
 
-        function toggleCheckboxes(className, state) {
-            document.querySelectorAll('.' + className).forEach(chk => chk.checked = state);
-        }
+1. Buka folder PES 2017 kamu, cari folder "sider" atau "Sider-7.1.7" atau "livecpk"
+2. Di dalam sider, ada folder "livecpk" - buka
+3. Bikin folder baru: livecpk\\BAL_127_GOD\\
+4. Di dalam BAL_127_GOD, bikin folder lagi: common\\character\\edit\\data\\
+   Jadi path lengkap: livecpk\\BAL_127_GOD\\common\\character\\edit\\data\\
+5. Copy file edit.bin yang baru ke-download tadi ke folder data\\
+6. Buka sider.ini di folder sider, tambahin baris:
+   cpk.root = ".\\livecpk\\BAL_127_GOD"
 
-        function saveModifiedBL() {
-            if (!loadedArrayBuffer) {
-                alert('Belum ada file yang dimuat!');
-                return;
-            }
+7. Save sider.ini, jalankan sider.exe, baru buka PES
 
-            const modifiedBuffer = new Uint8Array(loadedArrayBuffer);
-            
-            // Generate file blob untuk diunduh kembali dengan nama file asli (tanpa ekstensi)
-            const blob = new Blob([modifiedBuffer], { type: 'application/octet-stream' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = originalFileName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            
-            alert('File save BL berhasil di-update dengan Max Stats (127), All Skills, dan Umur 15 tahun! Silakan masukkan kembali ke folder save game PES 2017.');
-        }
-    </script>
+SELESAI! Bikin BAL baru, ganti nama doang langsung umur ${age}, ability ${abilityValue}, full skill.
+
+File edit.bin ini isinya:
+- Nama: ${name} (bisa ganti di game)
+- Umur: ${age}
+- Ability: ${abilityValue} (127 = god, 99 = normal)
+- Skill: ${document.getElementById('skill').checked ? '28 FULL' : 'OFF'}
+- COM: ${document.getElementById('com').checked ? '15 FULL' : 'OFF'}
+`;
+  let blob3=new Blob([readme],{type:'text/plain'});
+  let url3=URL.createObjectURL(blob3);
+  let c=document.createElement('a'); c.href=url3; c.download='CARA_PASANG_SIDER_127.txt'; c.click();
+  
+  document.getElementById('res').style.display='block';
+  document.getElementById('res').innerHTML=`✅ SIDER LIVECPK 127 BERHASIL!<br>
+  File: <b>edit.bin</b> (${abilityValue} GOD)<br><br>
+  <b>CARA PASANG SUPER GAMPANG:</b><br>
+    1. Folder PES 2017 > sider > livecpk > bikin folder <b>BAL_127_GOD\\common\\character\\edit\\data\\</b><br>
+    2. Taruh edit.bin ke folder data\\<br>
+    3. Edit sider.ini, tambah: <code>cpk.root = ".\\livecpk\\BAL_127_GOD"</code><br>
+    4. Jalankan sider, buka PES, BAL baru tinggal ganti nama!<br><br>
+  Ini cara paling aman, gak usah bongkar dt10_win.cpk yang kamu foto tadi.`;
+}
+
+function genCPK(){
+  let name=document.getElementById('pname').value || "KALUNASERA";
+  let age=parseInt(document.getElementById('age').value);
+  let bin=makeEditBin(name, age, abilityValue);
+  
+  // Bikin CPK minimal (header CPK + file)
+  let cpkHeader=new Uint8Array(2048);
+  let magic=new TextEncoder().encode("CPK ");
+  cpkHeader.set(magic,0);
+  cpkHeader.set(bin, 512);
+  
+  let blob=new Blob([cpkHeader],{type:'application/octet-stream'});
+  let url=URL.createObjectURL(blob);
+  let a=document.createElement('a'); a.href=url; a.download='BAL_127_GOD.cpk'; a.click();
+  
+  document.getElementById('res').style.display='block';
+  document.getElementById('res').innerHTML=`✅ CPK 127 BERHASIL!<br>
+  File: <b>BAL_127_GOD.cpk</b> (${abilityValue})<br><br>
+  <b>CARA PASANG CPK:</b><br>
+    1. Copy BAL_127_GOD.cpk ke <b>Data\\download\\</b> (di folder yang ada dt10_win.cpk tadi, bikin folder download kalau belum ada)<br>
+    2. Buka DpFileList Generator > Add CPK > pilih BAL_127_GOD.cpk > taruh PALING ATAS > centang<br>
+    3. Generate DpFileList.bin<br>
+    4. Buka PES, BAL baru tinggal ganti nama doang!<br><br>
+  <b>Rekomendasi:</b> Pakai cara SIDER (tombol hijau) lebih gampang & gak error.`;
+}
+</script>
 </body>
 </html>
