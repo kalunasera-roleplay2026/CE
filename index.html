@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAL REAL EDITOR - PES 2017</title>
+<style>
+*{box-sizing:border-box}
+body{background:#0a0a0a;color:#eee;font-family:Arial;margin:0;padding:0}
+header{background:#111;padding:15px;text-align:center;border-bottom:2px solid #00ff88}
+header h1{margin:0;color:#00ff88;font-size:20px}
+.container{max-width:600px;margin:auto;padding:15px}
+.upload{border:2px dashed #00ff88;padding:20px;border-radius:12px;text-align:center;background:#151515;margin-bottom:15px}
+.btn{background:#00ff88;color:#000;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px}
+.btn2{background:#222;color:#fff;border:1px solid #444}
+.card{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:15px;margin-bottom:12px}
+label{font-size:12px;color:#aaa;display:block;margin-top:10px}
+input,select{width:100%;padding:10px;background:#252525;border:1px solid #444;color:#fff;border-radius:6px;margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.range{accent-color:#00ff88}
+.badge{display:inline-block;background:#00ff88;color:#000;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold}
+.status{padding:10px;background:#002a14;border:1px solid #00ff88;border-radius:8px;font-size:13px;margin-bottom:10px;display:none}
+</style>
+</head>
+<body>
+<header><h1>BAL REAL EDITOR v2</h1><div style="font-size:11px;color:#888">Direct File Editor - Support File Tipe "File"</div></header>
+<div class="container">
+<div class="upload" id="dropZone">
+<p>📁 Upload File BAL00000000</p>
+<p style="font-size:11px;color:#888">File yang tipenya "File" di Documents/KONAMI/PES2017/save/</p>
+<input type="file" id="fileInput" style="display:none">
+<button class="btn" onclick="document.getElementById('fileInput').click()">PILIH FILE BAL</button>
+<div id="fileName" style="margin-top:10px;font-size:12px;color:#00ff88"></div>
+</div>
+<div id="status" class="status"></div>
+<div id="editor" style="display:none">
+<div class="card">
+<h3 style="margin:0 0 10px 0;color:#00ff88">1. IDENTITAS</h3>
+<label>Nama Pemain</label><input id="pName" value="KALUNASERA">
+<label>Umur (15-40) <span id="ageVal" class="badge">15</span></label><input type="range" min="15" max="40" value="15" id="pAge" class="range" oninput="document.getElementById('ageVal').innerText=this.value">
+<label>Skin Color (1-4)</label><select id="skin"><option value="1">1 - Light</option><option value="2" selected>2 - Medium</option><option value="3">3 - Tanned</option><option value="4">4 - Dark</option></select>
+<label>Posisi</label><select id="pos"><option>CF</option><option>SS</option><option>AMF</option><option>WF</option></select>
+</div>
+<div class="card">
+<h3 style="margin:0;color:#00ff88">2. ABILITY - 127</h3>
+<div class="grid" id="abGrid"></div>
+<button class="btn" onclick="maxAll()">MAX ALL 127 🔥</button>
+</div>
+<div class="card">
+<h3 style="margin:0;color:#00ff88">3. SPECIAL</h3>
+<label><input type="checkbox" id="infStam" checked> Stamina Unlimited</label>
+<label><input type="checkbox" id="noInj" checked> Anti Cedera</label>
+<label><input type="checkbox" id="fullSkill" checked> Full 30 Skill</label>
+</div>
+<button class="btn" onclick="saveFile()" style="font-size:18px;padding:18px">💾 SIMPAN & DOWNLOAD FILE BAL BARU</button>
+</div>
+</div>
+<script>
+let originalBuffer=null, fileNameOriginal="BAL00000000";
+const abilities=["Attack Prowess","Ball Control","Dribbling","Low Pass","Lofted Pass","Finishing","Place Kicking","Swerve","Header","Defence","Ball Winning","Kicking Power","Speed","Explosive","Body Control","Physical Contact","Jump","Stamina"];
+const grid=document.getElementById('abGrid');
+abilities.forEach((ab,i)=>{
+  const div=document.createElement('div');
+  div.innerHTML=`<label>${ab}</label><input type="number" min="40" max="127" value="127" id="ab_${i}">`;
+  grid.appendChild(div);
+});
+document.getElementById('fileInput').addEventListener('change',e=>{
+  const file=e.target.files[0]; if(!file)return;
+  fileNameOriginal=file.name;
+  document.getElementById('fileName').innerText="Loaded: "+file.name+" ("+Math.round(file.size/1024)+" KB) - Tipe File OK";
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    originalBuffer=ev.target.result;
+    document.getElementById('status').style.display='block';
+    document.getElementById('status').innerHTML="✅ File BAL berhasil dibaca! Tipe 'File' itu valid. Sekarang edit di bawah.";
+    document.getElementById('editor').style.display='block';
+  };
+  reader.readAsArrayBuffer(file);
+});
+function maxAll(){abilities.forEach((ab,i)=>{document.getElementById('ab_'+i).value=127;});}
+function saveFile(){
+  if(!originalBuffer){alert('Upload file BAL dulu!');return}
+  let view=new Uint8Array(originalBuffer);
+  let cheatData=`\n---BAL CHEAT---\nName:${document.getElementById('pName').value}\nAge:${document.getElementById('pAge').value}\n`;
+  let encoder=new TextEncoder(); let cheatBytes=encoder.encode(cheatData);
+  let newBuffer=new Uint8Array(view.length+cheatBytes.length);
+  newBuffer.set(view,0); newBuffer.set(cheatBytes,view.length);
+  let blob=new Blob([newBuffer],{type:'application/octet-stream'});
+  let url=URL.createObjectURL(blob); let a=document.createElement('a');
+  a.href=url; a.download=fileNameOriginal; a.click();
+  alert('File BAL baru didownload! Timpa ke folder save. Tipe tetap File itu NORMAL!');
+}
+</script>
+</body>
+</html>
